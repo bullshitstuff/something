@@ -1,0 +1,141 @@
+{
+  "log": {
+    "loglevel": "warning"
+  },
+  "dns": {
+    "queryStrategy": "UseIPv4",
+    "servers": [
+      "https://1.0.0.1/dns-query"
+    ],
+    "tag": "dns_out"
+  },
+  "routing": {
+    "balancers": [
+      {
+        "tag": "balancer",
+        "selector": [
+          "proxy-GB-0"
+        ],
+        "strategy": {
+          "type": "leastPing"
+        }
+      }
+    ],
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "type": "field",
+        "balancerTag": "balancer",
+        "network": "tcp,udp"
+      }
+    ]
+  },
+  "policy": {
+    "system": {
+      "statsOutboundDownlink": true,
+      "statsOutboundUplink": true
+    }
+  },
+  "inbounds": [
+    {
+      "port": 10808,
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": true,
+        "userLevel": 8
+      },
+      "sniffing": {
+        "destOverride": [
+          "http",
+          "tls"
+        ],
+        "enabled": true
+      },
+      "tag": "socks"
+    },
+    {
+      "port": 10809,
+      "protocol": "http",
+      "settings": {
+        "userLevel": 8
+      },
+      "tag": "http"
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "dialer",
+      "protocol": "freedom",
+      "settings": {
+        "fragment": {
+          "packets": "tlshello",
+          "length": "1-10",
+          "interval": "0-1"
+        }
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "UseIPv4"
+      }
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole"
+    },
+    {
+      "tag": "dns-out",
+      "protocol": "dns"
+    },
+    {
+      "add": "104.16.1.106",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "",
+      "flow": "",
+      "fp": "",
+      "headerType": "",
+      "host": "eng.vinamarketcenter.ir",
+      "id": "7ff23c33-a3b7-4a24-93fd-2d3dcbfa62b1",
+      "key": "",
+      "mode": "",
+      "path": "/",
+      "pbk": "",
+      "port": "80",
+      "ps": "🚩 CF | 🔓 VLESS | @fastshovpn [7]",
+      "quicSecurity": "",
+      "security": "none",
+      "serviceName": "",
+      "sid": "",
+      "sni": "",
+      "spx": "",
+      "tag": "proxy-GB-0",
+      "type": "ws"
+    }
+  ],
+  "observatory": {
+    "subjectSelector": [
+      "proxy-GB-0"
+    ],
+    "probeURL": "http://www.google.com/gen_204",
+    "probeInterval": "5m",
+    "enableConcurrency": true
+  },
+  "burstObservatory": {
+    "subjectSelector": [
+      "proxy-GB-0"
+    ],
+    "pingConfig": {
+      "destination": "http://www.google.com/gen_204",
+      "interval": "5m",
+      "sampling": 3,
+      "timeout": "10s"
+    }
+  },
+  "stats": {},
+  "remarks": "🇬🇧 United Kingdom"
+}

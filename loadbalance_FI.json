@@ -1,0 +1,228 @@
+{
+  "log": {
+    "loglevel": "warning"
+  },
+  "dns": {
+    "queryStrategy": "UseIPv4",
+    "servers": [
+      "https://1.0.0.1/dns-query"
+    ],
+    "tag": "dns_out"
+  },
+  "routing": {
+    "balancers": [
+      {
+        "tag": "balancer",
+        "selector": [
+          "proxy-FI-0",
+          "proxy-FI-1",
+          "proxy-FI-2",
+          "proxy-FI-3"
+        ],
+        "strategy": {
+          "type": "leastPing"
+        }
+      }
+    ],
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "type": "field",
+        "balancerTag": "balancer",
+        "network": "tcp,udp"
+      }
+    ]
+  },
+  "policy": {
+    "system": {
+      "statsOutboundDownlink": true,
+      "statsOutboundUplink": true
+    }
+  },
+  "inbounds": [
+    {
+      "port": 10808,
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": true,
+        "userLevel": 8
+      },
+      "sniffing": {
+        "destOverride": [
+          "http",
+          "tls"
+        ],
+        "enabled": true
+      },
+      "tag": "socks"
+    },
+    {
+      "port": 10809,
+      "protocol": "http",
+      "settings": {
+        "userLevel": 8
+      },
+      "tag": "http"
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "dialer",
+      "protocol": "freedom",
+      "settings": {
+        "fragment": {
+          "packets": "tlshello",
+          "length": "1-10",
+          "interval": "0-1"
+        }
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "UseIPv4"
+      }
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole"
+    },
+    {
+      "tag": "dns-out",
+      "protocol": "dns"
+    },
+    {
+      "add": "Www.speedtest.net",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "",
+      "flow": "",
+      "fp": "",
+      "headerType": "",
+      "host": "Mmd.mehrdadspd1980.ir.",
+      "id": "7df5a558-c45c-4002-ac52-c0b4e91b6968",
+      "key": "",
+      "mode": "",
+      "path": "/wss9500?ed=2560@V2RAYNG_IP---@V2RAYNG_IP---@V2RAYNG_IP---@V2RAYNG_IP---@V2RAYNG_IP---@V2RAYNG_IP---@V2RAYNG_IP---@V2RAYNG_IP---@V2RAYNG_IP-G_IP---@V2RAYNG_IP---@V2RAYNG_IP---@V2RAYNG_IP",
+      "pbk": "",
+      "port": "8880",
+      "ps": "🚩 CF | 🔓 VLESS | @config_proxy [36]",
+      "quicSecurity": "",
+      "security": "none",
+      "serviceName": "",
+      "sid": "",
+      "sni": "",
+      "spx": "",
+      "tag": "proxy-FI-0",
+      "type": "httpupgrade"
+    },
+    {
+      "add": "chat.openai.com",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "none",
+      "flow": "",
+      "fp": "",
+      "headerType": "",
+      "host": "shad.ir.fin.test.digicyber.click.",
+      "id": "cac92bc3-e77f-4bbe-ac11-c68162727b6d",
+      "key": "",
+      "mode": "",
+      "path": "/olem/ws?ed=1024",
+      "pbk": "",
+      "port": "8080",
+      "ps": "🚩 CF | 🔓 VLESS | @flyv2ray [4]",
+      "quicSecurity": "",
+      "security": "none",
+      "serviceName": "",
+      "sid": "",
+      "sni": "",
+      "spx": "",
+      "tag": "proxy-FI-1",
+      "type": "ws"
+    },
+    {
+      "add": "chat.deepseek.com",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "none",
+      "flow": "",
+      "fp": "",
+      "headerType": "",
+      "host": "fin.channel.digicyber.click",
+      "id": "22253331-3afd-4b87-ec6f-25e995664743",
+      "key": "",
+      "mode": "",
+      "path": "/olem/ws?ed=1024",
+      "pbk": "",
+      "port": "80",
+      "ps": "🚩 CF | 🔓 VLESS | @flyv2ray [5]",
+      "quicSecurity": "",
+      "security": "none",
+      "serviceName": "",
+      "sid": "",
+      "sni": "",
+      "spx": "",
+      "tag": "proxy-FI-2",
+      "type": "ws"
+    },
+    {
+      "add": "www.speedtest.net",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "",
+      "flow": "",
+      "fp": "",
+      "headerType": "",
+      "host": "fin.channel.digicyber.click",
+      "id": "22253331-3afd-4b87-ec6f-25e995664743",
+      "key": "",
+      "mode": "",
+      "path": "/olem/ws?ed=1024",
+      "pbk": "",
+      "port": "80",
+      "ps": "🚩 CF | 🔓 VLESS | @melov2ray [44]",
+      "quicSecurity": "",
+      "security": "none",
+      "serviceName": "",
+      "sid": "",
+      "sni": "",
+      "spx": "",
+      "tag": "proxy-FI-3",
+      "type": "ws"
+    }
+  ],
+  "observatory": {
+    "subjectSelector": [
+      "proxy-FI-0",
+      "proxy-FI-1",
+      "proxy-FI-2",
+      "proxy-FI-3"
+    ],
+    "probeURL": "http://www.google.com/gen_204",
+    "probeInterval": "5m",
+    "enableConcurrency": true
+  },
+  "burstObservatory": {
+    "subjectSelector": [
+      "proxy-FI-0",
+      "proxy-FI-1",
+      "proxy-FI-2",
+      "proxy-FI-3"
+    ],
+    "pingConfig": {
+      "destination": "http://www.google.com/gen_204",
+      "interval": "5m",
+      "sampling": 3,
+      "timeout": "10s"
+    }
+  },
+  "stats": {},
+  "remarks": "🌐 FI"
+}

@@ -1,0 +1,402 @@
+{
+  "log": {
+    "loglevel": "warning"
+  },
+  "dns": {
+    "queryStrategy": "UseIPv4",
+    "servers": [
+      "https://1.0.0.1/dns-query"
+    ],
+    "tag": "dns_out"
+  },
+  "routing": {
+    "balancers": [
+      {
+        "tag": "balancer",
+        "selector": [
+          "proxy-FR-0",
+          "proxy-FR-1",
+          "proxy-FR-2",
+          "proxy-FR-3",
+          "proxy-FR-4",
+          "proxy-FR-5",
+          "proxy-FR-6",
+          "proxy-FR-7",
+          "proxy-FR-8",
+          "proxy-FR-9"
+        ],
+        "strategy": {
+          "type": "leastPing"
+        }
+      }
+    ],
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "type": "field",
+        "balancerTag": "balancer",
+        "network": "tcp,udp"
+      }
+    ]
+  },
+  "policy": {
+    "system": {
+      "statsOutboundDownlink": true,
+      "statsOutboundUplink": true
+    }
+  },
+  "inbounds": [
+    {
+      "port": 10808,
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": true,
+        "userLevel": 8
+      },
+      "sniffing": {
+        "destOverride": [
+          "http",
+          "tls"
+        ],
+        "enabled": true
+      },
+      "tag": "socks"
+    },
+    {
+      "port": 10809,
+      "protocol": "http",
+      "settings": {
+        "userLevel": 8
+      },
+      "tag": "http"
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "dialer",
+      "protocol": "freedom",
+      "settings": {
+        "fragment": {
+          "packets": "tlshello",
+          "length": "1-10",
+          "interval": "0-1"
+        }
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "UseIPv4"
+      }
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole"
+    },
+    {
+      "tag": "dns-out",
+      "protocol": "dns"
+    },
+    {
+      "add": "172.66.40.99",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "none",
+      "flow": "",
+      "fp": "",
+      "headerType": "",
+      "host": "b.jOin.zEdMoDeOn.oNl.",
+      "id": "722959c6-2cf0-4709-bb14-2716aa34c1fa",
+      "key": "",
+      "mode": "",
+      "path": "/Join-ZEDMODEON-ZEDMODEON-ZEDMODEON-bia-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON",
+      "pbk": "",
+      "port": "80",
+      "ps": "🚩 CF | 🔓 VLESS | @bored_vpn [14]",
+      "quicSecurity": "",
+      "security": "none",
+      "serviceName": "",
+      "sid": "",
+      "sni": "",
+      "spx": "",
+      "tag": "proxy-FR-0",
+      "type": "ws"
+    },
+    {
+      "add": "172.66.40.99",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "none",
+      "flow": "",
+      "fp": "",
+      "headerType": "",
+      "host": "d.jOin.zEdMoDeOn.oNl.",
+      "id": "f9409fa0-900b-4526-be5f-37ddfb4fca78",
+      "key": "",
+      "mode": "",
+      "path": "/Join-ZEDMODEON-ZEDMODEON-ZEDMODEON-bia-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON",
+      "pbk": "",
+      "port": "80",
+      "ps": "🚩 CF | 🔓 VLESS | @v2raych [19]",
+      "quicSecurity": "",
+      "security": "",
+      "serviceName": "",
+      "sid": "",
+      "sni": "",
+      "spx": "",
+      "tag": "proxy-FR-1",
+      "type": "ws"
+    },
+    {
+      "add": "51.75.161.60",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "none",
+      "flow": "",
+      "fp": "",
+      "headerType": "",
+      "host": "",
+      "id": "3f277f78-ef7c-4fab-982c-0ae1b0c0cf67",
+      "key": "",
+      "mode": "",
+      "path": "/vless/",
+      "pbk": "",
+      "port": "80",
+      "ps": "🇬🇧 GB | 🔓 VLESS | @v2raying [10]",
+      "quicSecurity": "",
+      "security": "none",
+      "serviceName": "",
+      "sid": "",
+      "sni": "",
+      "spx": "",
+      "tag": "proxy-FR-2",
+      "type": "ws"
+    },
+    {
+      "add": "51.75.161.60",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "none",
+      "flow": "",
+      "fp": "",
+      "headerType": "",
+      "host": "",
+      "id": "3f277f78-ef7c-4fab-982c-0ae1b0c0cf67",
+      "key": "",
+      "mode": "",
+      "path": "/vless/",
+      "pbk": "",
+      "port": "80",
+      "ps": "🇬🇧 GB | 🔓 VLESS | @v2raying [12]",
+      "quicSecurity": "",
+      "security": "",
+      "serviceName": "",
+      "sid": "",
+      "sni": "",
+      "spx": "",
+      "tag": "proxy-FR-3",
+      "type": "ws"
+    },
+    {
+      "add": "dedicated-development.seotoolsforyou.co.uk",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "none",
+      "flow": "",
+      "fp": "",
+      "headerType": "",
+      "host": "",
+      "id": "2054405e-70ff-40a2-ae27-16b63d72390a",
+      "key": "",
+      "mode": "",
+      "path": "/",
+      "pbk": "",
+      "port": "80",
+      "ps": "🚩 CF | 🔓 VLESS | @canfing_vpn [16]",
+      "quicSecurity": "",
+      "security": "none",
+      "serviceName": "",
+      "sid": "",
+      "sni": "",
+      "spx": "",
+      "tag": "proxy-FR-4",
+      "type": "ws"
+    },
+    {
+      "add": "moody-lock.seotoolsforyou.co.uk",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "none",
+      "flow": "",
+      "fp": "",
+      "headerType": "",
+      "host": "",
+      "id": "82cdcdf0-e772-4d9a-b0a2-d6b605572ac1",
+      "key": "",
+      "mode": "",
+      "path": "/",
+      "pbk": "",
+      "port": "80",
+      "ps": "🚩 CF | 🔓 VLESS | @mtproxy22_v2ray [7]",
+      "quicSecurity": "",
+      "security": "none",
+      "serviceName": "",
+      "sid": "",
+      "sni": "",
+      "spx": "",
+      "tag": "proxy-FR-5",
+      "type": "ws"
+    },
+    {
+      "add": "obedient-menu.seotoolsforyou.co.uk",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "none",
+      "flow": "",
+      "fp": "",
+      "headerType": "",
+      "host": "",
+      "id": "561623c8-4983-44d3-a6ef-92b803a74ee8",
+      "key": "",
+      "mode": "",
+      "path": "/",
+      "pbk": "",
+      "port": "80",
+      "ps": "🚩 CF | 🔓 VLESS | @mtproxy22_v2ray [3]",
+      "quicSecurity": "",
+      "security": "none",
+      "serviceName": "",
+      "sid": "",
+      "sni": "",
+      "spx": "",
+      "tag": "proxy-FR-6",
+      "type": "ws"
+    },
+    {
+      "add": "wild-bird.seotoolsforyou.co.uk",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "none",
+      "flow": "",
+      "fp": "",
+      "headerType": "",
+      "host": "",
+      "id": "1d0dfde1-9f18-4557-9af8-4f3124ee5dcd",
+      "key": "",
+      "mode": "",
+      "path": "/",
+      "pbk": "",
+      "port": "80",
+      "ps": "🚩 CF | 🔓 VLESS | @mtproxy22_v2ray [8]",
+      "quicSecurity": "",
+      "security": "",
+      "serviceName": "",
+      "sid": "",
+      "sni": "",
+      "spx": "",
+      "tag": "proxy-FR-7",
+      "type": "ws"
+    },
+    {
+      "add": "fierce-data.seotoolsforyou.co.uk",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "none",
+      "flow": "",
+      "fp": "",
+      "headerType": "",
+      "host": "",
+      "id": "c313c27c-97ff-45ed-ab5c-64641af5debc",
+      "key": "",
+      "mode": "",
+      "path": "/",
+      "pbk": "",
+      "port": "80",
+      "ps": "🚩 CF | 🔓 VLESS | @v2graphy [12]",
+      "quicSecurity": "",
+      "security": "none",
+      "serviceName": "",
+      "sid": "",
+      "sni": "",
+      "spx": "",
+      "tag": "proxy-FR-8",
+      "type": "ws"
+    },
+    {
+      "add": "www.speedtest.net",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "none",
+      "flow": "",
+      "fp": "chrome",
+      "headerType": "",
+      "host": "dl1-fr-cdn.easy-upload.org",
+      "id": "c752abdc-4cef-42e9-8180-569256930f7d",
+      "key": "",
+      "mode": "",
+      "path": "/",
+      "pbk": "",
+      "port": "2053",
+      "ps": "🚩 CF | 🔒 VLESS | @vpnplusee_free [12]",
+      "quicSecurity": "",
+      "security": "tls",
+      "serviceName": "",
+      "sid": "",
+      "sni": "dl1-fr-cdn.easy-upload.org",
+      "spx": "",
+      "tag": "proxy-FR-9",
+      "type": "ws"
+    }
+  ],
+  "observatory": {
+    "subjectSelector": [
+      "proxy-FR-0",
+      "proxy-FR-1",
+      "proxy-FR-2",
+      "proxy-FR-3",
+      "proxy-FR-4",
+      "proxy-FR-5",
+      "proxy-FR-6",
+      "proxy-FR-7",
+      "proxy-FR-8",
+      "proxy-FR-9"
+    ],
+    "probeURL": "http://www.google.com/gen_204",
+    "probeInterval": "5m",
+    "enableConcurrency": true
+  },
+  "burstObservatory": {
+    "subjectSelector": [
+      "proxy-FR-0",
+      "proxy-FR-1",
+      "proxy-FR-2",
+      "proxy-FR-3",
+      "proxy-FR-4",
+      "proxy-FR-5",
+      "proxy-FR-6",
+      "proxy-FR-7",
+      "proxy-FR-8",
+      "proxy-FR-9"
+    ],
+    "pingConfig": {
+      "destination": "http://www.google.com/gen_204",
+      "interval": "5m",
+      "sampling": 3,
+      "timeout": "10s"
+    }
+  },
+  "stats": {},
+  "remarks": "🇫🇷 France"
+}

@@ -1,0 +1,95 @@
+{
+  "inbounds": [
+    {
+      "listen": "127.0.0.1",
+      "port": 10808,
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": true
+      },
+      "tag": "socks-in"
+    }
+  ],
+  "log": {
+    "loglevel": "warning"
+  },
+  "outbounds": [
+    {
+      "add": "simonil.zarghamportal.ir",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "none",
+      "flow": "",
+      "fp": "",
+      "headerType": "",
+      "host": "shole.zarghamportal.ir",
+      "id": "b43f416d-0bb7-45d9-b3a4-0ccef14f1fbe",
+      "key": "",
+      "mode": "",
+      "path": "/@iSpeedTopVPN?ed=80",
+      "pbk": "",
+      "port": "2095",
+      "ps": "🚩 CF | 🔓 VLESS | @dalton_ping [1]",
+      "quicSecurity": "",
+      "security": "",
+      "serviceName": "",
+      "sid": "",
+      "sni": "",
+      "spx": "",
+      "tag": "proxy-AM-0",
+      "type": "ws"
+    },
+    {
+      "add": "simonil.zarghamportal.ir",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "none",
+      "flow": "",
+      "fp": "",
+      "headerType": "",
+      "host": "shole.zarghamportal.ir",
+      "id": "b43f416d-0bb7-45d9-b3a4-0ccef14f1fbe",
+      "key": "",
+      "mode": "",
+      "path": "/@iSpeedTopVPN?ed=80",
+      "pbk": "",
+      "port": "2095",
+      "ps": "🚩 CF | 🔓 VLESS | @outlinev2rayng [13]",
+      "quicSecurity": "",
+      "security": "none",
+      "serviceName": "",
+      "sid": "",
+      "sni": "",
+      "spx": "",
+      "tag": "proxy-AM-1",
+      "type": "ws"
+    }
+  ],
+  "routing": {
+    "balancers": [
+      {
+        "selector": [
+          "proxy-AM-0",
+          "proxy-AM-1"
+        ],
+        "strategy": {
+          "type": "roundRobin"
+        },
+        "tag": "balancer-AM"
+      }
+    ],
+    "domainStrategy": "AsIs",
+    "rules": [
+      {
+        "balancerTag": "balancer-AM",
+        "inboundTag": [
+          "socks-in"
+        ],
+        "type": "field"
+      }
+    ]
+  }
+}

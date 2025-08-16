@@ -1,0 +1,68 @@
+{
+  "inbounds": [
+    {
+      "listen": "127.0.0.1",
+      "port": 10808,
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": true
+      },
+      "tag": "socks-in"
+    }
+  ],
+  "log": {
+    "loglevel": "warning"
+  },
+  "outbounds": [
+    {
+      "add": "45.88.183.164",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "none",
+      "flow": "",
+      "fp": "",
+      "headerType": "none",
+      "host": "",
+      "id": "ef246c6f-6e7d-4286-af33-5485544b0ba8",
+      "key": "",
+      "mode": "",
+      "path": "",
+      "pbk": "",
+      "port": "49355",
+      "ps": "🇮🇳 IN | 🔓 VLESS | @proxyfull [13]",
+      "quicSecurity": "",
+      "security": "",
+      "serviceName": "",
+      "sid": "",
+      "sni": "",
+      "spx": "",
+      "tag": "proxy-IN-0",
+      "type": "tcp"
+    }
+  ],
+  "routing": {
+    "balancers": [
+      {
+        "selector": [
+          "proxy-IN-0"
+        ],
+        "strategy": {
+          "type": "roundRobin"
+        },
+        "tag": "balancer-IN"
+      }
+    ],
+    "domainStrategy": "AsIs",
+    "rules": [
+      {
+        "balancerTag": "balancer-IN",
+        "inboundTag": [
+          "socks-in"
+        ],
+        "type": "field"
+      }
+    ]
+  }
+}

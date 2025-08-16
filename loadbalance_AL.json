@@ -1,0 +1,68 @@
+{
+  "inbounds": [
+    {
+      "listen": "127.0.0.1",
+      "port": 10808,
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": true
+      },
+      "tag": "socks-in"
+    }
+  ],
+  "log": {
+    "loglevel": "warning"
+  },
+  "outbounds": [
+    {
+      "add": "91.99.16.244",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "none",
+      "flow": "",
+      "fp": "chrome",
+      "headerType": "",
+      "host": "",
+      "id": "Parsashonam-299",
+      "key": "",
+      "mode": "auto",
+      "path": "/Parsashonam-Parsashonam-Parsashonam-Parsashonam-Parsashonam-Parsashonam",
+      "pbk": "sa5RHNjAAD3hYv4OU_YYU08gRUsmPs5JdZES5Xy3pn8",
+      "port": "443",
+      "ps": "🇩🇪 DE | 🔒 VLESS | @nofiltering2 [21]",
+      "quicSecurity": "",
+      "security": "reality",
+      "serviceName": "",
+      "sid": "61e683d41fdb",
+      "sni": "Google.com",
+      "spx": "/",
+      "tag": "proxy-AL-0",
+      "type": "xhttp"
+    }
+  ],
+  "routing": {
+    "balancers": [
+      {
+        "selector": [
+          "proxy-AL-0"
+        ],
+        "strategy": {
+          "type": "roundRobin"
+        },
+        "tag": "balancer-AL"
+      }
+    ],
+    "domainStrategy": "AsIs",
+    "rules": [
+      {
+        "balancerTag": "balancer-AL",
+        "inboundTag": [
+          "socks-in"
+        ],
+        "type": "field"
+      }
+    ]
+  }
+}

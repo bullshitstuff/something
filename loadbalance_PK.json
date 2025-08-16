@@ -1,0 +1,68 @@
+{
+  "inbounds": [
+    {
+      "listen": "127.0.0.1",
+      "port": 10808,
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": true
+      },
+      "tag": "socks-in"
+    }
+  ],
+  "log": {
+    "loglevel": "warning"
+  },
+  "outbounds": [
+    {
+      "add": "103.175.79.10",
+      "allowInsecure": "",
+      "alpn": "",
+      "authority": "",
+      "encryption": "none",
+      "flow": "xtls-rprx-vision",
+      "fp": "chrome",
+      "headerType": "none",
+      "host": "",
+      "id": "49ed01ad-3bb4-204f-b0ff-a58f658fd618",
+      "key": "",
+      "mode": "",
+      "path": "",
+      "pbk": "4e-unF1RO2v--E7-X3aqxnCSPaK9QaTfJ7LawAr2bRI",
+      "port": "443",
+      "ps": "🇺🇸 US | 🔒 VLESS | @filtershekan_channel [6]",
+      "quicSecurity": "",
+      "security": "reality",
+      "serviceName": "",
+      "sid": "",
+      "sni": "speed.cloudflare.com",
+      "spx": "",
+      "tag": "proxy-PK-0",
+      "type": "tcp"
+    }
+  ],
+  "routing": {
+    "balancers": [
+      {
+        "selector": [
+          "proxy-PK-0"
+        ],
+        "strategy": {
+          "type": "roundRobin"
+        },
+        "tag": "balancer-PK"
+      }
+    ],
+    "domainStrategy": "AsIs",
+    "rules": [
+      {
+        "balancerTag": "balancer-PK",
+        "inboundTag": [
+          "socks-in"
+        ],
+        "type": "field"
+      }
+    ]
+  }
+}
