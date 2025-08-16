@@ -19,18 +19,17 @@ import (
 	"time"
 
 	"github.com/naser-989/xray-knife/v3/pkg"
-	"github.com/naser-989/xray-knife/v3/pkg/protocol"
 	"github.com/naser-989/xray-knife/v3/pkg/singbox"
 	"github.com/naser-989/xray-knife/v3/pkg/xray"
 	"github.com/oschwald/geoip2-golang"
 )
 
-// Result struct from your base code, now without the problematic protocol.Protocol
+// Simplified Result struct from your base code
 type Result struct {
 	Config    string
 	SpeedMbps float64
 	Country   string
-	Remarks   string // To store the decoded name from the link
+	// The protocol.Protocol is no longer needed here as we parse from the raw string
 }
 
 const (
@@ -84,7 +83,6 @@ type StreamSettings struct {
 	TLSSettings     *TLSSettings     `json:"tlsSettings,omitempty"`
 	RealitySettings *RealitySettings `json:"realitySettings,omitempty"`
 	WSSettings      *WSSettings      `json:"wsSettings,omitempty"`
-	HTTPSettings    *HTTPSettings    `json:"httpSettings,omitempty"`
 	GRPCSettings    *GRPCSettings    `json:"grpcSettings,omitempty"`
 	Sockopt         *Sockopt         `json:"sockopt,omitempty"`
 }
@@ -104,10 +102,6 @@ type RealitySettings struct {
 type WSSettings struct {
 	Path    string            `json:"path,omitempty"`
 	Headers map[string]string `json:"headers,omitempty"`
-}
-type HTTPSettings struct {
-	Host []string `json:"host,omitempty"`
-	Path string   `json:"path,omitempty"`
 }
 type GRPCSettings struct {
 	ServiceName string `json:"serviceName,omitempty"`
@@ -137,22 +131,14 @@ type VmessLink struct {
 	Scy  string          `json:"scy"`
 }
 
-// --- NEW CORE LOGIC: Replicates Python Script ---
-func parseLinkToOutboundJSON(link, tag string) (json.RawMessage, string, error) {
+// --- CORE LOGIC: Replicates Python Script ---
+func parseLinkToOutboundJSON(link, tag string) (json.RawMessage, error) {
 	u, err := url.Parse(link)
 	if err != nil {
-		return nil, "", fmt.Errorf("invalid link format: %w", err)
+		return nil, fmt.Errorf("invalid link format: %w", err)
 	}
 
 	out := Outbound{Tag: tag, Mux: &Mux{Enabled: true, Concurrency: 8}}
-	remarks := u.Fragment
-	if remarks != "" {
-		decodedRemarks, err := url.QueryUnescape(remarks)
-		if err == nil {
-			remarks = decodedRemarks
-		}
-	}
-
 
 	switch u.Scheme {
 	case "vless":
@@ -162,13 +148,10 @@ func parseLinkToOutboundJSON(link, tag string) (json.RawMessage, string, error) 
 			port = 443
 		}
 		queryParams := u.Query()
-		
-		// *** THIS IS THE FIX for encryption: "" ***
 		encryption := queryParams.Get("encryption")
 		if encryption == "" {
 			encryption = "none"
 		}
-		
 		networkType := queryParams.Get("type")
 		if networkType == "" {
 			networkType = "tcp"
@@ -213,14 +196,13 @@ func parseLinkToOutboundJSON(link, tag string) (json.RawMessage, string, error) 
 		}
 		decoded, err := base64.StdEncoding.DecodeString(b64)
 		if err != nil {
-			return nil, "", fmt.Errorf("invalid vmess base64: %w", err)
+			return nil, fmt.Errorf("invalid vmess base64: %w", err)
 		}
 
 		var vmessData VmessLink
 		if err := json.Unmarshal(decoded, &vmessData); err != nil {
-			return nil, "", fmt.Errorf("invalid vmess json: %w", err)
+			return nil, fmt.Errorf("invalid vmess json: %w", err)
 		}
-		remarks = vmessData.PS
 		var port int
 		if err := json.Unmarshal(vmessData.Port, &port); err != nil {
 			var portStr string
@@ -238,8 +220,6 @@ func parseLinkToOutboundJSON(link, tag string) (json.RawMessage, string, error) 
 				aid, _ = strconv.Atoi(aidStr)
 			}
 		}
-
-		// *** THIS IS THE FIX for vmess security ***
 		security := vmessData.Scy
 		if security == "" || security == "auto" {
 			security = "none"
@@ -269,14 +249,11 @@ func parseLinkToOutboundJSON(link, tag string) (json.RawMessage, string, error) 
 		}
 		out.StreamSettings = ss
 	default:
-		return nil, "", fmt.Errorf("unsupported link scheme: %s", u.Scheme)
+		return nil, fmt.Errorf("unsupported link scheme: %s", u.Scheme)
 	}
-
-	jsonBytes, err := json.Marshal(out)
-	return jsonBytes, remarks, err
+	return json.Marshal(out)
 }
 
-// ... the rest of the file is identical to the one you provided as a base ...
 func main() {
 	urls := flag.String("urls", "", "Comma-separated list of subscription URLs")
 	timeout := flag.Duration("timeout", 10*time.Second, "Timeout for each network request")
@@ -285,22 +262,34 @@ func main() {
 	outputFile := flag.String("output", "v2rayng_profiles.json", "Name of the final output JSON file")
 	flag.Parse()
 
-	if *urls == "" { log.Println("Error: -urls flag is required."); flag.Usage(); os.Exit(1) }
+	if *urls == "" {
+		log.Println("Error: -urls flag is required.")
+		flag.Usage()
+		os.Exit(1)
+	}
 	log.SetOutput(os.Stderr)
 	log.Println("Starting proxy tester...")
 	var err error
 	geoDB, err = geoip2.Open(*geoDBPath)
-	if err != nil { log.Fatalf("FATAL: Could not load GeoIP database from '%s'. Please download it from MaxMind. Error: %v", *geoDBPath, err) }
+	if err != nil {
+		log.Fatalf("FATAL: Could not load GeoIP database from '%s'. Please download it from MaxMind. Error: %v", *geoDBPath, err)
+	}
 	defer geoDB.Close()
 
 	subscriptionURLs := strings.Split(*urls, ",")
 	allConfigs := fetchConfigsFromSubscriptions(subscriptionURLs)
-	if len(allConfigs) == 0 { log.Fatal("No proxy configurations were found from the provided URLs.") }
+	if len(allConfigs) == 0 {
+		log.Fatal("No proxy configurations were found from the provided URLs.")
+	}
 	log.Printf("Found a total of %d configs. Starting tests...\n", len(allConfigs))
 	results := testConfigs(*concurrency, allConfigs, *timeout)
 
 	var fastProxies []Result
-	for _, p := range results { if p.SpeedMbps >= minSpeedMbps { fastProxies = append(fastProxies, p) } }
+	for _, p := range results {
+		if p.SpeedMbps >= minSpeedMbps {
+			fastProxies = append(fastProxies, p)
+		}
+	}
 	if len(fastProxies) == 0 {
 		log.Println("Warning: No proxies met the required speed of %.2f Mbps.", minSpeedMbps)
 		os.WriteFile(*outputFile, []byte("[]"), 0644)
@@ -312,19 +301,27 @@ func main() {
 	var allProfiles []json.RawMessage
 	sort.SliceStable(fastProxies, func(i, j int) bool { return fastProxies[i].SpeedMbps > fastProxies[j].SpeedMbps })
 	numTopProxies := topNFastest
-	if len(fastProxies) < topNFastest { numTopProxies = len(fastProxies) }
+	if len(fastProxies) < topNFastest {
+		numTopProxies = len(fastProxies)
+	}
 	topProxies := fastProxies[:numTopProxies]
 	log.Printf("Generating 'Fastest Location' profile with top %d proxies...", len(topProxies))
 	fastestProfile, err := generateSingleProfileConfig("Fastest Location", "FAST", topProxies)
-	if err == nil { allProfiles = append(allProfiles, fastestProfile) }
+	if err == nil {
+		allProfiles = append(allProfiles, fastestProfile)
+	}
 
 	groupedByCountry := make(map[string][]Result)
-	for _, res := range fastProxies { groupedByCountry[res.Country] = append(groupedByCountry[res.Country], res) }
+	for _, res := range fastProxies {
+		groupedByCountry[res.Country] = append(groupedByCountry[res.Country], res)
+	}
 	for countryCode, countryResults := range groupedByCountry {
 		countryInfo := getCountryInfo(countryCode)
 		log.Printf("Generating '%s' profile with %d proxies...", countryInfo.Name, len(countryResults))
 		countryProfile, err := generateSingleProfileConfig(countryInfo.Name, countryCode, countryResults)
-		if err == nil { allProfiles = append(allProfiles, countryProfile) }
+		if err == nil {
+			allProfiles = append(allProfiles, countryProfile)
+		}
 	}
 
 	if len(allProfiles) == 0 {
@@ -335,14 +332,17 @@ func main() {
 	}
 
 	finalJSON, err := json.MarshalIndent(allProfiles, "", "  ")
-	if err != nil { log.Fatalf("Failed to marshal the final list of profiles: %v", err) }
+	if err != nil {
+		log.Fatalf("Failed to marshal the final list of profiles: %v", err)
+	}
 	err = os.WriteFile(*outputFile, finalJSON, 0644)
-	if err != nil { log.Fatalf("Failed to write the final config file: %v", err) }
+	if err != nil {
+		log.Fatalf("Failed to write the final config file: %v", err)
+	}
 	log.Printf("\nSUCCESS! All profiles have been written to %s", *outputFile)
 }
+
 func generateSingleProfileConfig(profileName, countryCode string, proxies []Result) (json.RawMessage, error) {
-	var proxyOutbounds []json.RawMessage
-	var proxyTags []string
 	templateBytes, err := os.ReadFile("template.json")
 	if err != nil {
 		return nil, fmt.Errorf("could not read template.json: %w", err)
@@ -352,25 +352,18 @@ func generateSingleProfileConfig(profileName, countryCode string, proxies []Resu
 		return nil, fmt.Errorf("could not parse template.json: %w", err)
 	}
 
+	var proxyOutbounds []interface{}
 	for i, p := range proxies {
-		tagRemark := p.Remarks
-		if tagRemark == "" {
-			// Fallback tag name if remarks field is empty
-			u, err := url.Parse(p.Config)
-			if err == nil {
-				tagRemark = u.Hostname()
-			} else {
-				tagRemark = "proxy"
-			}
-		}
-		tag := fmt.Sprintf("%s-%d", tagRemark, i)
-		outboundJSON, _, err := parseLinkToOutboundJSON(p.Config, tag)
+		// *** This now uses the new, simplified tagging scheme ***
+		tag := fmt.Sprintf("proxy%d", i+1)
+		outboundJSON, err := parseLinkToOutboundJSON(p.Config, tag)
 		if err != nil {
 			log.Printf("Skipping invalid config link: %v", err)
 			continue
 		}
-		proxyOutbounds = append(proxyOutbounds, outboundJSON)
-		proxyTags = append(proxyTags, tag)
+		var obj map[string]interface{}
+		json.Unmarshal(outboundJSON, &obj)
+		proxyOutbounds = append(proxyOutbounds, obj)
 	}
 
 	if len(proxyOutbounds) == 0 {
@@ -378,37 +371,23 @@ func generateSingleProfileConfig(profileName, countryCode string, proxies []Resu
 	}
 	countryInfo := getCountryInfo(countryCode)
 	config["remarks"] = fmt.Sprintf("%s %s", countryInfo.Emoji, countryInfo.Name)
-	var interfaceOutbounds []interface{}
-	for _, raw := range proxyOutbounds {
-		var obj map[string]interface{}
-		json.Unmarshal(raw, &obj)
-		interfaceOutbounds = append(interfaceOutbounds, obj)
-	}
+
 	currentOutbounds, ok := config["outbounds"].([]interface{})
 	if !ok {
 		return nil, fmt.Errorf("template.json 'outbounds' is not an array")
 	}
-	config["outbounds"] = append(currentOutbounds, interfaceOutbounds...)
-	routing, ok := config["routing"].(map[string]interface{})
-	if !ok {
-		return nil, fmt.Errorf("template.json 'routing' is not an object")
-	}
-	balancers, ok := routing["balancers"].([]interface{})
-	if !ok {
-		return nil, fmt.Errorf("template.json 'balancers' is not an array")
-	}
-	balancer := balancers[0].(map[string]interface{})
-	balancer["selector"] = proxyTags
-	observatory := config["observatory"].(map[string]interface{})
-	observatory["subjectSelector"] = proxyTags
-	burstObservatory := config["burstObservatory"].(map[string]interface{})
-	burstObservatory["subjectSelector"] = proxyTags
+	// Append the newly generated proxies
+	config["outbounds"] = append(currentOutbounds, proxyOutbounds...)
+
+	// No longer need to modify selectors, the template handles it!
 	return json.Marshal(config)
 }
+
 type CountryInfo struct {
 	Name  string
 	Emoji string
 }
+
 func getCountryInfo(code string) CountryInfo {
 	countryMap := map[string]CountryInfo{
 		"FAST": {"Fastest Location", "⚡️"}, "US": {"United States", "🇺🇸"}, "DE": {"Germany", "🇩🇪"}, "GB": {"United Kingdom", "🇬🇧"},
@@ -431,19 +410,34 @@ func fetchConfigsFromSubscriptions(urls []string) []string {
 			log.Printf("Fetching from %s...", u)
 			client := http.Client{Timeout: 15 * time.Second}
 			resp, err := client.Get(u)
-			if err != nil { log.Printf("Failed to fetch subscription from %s: %v", u, err); return }
+			if err != nil {
+				log.Printf("Failed to fetch subscription from %s: %v", u, err)
+				return
+			}
 			defer resp.Body.Close()
-			if resp.StatusCode != http.StatusOK { log.Printf("Received non-200 status code from %s: %s", u, resp.Status); return }
+			if resp.StatusCode != http.StatusOK {
+				log.Printf("Received non-200 status code from %s: %s", u, resp.Status)
+				return
+			}
 			body, err := io.ReadAll(resp.Body)
-			if err != nil { log.Printf("Failed to read response body from %s: %v", u, err); return }
+			if err != nil {
+				log.Printf("Failed to read response body from %s: %v", u, err)
+				return
+			}
 			decodedBody, err := base64.StdEncoding.DecodeString(string(body))
 			var content string
-			if err != nil { content = string(body) } else { content = string(decodedBody) }
+			if err != nil {
+				content = string(body)
+			} else {
+				content = string(decodedBody)
+			}
 			configs := strings.Split(content, "\n")
 			mu.Lock()
 			for _, config := range configs {
 				trimmed := strings.TrimSpace(config)
-				if trimmed != "" { allConfigs = append(allConfigs, trimmed) }
+				if trimmed != "" {
+					allConfigs = append(allConfigs, trimmed)
+				}
 			}
 			mu.Unlock()
 		}(url)
@@ -473,7 +467,6 @@ func testConfigs(numWorkers int, configs []string, timeout time.Duration) []Resu
 func worker(id int, wg *sync.WaitGroup, jobs <-chan string, results chan<- Result, timeout time.Duration) {
 	defer wg.Done()
 	for config := range jobs {
-		// This part is from your base code, using xray-knife ONLY for testing.
 		var core pkg.Core
 		if strings.HasPrefix(config, "hy") {
 			core = singbox.NewSingboxService(false, true)
@@ -515,34 +508,47 @@ func worker(id int, wg *sync.WaitGroup, jobs <-chan string, results chan<- Resul
 			continue
 		}
 		log.Printf("SUCCESS: %s | Outbound IP: %s | Country: %s", proto.ConvertToGeneralConfig().Address, ip, country)
-		_, remarks, _ := parseLinkToOutboundJSON(config, "")
-		results <- Result{Config: config, SpeedMbps: speed, Country: country, Remarks: remarks}
+		results <- Result{Config: config, SpeedMbps: speed, Country: country}
 	}
 }
 func getIPAndCountry(client *http.Client, timeout time.Duration) (string, string) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 	req, err := http.NewRequestWithContext(ctx, "GET", ipCheckURL, nil)
-	if err != nil { return "", "" }
+	if err != nil {
+		return "", ""
+	}
 	resp, err := client.Do(req)
-	if err != nil { return "", "" }
+	if err != nil {
+		return "", ""
+	}
 	defer resp.Body.Close()
 	ipBytes, err := io.ReadAll(resp.Body)
-	if err != nil { return "", "" }
+	if err != nil {
+		return "", ""
+	}
 	ipStr := strings.TrimSpace(string(ipBytes))
 	ip := net.ParseIP(ipStr)
-	if ip == nil { return "", "" }
+	if ip == nil {
+		return "", ""
+	}
 	record, err := geoDB.Country(ip)
-	if err != nil { return ipStr, "XX" }
+	if err != nil {
+		return ipStr, "XX"
+	}
 	return ipStr, record.Country.IsoCode
 }
 func checkReachability(client *http.Client, timeout time.Duration) bool {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 	req, err := http.NewRequestWithContext(ctx, "HEAD", sanityCheckURL, nil)
-	if err != nil { return false }
+	if err != nil {
+		return false
+	}
 	resp, err := client.Do(req)
-	if err != nil { return false }
+	if err != nil {
+		return false
+	}
 	defer resp.Body.Close()
 	return resp.StatusCode >= 200 && resp.StatusCode < 400
 }
@@ -550,16 +556,26 @@ func testDownloadSpeed(client *http.Client, timeout time.Duration) (float64, err
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 	req, err := http.NewRequestWithContext(ctx, "GET", speedTestURL, nil)
-	if err != nil { return 0, err }
+	if err != nil {
+		return 0, err
+	}
 	start := time.Now()
 	resp, err := client.Do(req)
-	if err != nil { return 0, err }
+	if err != nil {
+		return 0, err
+	}
 	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK { return 0, fmt.Errorf("received non-200 status: %s", resp.Status) }
+	if resp.StatusCode != http.StatusOK {
+		return 0, fmt.Errorf("received non-200 status: %s", resp.Status)
+	}
 	_, err = io.Copy(io.Discard, resp.Body)
-	if err != nil { return 0, err }
+	if err != nil {
+		return 0, err
+	}
 	duration := time.Since(start).Seconds()
-	if duration == 0 { return 0, fmt.Errorf("download took zero time") }
+	if duration == 0 {
+		return 0, fmt.Errorf("download took zero time")
+	}
 	speedMbps := (float64(speedTestFileSize) * 8) / duration / 1_000_000
 	return speedMbps, nil
 }
