@@ -1,0 +1,3571 @@
+[
+  {
+    "log": {
+      "loglevel": "warning"
+    },
+    "dns": {
+      "queryStrategy": "UseIPv4",
+      "servers": [
+        "https://1.0.0.1/dns-query"
+      ],
+      "tag": "dns_out"
+    },
+    "fakedns": [],
+    "routing": {
+      "balancers": [
+        {
+          "tag": "balancer",
+          "selector": [
+            "proxy-FastestLocation-0",
+            "proxy-FastestLocation-1",
+            "proxy-FastestLocation-2",
+            "proxy-FastestLocation-3",
+            "proxy-FastestLocation-4",
+            "proxy-FastestLocation-5",
+            "proxy-FastestLocation-6",
+            "proxy-FastestLocation-7",
+            "proxy-FastestLocation-8",
+            "proxy-FastestLocation-9",
+            "proxy-FastestLocation-10",
+            "proxy-FastestLocation-11",
+            "proxy-FastestLocation-12",
+            "proxy-FastestLocation-13",
+            "proxy-FastestLocation-14",
+            "proxy-FastestLocation-15",
+            "proxy-FastestLocation-16",
+            "proxy-FastestLocation-17",
+            "proxy-FastestLocation-18",
+            "proxy-FastestLocation-19"
+          ],
+          "strategy": {
+            "type": "leastPing"
+          }
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "type": "field",
+          "balancerTag": "balancer",
+          "network": "tcp,udp"
+        }
+      ]
+    },
+    "policy": {
+      "system": {
+        "statsOutboundDownlink": true,
+        "statsOutboundUplink": true
+      }
+    },
+    "inbounds": [
+      {
+        "port": 10808,
+        "protocol": "socks",
+        "settings": {
+          "auth": "noauth",
+          "udp": true,
+          "userLevel": 8
+        },
+        "sniffing": {
+          "destOverride": [
+            "http",
+            "tls"
+          ],
+          "enabled": true
+        },
+        "tag": "socks"
+      },
+      {
+        "port": 10809,
+        "protocol": "http",
+        "settings": {
+          "userLevel": 8
+        },
+        "tag": "http"
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "dialer",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "packets": "tlshello",
+            "length": "1-10",
+            "interval": "0-1"
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "dns-out",
+        "protocol": "dns"
+      },
+      {
+        "add": "25.26.27.7",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "ip.langmanshanxi.top",
+        "id": "583ceab3-4022-4553-9158-9bedc625ad4e",
+        "key": "",
+        "mode": "",
+        "path": "/Telegram🇨🇳 @WangCai2 /?ed=2560",
+        "pbk": "",
+        "port": "8880",
+        "ps": "🇬🇧 GB | 🔓 VLESS | @proxy_mtproto_vpns_free [8]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "Telegram-channel-WangCai2",
+        "spx": "",
+        "tag": "proxy-FastestLocation-0",
+        "type": "ws"
+      },
+      {
+        "add": "104.17.148.22",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "www.speedtest.net.zula.ir.cfp1.a2hdhjdxjbxjsjdjd.ddns-ip.nEt.",
+        "id": "6ec52bc7-fcd7-4841-ab69-70d6e03a6eda",
+        "key": "",
+        "mode": "",
+        "path": "/Telegram@ShadowProxy66/?ed=2560",
+        "pbk": "",
+        "port": "8880",
+        "ps": "🚩 CF | 🔓 VLESS | @v2raytg [71]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-FastestLocation-1",
+        "type": "ws"
+      },
+      {
+        "add": "193.124.18.3",
+        "allowInsecure": "1",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "bitget1.asdasd.click",
+        "id": "b5441b0d-2147-4898-8a6a-9b2c87f58382",
+        "key": "",
+        "mode": "",
+        "path": "/Telegram🇨🇳",
+        "pbk": "",
+        "port": "8880",
+        "ps": "🇭🇺 HU | 🔓 VLESS | @v2ray_collector [25]",
+        "quicSecurity": "",
+        "security": "",
+        "serviceName": "",
+        "sid": "",
+        "sni": "Telegram-channel-WangCai2",
+        "spx": "",
+        "tag": "proxy-FastestLocation-2",
+        "type": "ws"
+      },
+      {
+        "add": "104.17.147.22",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "www.speedtest.net.zula.ir.cfp1.a2hdhjdxjbxjsjdjd.ddns-ip.net.",
+        "id": "6ec52bc7-fcd7-4841-ab69-70d6e03a6eda",
+        "key": "",
+        "mode": "",
+        "path": "/",
+        "pbk": "",
+        "port": "8880",
+        "ps": "🚩 CF | 🔓 VLESS | @kurdistan_vpn_perfectt [1]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-FastestLocation-3",
+        "type": "ws"
+      },
+      {
+        "add": "77.105.163.251",
+        "allowInsecure": "1",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "cf.d3z.net",
+        "id": "0132166f-e702-48ed-a9e7-b07af768faf8",
+        "key": "",
+        "mode": "",
+        "path": "/Telegram🇨🇳",
+        "pbk": "",
+        "port": "8880",
+        "ps": "🇨🇳 CN | 🔓 VLESS | @v2ray_collector [32]",
+        "quicSecurity": "",
+        "security": "",
+        "serviceName": "",
+        "sid": "",
+        "sni": "Telegram-channel-WangCai2",
+        "spx": "",
+        "tag": "proxy-FastestLocation-4",
+        "type": "ws"
+      },
+      {
+        "add": "104.24.40.146",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "bitget1.asdasd.click",
+        "id": "b5441b0d-2147-4898-8a6a-9b2c87f58382",
+        "key": "",
+        "mode": "",
+        "path": "/?ed=2560",
+        "pbk": "",
+        "port": "8443",
+        "ps": "🚩 CF | 🔒 VLESS | @outline_ir [6]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "bitget1.asdasd.click",
+        "spx": "",
+        "tag": "proxy-FastestLocation-5",
+        "type": "ws"
+      },
+      {
+        "add": "190.93.246.246",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "bitget1.asdasd.click",
+        "id": "b5441b0d-2147-4898-8a6a-9b2c87f58382",
+        "key": "",
+        "mode": "",
+        "path": "/?ed",
+        "pbk": "",
+        "port": "8443",
+        "ps": "🚩 CF | 🔒 VLESS | @freeiranianv2rey [9]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "bitget1.asdasd.click",
+        "spx": "",
+        "tag": "proxy-FastestLocation-6",
+        "type": "ws"
+      },
+      {
+        "add": "app-stg.gopay.co.id.servpn.my.id",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "app-stg.gopay.co.id.servpn.my.id",
+        "id": "41b8c97a-7fac-4191-8922-f58d42a9acf7",
+        "key": "",
+        "mode": "",
+        "path": "/id5/?-Join---i10VPN---Join---i10VPN---Join---i10VPN---Join---i10VPN",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @orange_vpns [14]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "app-stg.gopay.co.id.servpn.my.id",
+        "spx": "",
+        "tag": "proxy-FastestLocation-7",
+        "type": "ws"
+      },
+      {
+        "add": "89.116.161.29",
+        "allowInsecure": "1",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "hk.laoyoutiao.link",
+        "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf",
+        "key": "",
+        "mode": "",
+        "path": "/TelegramU0001F1E8U0001F1F3 @MxlShare @WangCai2 /?ed=2560",
+        "pbk": "",
+        "port": "8880",
+        "ps": "🇱🇹 LT | 🔓 VLESS | @v2ray_collector [26]",
+        "quicSecurity": "",
+        "security": "",
+        "serviceName": "",
+        "sid": "",
+        "sni": "hk.laoyoutiao.link",
+        "spx": "",
+        "tag": "proxy-FastestLocation-8",
+        "type": "ws"
+      },
+      {
+        "add": "156.238.18.166",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "sg.laoyoutiao.link",
+        "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf",
+        "key": "",
+        "mode": "",
+        "path": "Telegram@WangCai2/?ed=2048",
+        "pbk": "",
+        "port": "8880",
+        "ps": "🇭🇰 HK | 🔓 VLESS | @free4allvpn [12]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-FastestLocation-9",
+        "type": "ws"
+      },
+      {
+        "add": "190.93.245.232",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "random",
+        "headerType": "",
+        "host": "bitget1.asdasd.click",
+        "id": "b5441b0d-2147-4898-8a6a-9b2c87f58382",
+        "key": "",
+        "mode": "",
+        "path": "/?ed=2560",
+        "pbk": "",
+        "port": "8443",
+        "ps": "🚩 CF | 🔒 VLESS | @outline_ir [13]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "bitget1.asdasd.click",
+        "spx": "",
+        "tag": "proxy-FastestLocation-10",
+        "type": "ws"
+      },
+      {
+        "add": "app-stg.gopay.co.id.servpn.my.id",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "app-stg.gopay.co.id.servpn.my.id",
+        "id": "41b8c97a-7fac-4191-8922-f58d42a9acf7",
+        "key": "",
+        "mode": "",
+        "path": "/id5/?-Tel-@V2rayAlpha",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @manzariyeh_rasht [27]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "app-stg.gopay.co.id.servpn.my.id",
+        "spx": "",
+        "tag": "proxy-FastestLocation-11",
+        "type": "ws"
+      },
+      {
+        "add": "172.66.47.140",
+        "allowInsecure": "",
+        "alpn": "http/1.1",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "randomized",
+        "headerType": "",
+        "host": "v2rayminer.pages.dev",
+        "id": "3c918c19-a5bd-4f2c-9b30-03c681c93ddc",
+        "key": "",
+        "mode": "",
+        "path": "/WwPEDup8yShFB1Wp/NzguNDYuNzMuNDk=?ed=2560",
+        "pbk": "",
+        "port": "8443",
+        "ps": "🚩 CF | 🔒 VLESS | @config_proxy [32]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "V2RayMinER.PAGeS.Dev",
+        "spx": "",
+        "tag": "proxy-FastestLocation-12",
+        "type": "ws"
+      },
+      {
+        "add": "104.18.131.54",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "random",
+        "headerType": "",
+        "host": "007.xingfu.qzz.io",
+        "id": "d88937d0-ce43-4bf8-9df6-d632810ba9ff",
+        "key": "",
+        "mode": "",
+        "path": "/",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @falcunargo [1]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "007.xingfu.qzz.io",
+        "spx": "",
+        "tag": "proxy-FastestLocation-13",
+        "type": "ws"
+      },
+      {
+        "add": "5.10.246.29",
+        "allowInsecure": "1",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "hk.laoyoutiao.link",
+        "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf",
+        "key": "",
+        "mode": "",
+        "path": "/TelegramU0001F1E8U0001F1F3",
+        "pbk": "",
+        "port": "8880",
+        "ps": "🇨🇼 CW | 🔓 VLESS | @v2ray_collector [22]",
+        "quicSecurity": "",
+        "security": "",
+        "serviceName": "",
+        "sid": "",
+        "sni": "hk.laoyoutiao.link",
+        "spx": "",
+        "tag": "proxy-FastestLocation-14",
+        "type": "ws"
+      },
+      {
+        "add": "app-stg.gopay.co.id.servpn.my.id",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "app-stg.gopay.co.id.servpn.my.id",
+        "id": "41b8c97a-7fac-4191-8922-f58d42a9acf7",
+        "key": "",
+        "mode": "",
+        "path": "/id5?/?ed=2048Join---i10VPN---Join---i10VPN---Join---i10VPN---Join---i10VPN",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @orange_vpns [15]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "app-stg.gopay.co.id.servpn.my.id",
+        "spx": "",
+        "tag": "proxy-FastestLocation-15",
+        "type": "ws"
+      },
+      {
+        "add": "www.speedtest.net",
+        "allowInsecure": "",
+        "alpn": "http/1.1",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "randomized",
+        "headerType": "",
+        "host": "fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev",
+        "id": "826f524a-cea1-4e44-9b49-3381d13b7593",
+        "key": "",
+        "mode": "",
+        "path": "/kDPocrIW3Ice02v4",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @oonfig [3]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "FK31lnDM4w8UJ0YP1dRWLtdtDKO6Y-cu.pages.dEv",
+        "spx": "",
+        "tag": "proxy-FastestLocation-16",
+        "type": "ws"
+      },
+      {
+        "add": "156.238.18.149",
+        "allowInsecure": "1",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "yd.laoyoutiao.link",
+        "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf",
+        "key": "",
+        "mode": "",
+        "path": "/TelegramU0001F1E8U0001F1F3 @MxlShare @WangCai2 /?ed=2560",
+        "pbk": "",
+        "port": "8880",
+        "ps": "🇭🇰 HK | 🔓 VLESS | @v2ray_collector [27]",
+        "quicSecurity": "",
+        "security": "",
+        "serviceName": "",
+        "sid": "",
+        "sni": "yd.laoyoutiao.link",
+        "spx": "",
+        "tag": "proxy-FastestLocation-17",
+        "type": "ws"
+      },
+      {
+        "add": "104.16.176.185",
+        "allowInsecure": "",
+        "alpn": "http/1.1",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "jklkl-cx6.pages.dev",
+        "id": "905076f9-e34e-40b1-9e33-df06726f6336",
+        "key": "",
+        "mode": "",
+        "path": "/51uBuxfAJBLSkC6b/NjIuMy4xMi43Ng==",
+        "pbk": "",
+        "port": "2087",
+        "ps": "🚩 CF | 🔒 VLESS | @prrofile_purple [134]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "jkLkL-CX6.PAGEs.DEV",
+        "spx": "",
+        "tag": "proxy-FastestLocation-18",
+        "type": "ws"
+      },
+      {
+        "add": "freevpn.xhamster.biz.id",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "freevpn.xhamster.biz.id",
+        "id": "aaaaaaa1-bbbb-4ccc-accc-eeeeeeeeeee1",
+        "key": "",
+        "mode": "",
+        "path": "/Free-CF-Proxy-AM14",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @outline_ir [11]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "freevpn.xhamster.biz.id",
+        "spx": "",
+        "tag": "proxy-FastestLocation-19",
+        "type": "ws"
+      }
+    ],
+    "observatory": {
+      "subjectSelector": [
+        "proxy-FastestLocation-0",
+        "proxy-FastestLocation-1",
+        "proxy-FastestLocation-2",
+        "proxy-FastestLocation-3",
+        "proxy-FastestLocation-4",
+        "proxy-FastestLocation-5",
+        "proxy-FastestLocation-6",
+        "proxy-FastestLocation-7",
+        "proxy-FastestLocation-8",
+        "proxy-FastestLocation-9",
+        "proxy-FastestLocation-10",
+        "proxy-FastestLocation-11",
+        "proxy-FastestLocation-12",
+        "proxy-FastestLocation-13",
+        "proxy-FastestLocation-14",
+        "proxy-FastestLocation-15",
+        "proxy-FastestLocation-16",
+        "proxy-FastestLocation-17",
+        "proxy-FastestLocation-18",
+        "proxy-FastestLocation-19"
+      ],
+      "probeURL": "http://www.google.com/gen_204",
+      "probeInterval": "5m",
+      "enableConcurrency": true
+    },
+    "burstObservatory": {
+      "subjectSelector": [
+        "proxy-FastestLocation-0",
+        "proxy-FastestLocation-1",
+        "proxy-FastestLocation-2",
+        "proxy-FastestLocation-3",
+        "proxy-FastestLocation-4",
+        "proxy-FastestLocation-5",
+        "proxy-FastestLocation-6",
+        "proxy-FastestLocation-7",
+        "proxy-FastestLocation-8",
+        "proxy-FastestLocation-9",
+        "proxy-FastestLocation-10",
+        "proxy-FastestLocation-11",
+        "proxy-FastestLocation-12",
+        "proxy-FastestLocation-13",
+        "proxy-FastestLocation-14",
+        "proxy-FastestLocation-15",
+        "proxy-FastestLocation-16",
+        "proxy-FastestLocation-17",
+        "proxy-FastestLocation-18",
+        "proxy-FastestLocation-19"
+      ],
+      "pingConfig": {
+        "destination": "http://www.google.com/gen_204",
+        "interval": "5m",
+        "sampling": 3,
+        "timeout": "10s"
+      }
+    },
+    "stats": {},
+    "remarks": "⚡️ Fastest Location"
+  },
+  {
+    "log": {
+      "loglevel": "warning"
+    },
+    "dns": {
+      "queryStrategy": "UseIPv4",
+      "servers": [
+        "https://1.0.0.1/dns-query"
+      ],
+      "tag": "dns_out"
+    },
+    "fakedns": [],
+    "routing": {
+      "balancers": [
+        {
+          "tag": "balancer",
+          "selector": [
+            "proxy-Netherlands-0",
+            "proxy-Netherlands-1",
+            "proxy-Netherlands-2",
+            "proxy-Netherlands-3",
+            "proxy-Netherlands-4",
+            "proxy-Netherlands-5",
+            "proxy-Netherlands-6",
+            "proxy-Netherlands-7",
+            "proxy-Netherlands-8",
+            "proxy-Netherlands-9",
+            "proxy-Netherlands-10",
+            "proxy-Netherlands-11",
+            "proxy-Netherlands-12",
+            "proxy-Netherlands-13",
+            "proxy-Netherlands-14",
+            "proxy-Netherlands-15",
+            "proxy-Netherlands-16",
+            "proxy-Netherlands-17",
+            "proxy-Netherlands-18",
+            "proxy-Netherlands-19",
+            "proxy-Netherlands-20",
+            "proxy-Netherlands-21",
+            "proxy-Netherlands-22",
+            "proxy-Netherlands-23",
+            "proxy-Netherlands-24",
+            "proxy-Netherlands-25",
+            "proxy-Netherlands-26",
+            "proxy-Netherlands-27",
+            "proxy-Netherlands-28",
+            "proxy-Netherlands-29"
+          ],
+          "strategy": {
+            "type": "leastPing"
+          }
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "type": "field",
+          "balancerTag": "balancer",
+          "network": "tcp,udp"
+        }
+      ]
+    },
+    "policy": {
+      "system": {
+        "statsOutboundDownlink": true,
+        "statsOutboundUplink": true
+      }
+    },
+    "inbounds": [
+      {
+        "port": 10808,
+        "protocol": "socks",
+        "settings": {
+          "auth": "noauth",
+          "udp": true,
+          "userLevel": 8
+        },
+        "sniffing": {
+          "destOverride": [
+            "http",
+            "tls"
+          ],
+          "enabled": true
+        },
+        "tag": "socks"
+      },
+      {
+        "port": 10809,
+        "protocol": "http",
+        "settings": {
+          "userLevel": 8
+        },
+        "tag": "http"
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "dialer",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "packets": "tlshello",
+            "length": "1-10",
+            "interval": "0-1"
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "dns-out",
+        "protocol": "dns"
+      },
+      {
+        "add": "25.26.27.7",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "ip.langmanshanxi.top",
+        "id": "583ceab3-4022-4553-9158-9bedc625ad4e",
+        "key": "",
+        "mode": "",
+        "path": "/Telegram🇨🇳 @WangCai2 /?ed=2560",
+        "pbk": "",
+        "port": "8880",
+        "ps": "🇬🇧 GB | 🔓 VLESS | @proxy_mtproto_vpns_free [8]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "Telegram-channel-WangCai2",
+        "spx": "",
+        "tag": "proxy-Netherlands-0",
+        "type": "ws"
+      },
+      {
+        "add": "104.17.148.22",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "www.speedtest.net.zula.ir.cfp1.a2hdhjdxjbxjsjdjd.ddns-ip.nEt.",
+        "id": "6ec52bc7-fcd7-4841-ab69-70d6e03a6eda",
+        "key": "",
+        "mode": "",
+        "path": "/Telegram@ShadowProxy66/?ed=2560",
+        "pbk": "",
+        "port": "8880",
+        "ps": "🚩 CF | 🔓 VLESS | @v2raytg [71]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Netherlands-1",
+        "type": "ws"
+      },
+      {
+        "add": "193.124.18.3",
+        "allowInsecure": "1",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "bitget1.asdasd.click",
+        "id": "b5441b0d-2147-4898-8a6a-9b2c87f58382",
+        "key": "",
+        "mode": "",
+        "path": "/Telegram🇨🇳",
+        "pbk": "",
+        "port": "8880",
+        "ps": "🇭🇺 HU | 🔓 VLESS | @v2ray_collector [25]",
+        "quicSecurity": "",
+        "security": "",
+        "serviceName": "",
+        "sid": "",
+        "sni": "Telegram-channel-WangCai2",
+        "spx": "",
+        "tag": "proxy-Netherlands-2",
+        "type": "ws"
+      },
+      {
+        "add": "104.17.147.22",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "www.speedtest.net.zula.ir.cfp1.a2hdhjdxjbxjsjdjd.ddns-ip.net.",
+        "id": "6ec52bc7-fcd7-4841-ab69-70d6e03a6eda",
+        "key": "",
+        "mode": "",
+        "path": "/",
+        "pbk": "",
+        "port": "8880",
+        "ps": "🚩 CF | 🔓 VLESS | @kurdistan_vpn_perfectt [1]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Netherlands-3",
+        "type": "ws"
+      },
+      {
+        "add": "77.105.163.251",
+        "allowInsecure": "1",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "cf.d3z.net",
+        "id": "0132166f-e702-48ed-a9e7-b07af768faf8",
+        "key": "",
+        "mode": "",
+        "path": "/Telegram🇨🇳",
+        "pbk": "",
+        "port": "8880",
+        "ps": "🇨🇳 CN | 🔓 VLESS | @v2ray_collector [32]",
+        "quicSecurity": "",
+        "security": "",
+        "serviceName": "",
+        "sid": "",
+        "sni": "Telegram-channel-WangCai2",
+        "spx": "",
+        "tag": "proxy-Netherlands-4",
+        "type": "ws"
+      },
+      {
+        "add": "104.24.40.146",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "bitget1.asdasd.click",
+        "id": "b5441b0d-2147-4898-8a6a-9b2c87f58382",
+        "key": "",
+        "mode": "",
+        "path": "/?ed=2560",
+        "pbk": "",
+        "port": "8443",
+        "ps": "🚩 CF | 🔒 VLESS | @outline_ir [6]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "bitget1.asdasd.click",
+        "spx": "",
+        "tag": "proxy-Netherlands-5",
+        "type": "ws"
+      },
+      {
+        "add": "190.93.246.246",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "bitget1.asdasd.click",
+        "id": "b5441b0d-2147-4898-8a6a-9b2c87f58382",
+        "key": "",
+        "mode": "",
+        "path": "/?ed",
+        "pbk": "",
+        "port": "8443",
+        "ps": "🚩 CF | 🔒 VLESS | @freeiranianv2rey [9]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "bitget1.asdasd.click",
+        "spx": "",
+        "tag": "proxy-Netherlands-6",
+        "type": "ws"
+      },
+      {
+        "add": "app-stg.gopay.co.id.servpn.my.id",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "app-stg.gopay.co.id.servpn.my.id",
+        "id": "41b8c97a-7fac-4191-8922-f58d42a9acf7",
+        "key": "",
+        "mode": "",
+        "path": "/id5/?-Join---i10VPN---Join---i10VPN---Join---i10VPN---Join---i10VPN",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @orange_vpns [14]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "app-stg.gopay.co.id.servpn.my.id",
+        "spx": "",
+        "tag": "proxy-Netherlands-7",
+        "type": "ws"
+      },
+      {
+        "add": "89.116.161.29",
+        "allowInsecure": "1",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "hk.laoyoutiao.link",
+        "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf",
+        "key": "",
+        "mode": "",
+        "path": "/TelegramU0001F1E8U0001F1F3 @MxlShare @WangCai2 /?ed=2560",
+        "pbk": "",
+        "port": "8880",
+        "ps": "🇱🇹 LT | 🔓 VLESS | @v2ray_collector [26]",
+        "quicSecurity": "",
+        "security": "",
+        "serviceName": "",
+        "sid": "",
+        "sni": "hk.laoyoutiao.link",
+        "spx": "",
+        "tag": "proxy-Netherlands-8",
+        "type": "ws"
+      },
+      {
+        "add": "156.238.18.166",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "sg.laoyoutiao.link",
+        "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf",
+        "key": "",
+        "mode": "",
+        "path": "Telegram@WangCai2/?ed=2048",
+        "pbk": "",
+        "port": "8880",
+        "ps": "🇭🇰 HK | 🔓 VLESS | @free4allvpn [12]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Netherlands-9",
+        "type": "ws"
+      },
+      {
+        "add": "190.93.245.232",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "random",
+        "headerType": "",
+        "host": "bitget1.asdasd.click",
+        "id": "b5441b0d-2147-4898-8a6a-9b2c87f58382",
+        "key": "",
+        "mode": "",
+        "path": "/?ed=2560",
+        "pbk": "",
+        "port": "8443",
+        "ps": "🚩 CF | 🔒 VLESS | @outline_ir [13]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "bitget1.asdasd.click",
+        "spx": "",
+        "tag": "proxy-Netherlands-10",
+        "type": "ws"
+      },
+      {
+        "add": "app-stg.gopay.co.id.servpn.my.id",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "app-stg.gopay.co.id.servpn.my.id",
+        "id": "41b8c97a-7fac-4191-8922-f58d42a9acf7",
+        "key": "",
+        "mode": "",
+        "path": "/id5/?-Tel-@V2rayAlpha",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @manzariyeh_rasht [27]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "app-stg.gopay.co.id.servpn.my.id",
+        "spx": "",
+        "tag": "proxy-Netherlands-11",
+        "type": "ws"
+      },
+      {
+        "add": "172.66.47.140",
+        "allowInsecure": "",
+        "alpn": "http/1.1",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "randomized",
+        "headerType": "",
+        "host": "v2rayminer.pages.dev",
+        "id": "3c918c19-a5bd-4f2c-9b30-03c681c93ddc",
+        "key": "",
+        "mode": "",
+        "path": "/WwPEDup8yShFB1Wp/NzguNDYuNzMuNDk=?ed=2560",
+        "pbk": "",
+        "port": "8443",
+        "ps": "🚩 CF | 🔒 VLESS | @config_proxy [32]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "V2RayMinER.PAGeS.Dev",
+        "spx": "",
+        "tag": "proxy-Netherlands-12",
+        "type": "ws"
+      },
+      {
+        "add": "104.18.131.54",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "random",
+        "headerType": "",
+        "host": "007.xingfu.qzz.io",
+        "id": "d88937d0-ce43-4bf8-9df6-d632810ba9ff",
+        "key": "",
+        "mode": "",
+        "path": "/",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @falcunargo [1]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "007.xingfu.qzz.io",
+        "spx": "",
+        "tag": "proxy-Netherlands-13",
+        "type": "ws"
+      },
+      {
+        "add": "5.10.246.29",
+        "allowInsecure": "1",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "hk.laoyoutiao.link",
+        "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf",
+        "key": "",
+        "mode": "",
+        "path": "/TelegramU0001F1E8U0001F1F3",
+        "pbk": "",
+        "port": "8880",
+        "ps": "🇨🇼 CW | 🔓 VLESS | @v2ray_collector [22]",
+        "quicSecurity": "",
+        "security": "",
+        "serviceName": "",
+        "sid": "",
+        "sni": "hk.laoyoutiao.link",
+        "spx": "",
+        "tag": "proxy-Netherlands-14",
+        "type": "ws"
+      },
+      {
+        "add": "app-stg.gopay.co.id.servpn.my.id",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "app-stg.gopay.co.id.servpn.my.id",
+        "id": "41b8c97a-7fac-4191-8922-f58d42a9acf7",
+        "key": "",
+        "mode": "",
+        "path": "/id5?/?ed=2048Join---i10VPN---Join---i10VPN---Join---i10VPN---Join---i10VPN",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @orange_vpns [15]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "app-stg.gopay.co.id.servpn.my.id",
+        "spx": "",
+        "tag": "proxy-Netherlands-15",
+        "type": "ws"
+      },
+      {
+        "add": "www.speedtest.net",
+        "allowInsecure": "",
+        "alpn": "http/1.1",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "randomized",
+        "headerType": "",
+        "host": "fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev",
+        "id": "826f524a-cea1-4e44-9b49-3381d13b7593",
+        "key": "",
+        "mode": "",
+        "path": "/kDPocrIW3Ice02v4",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @oonfig [3]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "FK31lnDM4w8UJ0YP1dRWLtdtDKO6Y-cu.pages.dEv",
+        "spx": "",
+        "tag": "proxy-Netherlands-16",
+        "type": "ws"
+      },
+      {
+        "add": "156.238.18.149",
+        "allowInsecure": "1",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "yd.laoyoutiao.link",
+        "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf",
+        "key": "",
+        "mode": "",
+        "path": "/TelegramU0001F1E8U0001F1F3 @MxlShare @WangCai2 /?ed=2560",
+        "pbk": "",
+        "port": "8880",
+        "ps": "🇭🇰 HK | 🔓 VLESS | @v2ray_collector [27]",
+        "quicSecurity": "",
+        "security": "",
+        "serviceName": "",
+        "sid": "",
+        "sni": "yd.laoyoutiao.link",
+        "spx": "",
+        "tag": "proxy-Netherlands-17",
+        "type": "ws"
+      },
+      {
+        "add": "104.16.176.185",
+        "allowInsecure": "",
+        "alpn": "http/1.1",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "jklkl-cx6.pages.dev",
+        "id": "905076f9-e34e-40b1-9e33-df06726f6336",
+        "key": "",
+        "mode": "",
+        "path": "/51uBuxfAJBLSkC6b/NjIuMy4xMi43Ng==",
+        "pbk": "",
+        "port": "2087",
+        "ps": "🚩 CF | 🔒 VLESS | @prrofile_purple [134]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "jkLkL-CX6.PAGEs.DEV",
+        "spx": "",
+        "tag": "proxy-Netherlands-18",
+        "type": "ws"
+      },
+      {
+        "add": "freevpn.xhamster.biz.id",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "freevpn.xhamster.biz.id",
+        "id": "aaaaaaa1-bbbb-4ccc-accc-eeeeeeeeeee1",
+        "key": "",
+        "mode": "",
+        "path": "/Free-CF-Proxy-AM14",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @outline_ir [11]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "freevpn.xhamster.biz.id",
+        "spx": "",
+        "tag": "proxy-Netherlands-19",
+        "type": "ws"
+      },
+      {
+        "add": "WWw.speedtest.net",
+        "allowInsecure": "",
+        "alpn": "h2,http/1.1",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "xbox.fastnetpro.xyz",
+        "id": "86c50e3a-5b87-49dd-bd20-03c7f2735e40",
+        "key": "",
+        "mode": "",
+        "path": "/",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @falcunargo [12]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "xbox.fastnetpro.xyz",
+        "spx": "",
+        "tag": "proxy-Netherlands-20",
+        "type": "ws"
+      },
+      {
+        "add": "www.speedtest.net",
+        "allowInsecure": "",
+        "alpn": "http/1.1",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "firefox",
+        "headerType": "",
+        "host": "09sp38aey76eabnpj79orvawf-0ssxts.pages.dev",
+        "id": "17d43328-bbd2-40df-bd45-c94aeb554e89",
+        "key": "",
+        "mode": "",
+        "path": "/vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-?ed=2560",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @vpnowl [17]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "paGeS.DeV",
+        "spx": "",
+        "tag": "proxy-Netherlands-21",
+        "type": "ws"
+      },
+      {
+        "add": "web.xhamster.biz.id",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "web.xhamster.biz.id",
+        "id": "aaaaaaa1-bbbb-4ccc-accc-eeeeeeeeeee1",
+        "key": "",
+        "mode": "",
+        "path": "/Free-CF-Proxy-AT29",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @outline_vpn [8]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "web.xhamster.biz.id",
+        "spx": "",
+        "tag": "proxy-Netherlands-22",
+        "type": "ws"
+      },
+      {
+        "add": "web.xhamster.biz.id",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "web.xhamster.biz.id",
+        "id": "aaaaaaa1-bbbb-4ccc-accc-eeeeeeeeeee1",
+        "key": "",
+        "mode": "",
+        "path": "/Free-CF-Proxy-AT37",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @config_proxy [43]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "web.xhamster.biz.id",
+        "spx": "",
+        "tag": "proxy-Netherlands-23",
+        "type": "ws"
+      },
+      {
+        "add": "privasi.turah.my.id",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "privasi.turah.my.id",
+        "id": "0fbf4f81-2598-4b6a-a623-0ead4cb9efa8",
+        "key": "",
+        "mode": "",
+        "path": "/Free-CF-Proxy-AD192.3.113.4-19318",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @orange_vpns [9]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "privasi.turah.my.id",
+        "spx": "",
+        "tag": "proxy-Netherlands-24",
+        "type": "ws"
+      },
+      {
+        "add": "ns1.cloudflare.com",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "rayan-config-telegram-a03.parastoo.dpdns.org",
+        "id": "4e4768df-0fbb-4cc1-8fd3-7c6fea95742a",
+        "key": "",
+        "mode": "",
+        "path": "/@Rayan_Config",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @vpn_ioss [8]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "rAyAn-cOnFiG-TeLeGrAm-a03.pArAsToO.DpDnS.OrG",
+        "spx": "",
+        "tag": "proxy-Netherlands-25",
+        "type": "ws"
+      },
+      {
+        "add": "light-presence.oneeat.co",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "none",
+        "host": "",
+        "id": "7e74ff43-3a90-48b3-8372-7d92a045c2d4",
+        "key": "",
+        "mode": "",
+        "path": "/",
+        "pbk": "",
+        "port": "80",
+        "ps": "🚩 CF | 🔓 VLESS | @jiedianf [6]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "light-presence.oneeat.co",
+        "spx": "",
+        "tag": "proxy-Netherlands-26",
+        "type": "ws"
+      },
+      {
+        "add": "narrow-passenger.oneeat.co",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "",
+        "id": "5a12794b-2125-46d7-a748-927a989faa04",
+        "key": "",
+        "mode": "",
+        "path": "/",
+        "pbk": "",
+        "port": "80",
+        "ps": "🚩 CF | 🔓 VLESS | @outline_vpn [5]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Netherlands-27",
+        "type": "ws"
+      },
+      {
+        "add": "64.188.96.208",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "",
+        "flow": "",
+        "fp": "",
+        "headerType": "none",
+        "host": "----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn",
+        "id": "d8dd94fd-540e-461d-b5d4-acebef02c22a",
+        "key": "",
+        "mode": "",
+        "path": "",
+        "pbk": "cDaDzPr3PlS3NM8lreHZbdo-Mhqz8vMBzMSkHXhGIUA",
+        "port": "34045",
+        "ps": "🇳🇱 NL | 🔒 VLESS | @evay_vpn [20]",
+        "quicSecurity": "",
+        "security": "reality",
+        "serviceName": "",
+        "sid": "e8ab71d0",
+        "sni": "visit-this-invitation-link-to-join-tg-enkelte-notif.ekt.me",
+        "spx": "",
+        "tag": "proxy-Netherlands-28",
+        "type": "tcp"
+      },
+      {
+        "add": "5.129.208.19",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "none",
+        "host": "",
+        "id": "d8dd94fd-540e-461d-b5d4-acebef02c22a",
+        "key": "",
+        "mode": "",
+        "path": "",
+        "pbk": "cDaDzPr3PlS3NM8lreHZbdo-Mhqz8vMBzMSkHXhGIUA",
+        "port": "34045",
+        "ps": "🇳🇱 NL | 🔒 VLESS | @vpnplusee_free [9]",
+        "quicSecurity": "",
+        "security": "reality",
+        "serviceName": "",
+        "sid": "e8ab71d0",
+        "sni": "visit-this-invitation-link-to-join-tg-enkelte-notif.ekt.me",
+        "spx": "",
+        "tag": "proxy-Netherlands-29",
+        "type": "tcp"
+      }
+    ],
+    "observatory": {
+      "subjectSelector": [
+        "proxy-Netherlands-0",
+        "proxy-Netherlands-1",
+        "proxy-Netherlands-2",
+        "proxy-Netherlands-3",
+        "proxy-Netherlands-4",
+        "proxy-Netherlands-5",
+        "proxy-Netherlands-6",
+        "proxy-Netherlands-7",
+        "proxy-Netherlands-8",
+        "proxy-Netherlands-9",
+        "proxy-Netherlands-10",
+        "proxy-Netherlands-11",
+        "proxy-Netherlands-12",
+        "proxy-Netherlands-13",
+        "proxy-Netherlands-14",
+        "proxy-Netherlands-15",
+        "proxy-Netherlands-16",
+        "proxy-Netherlands-17",
+        "proxy-Netherlands-18",
+        "proxy-Netherlands-19",
+        "proxy-Netherlands-20",
+        "proxy-Netherlands-21",
+        "proxy-Netherlands-22",
+        "proxy-Netherlands-23",
+        "proxy-Netherlands-24",
+        "proxy-Netherlands-25",
+        "proxy-Netherlands-26",
+        "proxy-Netherlands-27",
+        "proxy-Netherlands-28",
+        "proxy-Netherlands-29"
+      ],
+      "probeURL": "http://www.google.com/gen_204",
+      "probeInterval": "5m",
+      "enableConcurrency": true
+    },
+    "burstObservatory": {
+      "subjectSelector": [
+        "proxy-Netherlands-0",
+        "proxy-Netherlands-1",
+        "proxy-Netherlands-2",
+        "proxy-Netherlands-3",
+        "proxy-Netherlands-4",
+        "proxy-Netherlands-5",
+        "proxy-Netherlands-6",
+        "proxy-Netherlands-7",
+        "proxy-Netherlands-8",
+        "proxy-Netherlands-9",
+        "proxy-Netherlands-10",
+        "proxy-Netherlands-11",
+        "proxy-Netherlands-12",
+        "proxy-Netherlands-13",
+        "proxy-Netherlands-14",
+        "proxy-Netherlands-15",
+        "proxy-Netherlands-16",
+        "proxy-Netherlands-17",
+        "proxy-Netherlands-18",
+        "proxy-Netherlands-19",
+        "proxy-Netherlands-20",
+        "proxy-Netherlands-21",
+        "proxy-Netherlands-22",
+        "proxy-Netherlands-23",
+        "proxy-Netherlands-24",
+        "proxy-Netherlands-25",
+        "proxy-Netherlands-26",
+        "proxy-Netherlands-27",
+        "proxy-Netherlands-28",
+        "proxy-Netherlands-29"
+      ],
+      "pingConfig": {
+        "destination": "http://www.google.com/gen_204",
+        "interval": "5m",
+        "sampling": 3,
+        "timeout": "10s"
+      }
+    },
+    "stats": {},
+    "remarks": "🇳🇱 Netherlands"
+  },
+  {
+    "log": {
+      "loglevel": "warning"
+    },
+    "dns": {
+      "queryStrategy": "UseIPv4",
+      "servers": [
+        "https://1.0.0.1/dns-query"
+      ],
+      "tag": "dns_out"
+    },
+    "fakedns": [],
+    "routing": {
+      "balancers": [
+        {
+          "tag": "balancer",
+          "selector": [
+            "proxy-Germany-0",
+            "proxy-Germany-1",
+            "proxy-Germany-2",
+            "proxy-Germany-3",
+            "proxy-Germany-4",
+            "proxy-Germany-5",
+            "proxy-Germany-6",
+            "proxy-Germany-7",
+            "proxy-Germany-8",
+            "proxy-Germany-9",
+            "proxy-Germany-10",
+            "proxy-Germany-11",
+            "proxy-Germany-12",
+            "proxy-Germany-13",
+            "proxy-Germany-14",
+            "proxy-Germany-15",
+            "proxy-Germany-16",
+            "proxy-Germany-17",
+            "proxy-Germany-18",
+            "proxy-Germany-19",
+            "proxy-Germany-20",
+            "proxy-Germany-21",
+            "proxy-Germany-22",
+            "proxy-Germany-23",
+            "proxy-Germany-24",
+            "proxy-Germany-25",
+            "proxy-Germany-26",
+            "proxy-Germany-27"
+          ],
+          "strategy": {
+            "type": "leastPing"
+          }
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "type": "field",
+          "balancerTag": "balancer",
+          "network": "tcp,udp"
+        }
+      ]
+    },
+    "policy": {
+      "system": {
+        "statsOutboundDownlink": true,
+        "statsOutboundUplink": true
+      }
+    },
+    "inbounds": [
+      {
+        "port": 10808,
+        "protocol": "socks",
+        "settings": {
+          "auth": "noauth",
+          "udp": true,
+          "userLevel": 8
+        },
+        "sniffing": {
+          "destOverride": [
+            "http",
+            "tls"
+          ],
+          "enabled": true
+        },
+        "tag": "socks"
+      },
+      {
+        "port": 10809,
+        "protocol": "http",
+        "settings": {
+          "userLevel": 8
+        },
+        "tag": "http"
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "dialer",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "packets": "tlshello",
+            "length": "1-10",
+            "interval": "0-1"
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "dns-out",
+        "protocol": "dns"
+      },
+      {
+        "add": "sss94870.tas-bazi.com",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "",
+        "id": "43fbd4b6-0e35-4b6f-9ed2-8fe95be28bf5",
+        "key": "",
+        "mode": "stream-one",
+        "path": "/sc",
+        "pbk": "",
+        "port": "443",
+        "ps": "🇩🇪 DE | 🔓 VLESS | @falcunargo [5]",
+        "quicSecurity": "",
+        "security": "",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-0",
+        "type": "xhttp"
+      },
+      {
+        "add": "sss94870.tas-bazi.com",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "",
+        "id": "43fbd4b6-0e35-4b6f-9ed2-8fe95be28bf5",
+        "key": "",
+        "mode": "stream-one",
+        "path": "/sc",
+        "pbk": "",
+        "port": "443",
+        "ps": "🇩🇪 DE | 🔓 VLESS | @lexernet [3]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-1",
+        "type": "xhttp"
+      },
+      {
+        "add": "sss94870.tas-bazi.com",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none=/@Telegram-|-@EL774-|-@Telegram-|-@EL774-|-@Telegram-|-@EL774-|-@Telegram-|-@EL774-|-@Telegram-|-@EL774-|-@EL774",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "",
+        "id": "43fbd4b6-0e35-4b6f-9ed2-8fe95be28bf5",
+        "key": "",
+        "mode": "stream-one",
+        "path": "/sc",
+        "pbk": "",
+        "port": "443",
+        "ps": "🇩🇪 DE | 🔓 VLESS | @dalton_ping [3]",
+        "quicSecurity": "",
+        "security": "",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-2",
+        "type": "xhttp"
+      },
+      {
+        "add": "sss2180.tas-bazi.com",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "",
+        "id": "43fbd4b6-0e35-4b6f-9ed2-8fe95be28bf5",
+        "key": "",
+        "mode": "stream-one",
+        "path": "/sc",
+        "pbk": "",
+        "port": "443",
+        "ps": "🇩🇪 DE | 🔓 VLESS | @v2rayopen [9]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-3",
+        "type": "xhttp"
+      },
+      {
+        "add": "172.66.40.99",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "www.speednet.teat.iransHeep.Web.tR.",
+        "id": "5a9fa926-1ff7-48fe-e467-5d3e1e3a61b7",
+        "key": "",
+        "mode": "",
+        "path": "/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam?ed=2048",
+        "pbk": "",
+        "port": "2095",
+        "ps": "🚩 CF | 🔓 VLESS | @mehrosaboran [12]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-4",
+        "type": "httpupgrade"
+      },
+      {
+        "add": "91.99.216.9",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "mahxgr.global.ssl.fastly.net",
+        "id": "4f929f18-d2c8-49af-9701-6a5b8baabda6",
+        "key": "",
+        "mode": "auto",
+        "path": "MaHxRaY?ed=2048",
+        "pbk": "",
+        "port": "2009",
+        "ps": "🇩🇪 DE | 🔓 VLESS | @vmesc [17]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-5",
+        "type": "xhttp"
+      },
+      {
+        "add": "balabala.ahadbala.ir",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "",
+        "flow": "",
+        "fp": "",
+        "headerType": "http",
+        "host": "canva.com",
+        "id": "3403d340-3956-4fe8-a971-1a1855fc8a5f",
+        "key": "",
+        "mode": "",
+        "path": "/",
+        "pbk": "",
+        "port": "22626",
+        "ps": "🇩🇪 DE | 🔓 VLESS | @ehsawn8 [10]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-6",
+        "type": "tcp"
+      },
+      {
+        "add": "sss86065.tas-bazi.com",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "",
+        "id": "43fbd4b6-0e35-4b6f-9ed2-8fe95be28bf5",
+        "key": "",
+        "mode": "stream-one",
+        "path": "/sc",
+        "pbk": "",
+        "port": "443",
+        "ps": "🇩🇪 DE | 🔓 VLESS | @orange_vpns [5]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-7",
+        "type": "xhttp"
+      },
+      {
+        "add": "188.245.228.94",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "",
+        "id": "d7ed8991-e019-47c1-b578-93a8d8443830",
+        "key": "",
+        "mode": "auto",
+        "path": "/xhttp",
+        "pbk": "",
+        "port": "443",
+        "ps": "🇩🇪 DE | 🔓 VLESS | @vpnplusee_free [13]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-8",
+        "type": "xhttp"
+      },
+      {
+        "add": "sss86065.tas-bazi.com",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "",
+        "id": "43fbd4b6-0e35-4b6f-9ed2-8fe95be28bf5",
+        "key": "",
+        "mode": "stream-one",
+        "path": "/sc/?@MARAMBASHI_MARAMBASHI_MARAMBASHI?ed=2048",
+        "pbk": "",
+        "port": "443",
+        "ps": "🇩🇪 DE | 🔓 VLESS | @outline_ir [9]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-9",
+        "type": "xhttp"
+      },
+      {
+        "add": "sss93336.tas-bazi.com",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "",
+        "id": "43fbd4b6-0e35-4b6f-9ed2-8fe95be28bf5",
+        "key": "",
+        "mode": "stream-one",
+        "path": "/sc",
+        "pbk": "",
+        "port": "443",
+        "ps": "🇩🇪 DE | 🔓 VLESS | @outline_ir [12]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-10",
+        "type": "xhttp"
+      },
+      {
+        "add": "91.99.216.9",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "mahxgr.global.ssl.fastly.net",
+        "id": "4f929f18-d2c8-49af-9701-6a5b8baabda6",
+        "key": "",
+        "mode": "auto",
+        "path": "MaHxRaY?ed=2048",
+        "pbk": "",
+        "port": "2009",
+        "ps": "🇩🇪 DE | 🔓 VLESS | @kingofilter [5]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-11",
+        "type": "xhttp"
+      },
+      {
+        "add": "bewildered-poem.seotoolsforyou.co.uk",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "",
+        "id": "0f4865d9-9405-4703-a282-46e326e6d9e7",
+        "key": "",
+        "mode": "",
+        "path": "/",
+        "pbk": "",
+        "port": "80",
+        "ps": "🚩 CF | 🔓 VLESS | @satellitenewspersian [14]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-12",
+        "type": "ws"
+      },
+      {
+        "add": "balabala.ahadbala.ir",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "http",
+        "host": "canva.com",
+        "id": "3403d340-3956-4fe8-a971-1a1855fc8a5f",
+        "key": "",
+        "mode": "",
+        "path": "/",
+        "pbk": "",
+        "port": "22626",
+        "ps": "🇩🇪 DE | 🔓 VLESS | @v2rayn5 [4]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-13",
+        "type": "tcp"
+      },
+      {
+        "add": "cloudgetservice.mcloudservice.site",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "maxnetvipap-de145.maxnetservices.online",
+        "id": "7db68497-fbfd-40a3-ac95-96d2ee28b709",
+        "key": "",
+        "mode": "",
+        "path": "/linkws",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @outline_ir [18]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-14",
+        "type": "ws"
+      },
+      {
+        "add": "91.107.178.242",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "none",
+        "host": "",
+        "id": "f2c44225-736e-45a4-9cfb-490fa34e15a0",
+        "key": "",
+        "mode": "",
+        "path": "",
+        "pbk": "",
+        "port": "20087",
+        "ps": "🇩🇪 DE | 🔓 VLESS | @lexernet [1]",
+        "quicSecurity": "",
+        "security": "",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-15",
+        "type": "tcp"
+      },
+      {
+        "add": "91.107.178.242",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "none",
+        "host": "",
+        "id": "f2c44225-736e-45a4-9cfb-490fa34e15a0",
+        "key": "",
+        "mode": "",
+        "path": "",
+        "pbk": "",
+        "port": "20087",
+        "ps": "🇩🇪 DE | 🔓 VLESS | @lexernet [4]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-16",
+        "type": "tcp"
+      },
+      {
+        "add": "172.66.40.99",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "www.speednet.teat.iransHeep.Web.tR.",
+        "id": "5a9fa926-1ff7-48fe-e467-5d3e1e3a61b7",
+        "key": "",
+        "mode": "",
+        "path": "/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam/@XpnTeam?ed=2048",
+        "pbk": "",
+        "port": "2095",
+        "ps": "🚩 CF | 🔓 VLESS | @vpnplusee_free [14]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-17",
+        "type": "httpupgrade"
+      },
+      {
+        "add": "104.18.26.90",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "mAXNeTVIpaP-clOUD205.NETKH3.SIte",
+        "id": "e66a1e27-be31-4671-82fc-e810b0f7a8cb",
+        "key": "",
+        "mode": "",
+        "path": "/linkws?ed=2560",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @vmesc [8]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-18",
+        "type": "ws"
+      },
+      {
+        "add": "hopeful-appointment.seotoolsforyou.co.uk",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "",
+        "id": "491e4f76-42f0-43a7-a987-25072a68d5e4",
+        "key": "",
+        "mode": "",
+        "path": "/",
+        "pbk": "",
+        "port": "80",
+        "ps": "🚩 CF | 🔓 VLESS | @outline_vpn [9]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-19",
+        "type": "ws"
+      },
+      {
+        "add": "dedicated-development.seotoolsforyou.co.uk",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "",
+        "id": "2054405e-70ff-40a2-ae27-16b63d72390a",
+        "key": "",
+        "mode": "",
+        "path": "/",
+        "pbk": "",
+        "port": "80",
+        "ps": "🚩 CF | 🔓 VLESS | @canfing_vpn [16]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-20",
+        "type": "ws"
+      },
+      {
+        "add": "www.snl24.com",
+        "allowInsecure": "",
+        "alpn": "h2",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "matoride2.sabzipolo.site",
+        "id": "930e2d97-c3e4-4840-9289-748ae4fde82e",
+        "key": "",
+        "mode": "",
+        "path": "/downloader.php?ed=2560",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @vpnowl [13]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "matoride2.sabzipolo.site",
+        "spx": "",
+        "tag": "proxy-Germany-21",
+        "type": "ws"
+      },
+      {
+        "add": "www.speedtest.net",
+        "allowInsecure": "",
+        "alpn": "h2",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "matoride2.sabzipolo.site",
+        "id": "930e2d97-c3e4-4840-9289-748ae4fde82e",
+        "key": "",
+        "mode": "",
+        "path": "/downloader.php?ed=2560",
+        "pbk": "",
+        "port": "443",
+        "ps": "🚩 CF | 🔒 VLESS | @vpnowl [12]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "matoride2.sabzipolo.site",
+        "spx": "",
+        "tag": "proxy-Germany-22",
+        "type": "ws"
+      },
+      {
+        "add": "DeEp-RAdIo.SEOtOoLSForYou.CO.UK",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "",
+        "id": "5139af95-a453-46c6-831a-a532b6b51305",
+        "key": "",
+        "mode": "",
+        "path": "/?@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn",
+        "pbk": "",
+        "port": "80",
+        "ps": "🚩 CF | 🔓 VLESS | @evay_vpn [6]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-23",
+        "type": "ws"
+      },
+      {
+        "add": "95.164.68.37",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "",
+        "flow": "xtls-rprx-vision",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "",
+        "id": "a03a939f-1f95-45c3-b65e-5a99b04fe85f",
+        "key": "",
+        "mode": "",
+        "path": "",
+        "pbk": "WuV0Uu4BXukDeBYQR2OtDgb_aKjs3u0tU-ENHSjtTmY",
+        "port": "8443",
+        "ps": "🇩🇪 DE | 🔒 VLESS | @config_proxy [42]",
+        "quicSecurity": "",
+        "security": "reality",
+        "serviceName": "",
+        "sid": "",
+        "sni": "google.com",
+        "spx": "",
+        "tag": "proxy-Germany-24",
+        "type": "tcp"
+      },
+      {
+        "add": "89.23.108.188",
+        "allowInsecure": "1",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "xtls-rprx-vision",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "",
+        "id": "fe1888f8-2361-11f0-9970-45e1d80c4039",
+        "key": "",
+        "mode": "",
+        "path": "",
+        "pbk": "nm1ZhMktJbHTcJv0gqV8l0s_c9BWfQe5d02qhpSkKWo",
+        "port": "443",
+        "ps": "🇩🇪 DE | 🔒 VLESS | @msv2flyng [9]",
+        "quicSecurity": "",
+        "security": "reality",
+        "serviceName": "",
+        "sid": "7fd4",
+        "sni": "images.apple.com",
+        "spx": "",
+        "tag": "proxy-Germany-25",
+        "type": "tcp"
+      },
+      {
+        "add": "188.245.75.235",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "none",
+        "host": "",
+        "id": "e89ba39d-ae7e-493a-a57b-cdd55b42b4e3",
+        "key": "",
+        "mode": "",
+        "path": "",
+        "pbk": "",
+        "port": "443",
+        "ps": "🇩🇪 DE | 🔓 VLESS | @freakconfig [16]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-26",
+        "type": "tcp"
+      },
+      {
+        "add": "sss71534.tas-bazi.com",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "",
+        "id": "aa077dd1-0a53-4313-8800-c9ac79a97003",
+        "key": "",
+        "mode": "stream-one",
+        "path": "/sef",
+        "pbk": "",
+        "port": "443",
+        "ps": "🇩🇪 DE | 🔓 VLESS | @v2rayopen [3]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Germany-27",
+        "type": "xhttp"
+      }
+    ],
+    "observatory": {
+      "subjectSelector": [
+        "proxy-Germany-0",
+        "proxy-Germany-1",
+        "proxy-Germany-2",
+        "proxy-Germany-3",
+        "proxy-Germany-4",
+        "proxy-Germany-5",
+        "proxy-Germany-6",
+        "proxy-Germany-7",
+        "proxy-Germany-8",
+        "proxy-Germany-9",
+        "proxy-Germany-10",
+        "proxy-Germany-11",
+        "proxy-Germany-12",
+        "proxy-Germany-13",
+        "proxy-Germany-14",
+        "proxy-Germany-15",
+        "proxy-Germany-16",
+        "proxy-Germany-17",
+        "proxy-Germany-18",
+        "proxy-Germany-19",
+        "proxy-Germany-20",
+        "proxy-Germany-21",
+        "proxy-Germany-22",
+        "proxy-Germany-23",
+        "proxy-Germany-24",
+        "proxy-Germany-25",
+        "proxy-Germany-26",
+        "proxy-Germany-27"
+      ],
+      "probeURL": "http://www.google.com/gen_204",
+      "probeInterval": "5m",
+      "enableConcurrency": true
+    },
+    "burstObservatory": {
+      "subjectSelector": [
+        "proxy-Germany-0",
+        "proxy-Germany-1",
+        "proxy-Germany-2",
+        "proxy-Germany-3",
+        "proxy-Germany-4",
+        "proxy-Germany-5",
+        "proxy-Germany-6",
+        "proxy-Germany-7",
+        "proxy-Germany-8",
+        "proxy-Germany-9",
+        "proxy-Germany-10",
+        "proxy-Germany-11",
+        "proxy-Germany-12",
+        "proxy-Germany-13",
+        "proxy-Germany-14",
+        "proxy-Germany-15",
+        "proxy-Germany-16",
+        "proxy-Germany-17",
+        "proxy-Germany-18",
+        "proxy-Germany-19",
+        "proxy-Germany-20",
+        "proxy-Germany-21",
+        "proxy-Germany-22",
+        "proxy-Germany-23",
+        "proxy-Germany-24",
+        "proxy-Germany-25",
+        "proxy-Germany-26",
+        "proxy-Germany-27"
+      ],
+      "pingConfig": {
+        "destination": "http://www.google.com/gen_204",
+        "interval": "5m",
+        "sampling": 3,
+        "timeout": "10s"
+      }
+    },
+    "stats": {},
+    "remarks": "🇩🇪 Germany"
+  },
+  {
+    "log": {
+      "loglevel": "warning"
+    },
+    "dns": {
+      "queryStrategy": "UseIPv4",
+      "servers": [
+        "https://1.0.0.1/dns-query"
+      ],
+      "tag": "dns_out"
+    },
+    "fakedns": [],
+    "routing": {
+      "balancers": [
+        {
+          "tag": "balancer",
+          "selector": [
+            "proxy-UnitedStates-0"
+          ],
+          "strategy": {
+            "type": "leastPing"
+          }
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "type": "field",
+          "balancerTag": "balancer",
+          "network": "tcp,udp"
+        }
+      ]
+    },
+    "policy": {
+      "system": {
+        "statsOutboundDownlink": true,
+        "statsOutboundUplink": true
+      }
+    },
+    "inbounds": [
+      {
+        "port": 10808,
+        "protocol": "socks",
+        "settings": {
+          "auth": "noauth",
+          "udp": true,
+          "userLevel": 8
+        },
+        "sniffing": {
+          "destOverride": [
+            "http",
+            "tls"
+          ],
+          "enabled": true
+        },
+        "tag": "socks"
+      },
+      {
+        "port": 10809,
+        "protocol": "http",
+        "settings": {
+          "userLevel": 8
+        },
+        "tag": "http"
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "dialer",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "packets": "tlshello",
+            "length": "1-10",
+            "interval": "0-1"
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "dns-out",
+        "protocol": "dns"
+      },
+      {
+        "add": "185.139.7.238",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "none",
+        "host": "",
+        "id": "d8dd94fd-540e-461d-b5d4-acebef02c22a",
+        "key": "",
+        "mode": "",
+        "path": "",
+        "pbk": "cDaDzPr3PlS3NM8lreHZbdo-Mhqz8vMBzMSkHXhGIUA",
+        "port": "34045",
+        "ps": "🇬🇧 GB | 🔒 VLESS | @manzariyeh_rasht [18]",
+        "quicSecurity": "",
+        "security": "reality",
+        "serviceName": "",
+        "sid": "e8ab71d0",
+        "sni": "visit-this-invitation-link-to-join-tg-enkelte-notif.ekt.me",
+        "spx": "",
+        "tag": "proxy-UnitedStates-0",
+        "type": "tcp"
+      }
+    ],
+    "observatory": {
+      "subjectSelector": [
+        "proxy-UnitedStates-0"
+      ],
+      "probeURL": "http://www.google.com/gen_204",
+      "probeInterval": "5m",
+      "enableConcurrency": true
+    },
+    "burstObservatory": {
+      "subjectSelector": [
+        "proxy-UnitedStates-0"
+      ],
+      "pingConfig": {
+        "destination": "http://www.google.com/gen_204",
+        "interval": "5m",
+        "sampling": 3,
+        "timeout": "10s"
+      }
+    },
+    "stats": {},
+    "remarks": "🇺🇸 United States"
+  },
+  {
+    "log": {
+      "loglevel": "warning"
+    },
+    "dns": {
+      "queryStrategy": "UseIPv4",
+      "servers": [
+        "https://1.0.0.1/dns-query"
+      ],
+      "tag": "dns_out"
+    },
+    "fakedns": [],
+    "routing": {
+      "balancers": [
+        {
+          "tag": "balancer",
+          "selector": [
+            "proxy-Finland-0"
+          ],
+          "strategy": {
+            "type": "leastPing"
+          }
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "type": "field",
+          "balancerTag": "balancer",
+          "network": "tcp,udp"
+        }
+      ]
+    },
+    "policy": {
+      "system": {
+        "statsOutboundDownlink": true,
+        "statsOutboundUplink": true
+      }
+    },
+    "inbounds": [
+      {
+        "port": 10808,
+        "protocol": "socks",
+        "settings": {
+          "auth": "noauth",
+          "udp": true,
+          "userLevel": 8
+        },
+        "sniffing": {
+          "destOverride": [
+            "http",
+            "tls"
+          ],
+          "enabled": true
+        },
+        "tag": "socks"
+      },
+      {
+        "port": 10809,
+        "protocol": "http",
+        "settings": {
+          "userLevel": 8
+        },
+        "tag": "http"
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "dialer",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "packets": "tlshello",
+            "length": "1-10",
+            "interval": "0-1"
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "dns-out",
+        "protocol": "dns"
+      },
+      {
+        "add": "Www.speedtest.net",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "Mmd.mehrdadspd1980.ir.",
+        "id": "7df5a558-c45c-4002-ac52-c0b4e91b6968",
+        "key": "",
+        "mode": "",
+        "path": "/wss9500?ed=2560@V2RAYNG_IP---@V2RAYNG_IP---@V2RAYNG_IP---@V2RAYNG_IP---@V2RAYNG_IP---@V2RAYNG_IP---@V2RAYNG_IP---@V2RAYNG_IP---@V2RAYNG_IP-G_IP---@V2RAYNG_IP---@V2RAYNG_IP---@V2RAYNG_IP",
+        "pbk": "",
+        "port": "8880",
+        "ps": "🚩 CF | 🔓 VLESS | @config_proxy [36]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-Finland-0",
+        "type": "httpupgrade"
+      }
+    ],
+    "observatory": {
+      "subjectSelector": [
+        "proxy-Finland-0"
+      ],
+      "probeURL": "http://www.google.com/gen_204",
+      "probeInterval": "5m",
+      "enableConcurrency": true
+    },
+    "burstObservatory": {
+      "subjectSelector": [
+        "proxy-Finland-0"
+      ],
+      "pingConfig": {
+        "destination": "http://www.google.com/gen_204",
+        "interval": "5m",
+        "sampling": 3,
+        "timeout": "10s"
+      }
+    },
+    "stats": {},
+    "remarks": "🇫🇮 Finland"
+  },
+  {
+    "log": {
+      "loglevel": "warning"
+    },
+    "dns": {
+      "queryStrategy": "UseIPv4",
+      "servers": [
+        "https://1.0.0.1/dns-query"
+      ],
+      "tag": "dns_out"
+    },
+    "fakedns": [],
+    "routing": {
+      "balancers": [
+        {
+          "tag": "balancer",
+          "selector": [
+            "proxy-SouthKorea-0"
+          ],
+          "strategy": {
+            "type": "leastPing"
+          }
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "type": "field",
+          "balancerTag": "balancer",
+          "network": "tcp,udp"
+        }
+      ]
+    },
+    "policy": {
+      "system": {
+        "statsOutboundDownlink": true,
+        "statsOutboundUplink": true
+      }
+    },
+    "inbounds": [
+      {
+        "port": 10808,
+        "protocol": "socks",
+        "settings": {
+          "auth": "noauth",
+          "udp": true,
+          "userLevel": 8
+        },
+        "sniffing": {
+          "destOverride": [
+            "http",
+            "tls"
+          ],
+          "enabled": true
+        },
+        "tag": "socks"
+      },
+      {
+        "port": 10809,
+        "protocol": "http",
+        "settings": {
+          "userLevel": 8
+        },
+        "tag": "http"
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "dialer",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "packets": "tlshello",
+            "length": "1-10",
+            "interval": "0-1"
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "dns-out",
+        "protocol": "dns"
+      },
+      {
+        "add": "amazon-13.cristiano.name.ng",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "xtls-rprx-vision",
+        "fp": "chrome",
+        "headerType": "none",
+        "host": "",
+        "id": "4c26ebc3-7784-46d8-b52a-7b0ccae6f4b4",
+        "key": "",
+        "mode": "",
+        "path": "",
+        "pbk": "TGlPtfVzGIVpMauPRMGJj2Uu6GUiCpu5ZizIIjw-wx4",
+        "port": "443",
+        "ps": "🇫🇷 FR | 🔒 VLESS | @qrv2ray [11]",
+        "quicSecurity": "",
+        "security": "reality",
+        "serviceName": "",
+        "sid": "f5",
+        "sni": "store.steampowered.com",
+        "spx": "/",
+        "tag": "proxy-SouthKorea-0",
+        "type": "tcp"
+      }
+    ],
+    "observatory": {
+      "subjectSelector": [
+        "proxy-SouthKorea-0"
+      ],
+      "probeURL": "http://www.google.com/gen_204",
+      "probeInterval": "5m",
+      "enableConcurrency": true
+    },
+    "burstObservatory": {
+      "subjectSelector": [
+        "proxy-SouthKorea-0"
+      ],
+      "pingConfig": {
+        "destination": "http://www.google.com/gen_204",
+        "interval": "5m",
+        "sampling": 3,
+        "timeout": "10s"
+      }
+    },
+    "stats": {},
+    "remarks": "🇰🇷 South Korea"
+  },
+  {
+    "log": {
+      "loglevel": "warning"
+    },
+    "dns": {
+      "queryStrategy": "UseIPv4",
+      "servers": [
+        "https://1.0.0.1/dns-query"
+      ],
+      "tag": "dns_out"
+    },
+    "fakedns": [],
+    "routing": {
+      "balancers": [
+        {
+          "tag": "balancer",
+          "selector": [
+            "proxy-UnitedKingdom-0"
+          ],
+          "strategy": {
+            "type": "leastPing"
+          }
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "type": "field",
+          "balancerTag": "balancer",
+          "network": "tcp,udp"
+        }
+      ]
+    },
+    "policy": {
+      "system": {
+        "statsOutboundDownlink": true,
+        "statsOutboundUplink": true
+      }
+    },
+    "inbounds": [
+      {
+        "port": 10808,
+        "protocol": "socks",
+        "settings": {
+          "auth": "noauth",
+          "udp": true,
+          "userLevel": 8
+        },
+        "sniffing": {
+          "destOverride": [
+            "http",
+            "tls"
+          ],
+          "enabled": true
+        },
+        "tag": "socks"
+      },
+      {
+        "port": 10809,
+        "protocol": "http",
+        "settings": {
+          "userLevel": 8
+        },
+        "tag": "http"
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "dialer",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "packets": "tlshello",
+            "length": "1-10",
+            "interval": "0-1"
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "dns-out",
+        "protocol": "dns"
+      },
+      {
+        "add": "104.16.1.106",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "eng.vinamarketcenter.ir",
+        "id": "7ff23c33-a3b7-4a24-93fd-2d3dcbfa62b1",
+        "key": "",
+        "mode": "",
+        "path": "/",
+        "pbk": "",
+        "port": "80",
+        "ps": "🚩 CF | 🔓 VLESS | @fastshovpn [7]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-UnitedKingdom-0",
+        "type": "ws"
+      }
+    ],
+    "observatory": {
+      "subjectSelector": [
+        "proxy-UnitedKingdom-0"
+      ],
+      "probeURL": "http://www.google.com/gen_204",
+      "probeInterval": "5m",
+      "enableConcurrency": true
+    },
+    "burstObservatory": {
+      "subjectSelector": [
+        "proxy-UnitedKingdom-0"
+      ],
+      "pingConfig": {
+        "destination": "http://www.google.com/gen_204",
+        "interval": "5m",
+        "sampling": 3,
+        "timeout": "10s"
+      }
+    },
+    "stats": {},
+    "remarks": "🇬🇧 United Kingdom"
+  },
+  {
+    "log": {
+      "loglevel": "warning"
+    },
+    "dns": {
+      "queryStrategy": "UseIPv4",
+      "servers": [
+        "https://1.0.0.1/dns-query"
+      ],
+      "tag": "dns_out"
+    },
+    "fakedns": [],
+    "routing": {
+      "balancers": [
+        {
+          "tag": "balancer",
+          "selector": [
+            "proxy-France-0",
+            "proxy-France-1",
+            "proxy-France-2",
+            "proxy-France-3"
+          ],
+          "strategy": {
+            "type": "leastPing"
+          }
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "type": "field",
+          "balancerTag": "balancer",
+          "network": "tcp,udp"
+        }
+      ]
+    },
+    "policy": {
+      "system": {
+        "statsOutboundDownlink": true,
+        "statsOutboundUplink": true
+      }
+    },
+    "inbounds": [
+      {
+        "port": 10808,
+        "protocol": "socks",
+        "settings": {
+          "auth": "noauth",
+          "udp": true,
+          "userLevel": 8
+        },
+        "sniffing": {
+          "destOverride": [
+            "http",
+            "tls"
+          ],
+          "enabled": true
+        },
+        "tag": "socks"
+      },
+      {
+        "port": 10809,
+        "protocol": "http",
+        "settings": {
+          "userLevel": 8
+        },
+        "tag": "http"
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "dialer",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "packets": "tlshello",
+            "length": "1-10",
+            "interval": "0-1"
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "dns-out",
+        "protocol": "dns"
+      },
+      {
+        "add": "glEefUL-ERror.sEoTOoLSfOrYou.cO.UK",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "",
+        "id": "9a37131b-2b68-427f-a2fc-cc7381c2d575",
+        "key": "",
+        "mode": "",
+        "path": "/",
+        "pbk": "",
+        "port": "80",
+        "ps": "🚩 CF | 🔓 VLESS | @nofilter_v2rayng [5]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-France-0",
+        "type": "ws"
+      },
+      {
+        "add": "www.speedtest.net",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "chrome",
+        "headerType": "",
+        "host": "dl1-fr-cdn.easy-upload.org",
+        "id": "c752abdc-4cef-42e9-8180-569256930f7d",
+        "key": "",
+        "mode": "",
+        "path": "/",
+        "pbk": "",
+        "port": "2053",
+        "ps": "🚩 CF | 🔒 VLESS | @vpnplusee_free [12]",
+        "quicSecurity": "",
+        "security": "tls",
+        "serviceName": "",
+        "sid": "",
+        "sni": "dl1-fr-cdn.easy-upload.org",
+        "spx": "",
+        "tag": "proxy-France-1",
+        "type": "ws"
+      },
+      {
+        "add": "172.66.40.99",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "d.jOin.zEdMoDeOn.oNl.",
+        "id": "f9409fa0-900b-4526-be5f-37ddfb4fca78",
+        "key": "",
+        "mode": "",
+        "path": "/Join-ZEDMODEON-ZEDMODEON-ZEDMODEON-bia-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON",
+        "pbk": "",
+        "port": "80",
+        "ps": "🚩 CF | 🔓 VLESS | @v2raych [19]",
+        "quicSecurity": "",
+        "security": "",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-France-2",
+        "type": "ws"
+      },
+      {
+        "add": "172.66.40.99",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "a.joIn.zEdMoDeOn.oNl.",
+        "id": "3743c683-a48f-4a39-a904-2467f23d88fb",
+        "key": "",
+        "mode": "",
+        "path": "/Join-ZEDMODEON-ZEDMODEON-ZEDMODEON-bia-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON",
+        "pbk": "",
+        "port": "80",
+        "ps": "🚩 CF | 🔓 VLESS | @lranonline_new [16]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-France-3",
+        "type": "ws"
+      }
+    ],
+    "observatory": {
+      "subjectSelector": [
+        "proxy-France-0",
+        "proxy-France-1",
+        "proxy-France-2",
+        "proxy-France-3"
+      ],
+      "probeURL": "http://www.google.com/gen_204",
+      "probeInterval": "5m",
+      "enableConcurrency": true
+    },
+    "burstObservatory": {
+      "subjectSelector": [
+        "proxy-France-0",
+        "proxy-France-1",
+        "proxy-France-2",
+        "proxy-France-3"
+      ],
+      "pingConfig": {
+        "destination": "http://www.google.com/gen_204",
+        "interval": "5m",
+        "sampling": 3,
+        "timeout": "10s"
+      }
+    },
+    "stats": {},
+    "remarks": "🇫🇷 France"
+  },
+  {
+    "log": {
+      "loglevel": "warning"
+    },
+    "dns": {
+      "queryStrategy": "UseIPv4",
+      "servers": [
+        "https://1.0.0.1/dns-query"
+      ],
+      "tag": "dns_out"
+    },
+    "fakedns": [],
+    "routing": {
+      "balancers": [
+        {
+          "tag": "balancer",
+          "selector": [
+            "proxy-AM-0",
+            "proxy-AM-1"
+          ],
+          "strategy": {
+            "type": "leastPing"
+          }
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch",
+      "rules": [
+        {
+          "type": "field",
+          "balancerTag": "balancer",
+          "network": "tcp,udp"
+        }
+      ]
+    },
+    "policy": {
+      "system": {
+        "statsOutboundDownlink": true,
+        "statsOutboundUplink": true
+      }
+    },
+    "inbounds": [
+      {
+        "port": 10808,
+        "protocol": "socks",
+        "settings": {
+          "auth": "noauth",
+          "udp": true,
+          "userLevel": 8
+        },
+        "sniffing": {
+          "destOverride": [
+            "http",
+            "tls"
+          ],
+          "enabled": true
+        },
+        "tag": "socks"
+      },
+      {
+        "port": 10809,
+        "protocol": "http",
+        "settings": {
+          "userLevel": 8
+        },
+        "tag": "http"
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "dialer",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "packets": "tlshello",
+            "length": "1-10",
+            "interval": "0-1"
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "dns-out",
+        "protocol": "dns"
+      },
+      {
+        "add": "simonil.zarghamportal.ir",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "shole.zarghamportal.ir",
+        "id": "b43f416d-0bb7-45d9-b3a4-0ccef14f1fbe",
+        "key": "",
+        "mode": "",
+        "path": "/@iSpeedTopVPN?ed=80",
+        "pbk": "",
+        "port": "2095",
+        "ps": "🚩 CF | 🔓 VLESS | @outlinev2rayng [13]",
+        "quicSecurity": "",
+        "security": "none",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-AM-0",
+        "type": "ws"
+      },
+      {
+        "add": "simonil.zarghamportal.ir",
+        "allowInsecure": "",
+        "alpn": "",
+        "authority": "",
+        "encryption": "none",
+        "flow": "",
+        "fp": "",
+        "headerType": "",
+        "host": "shole.zarghamportal.ir",
+        "id": "b43f416d-0bb7-45d9-b3a4-0ccef14f1fbe",
+        "key": "",
+        "mode": "",
+        "path": "/@iSpeedTopVPN?ed=80",
+        "pbk": "",
+        "port": "2095",
+        "ps": "🚩 CF | 🔓 VLESS | @dalton_ping [1]",
+        "quicSecurity": "",
+        "security": "",
+        "serviceName": "",
+        "sid": "",
+        "sni": "",
+        "spx": "",
+        "tag": "proxy-AM-1",
+        "type": "ws"
+      }
+    ],
+    "observatory": {
+      "subjectSelector": [
+        "proxy-AM-0",
+        "proxy-AM-1"
+      ],
+      "probeURL": "http://www.google.com/gen_204",
+      "probeInterval": "5m",
+      "enableConcurrency": true
+    },
+    "burstObservatory": {
+      "subjectSelector": [
+        "proxy-AM-0",
+        "proxy-AM-1"
+      ],
+      "pingConfig": {
+        "destination": "http://www.google.com/gen_204",
+        "interval": "5m",
+        "sampling": 3,
+        "timeout": "10s"
+      }
+    },
+    "stats": {},
+    "remarks": "🌐 AM"
+  }
+]

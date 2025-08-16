@@ -11,6 +11,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"sort"
 	"strings"
 	"sync"
 	"time"
@@ -36,15 +37,17 @@ const (
 	speedTestFileSize = 10 * 1024 * 1024
 	ipCheckURL        = "https://api.ifconfig.me/ip"
 	minSpeedMbps      = 80.0 // Minimum speed in Mbps to be included in the config
+	topNFastest       = 20   // Number of proxies to include in the "Fastest" group
 )
 
 // Global GeoIP database reader
 var geoDB *geoip2.Reader
 
-// --- Structs for Xray Config Template ---
+// --- Structs for Xray Config Template (Unchanged) ---
 type XrayConfig struct {
 	Log              map[string]string        `json:"log"`
 	DNS              map[string]interface{}   `json:"dns"`
+	FakeDNS          []interface{}            `json:"fakedns"`
 	Routing          RoutingConfig            `json:"routing"`
 	Policy           map[string]interface{}   `json:"policy"`
 	Inbounds         []map[string]interface{} `json:"inbounds"`
@@ -91,6 +94,7 @@ func main() {
 	timeout := flag.Duration("timeout", 10*time.Second, "Timeout for each network request")
 	concurrency := flag.Int("concurrency", 20, "Number of concurrent workers to test configs")
 	geoDBPath := flag.String("geoip-db", "GeoLite2-Country.mmdb", "Path to the GeoIP MMDB file")
+	outputFile := flag.String("output", "v2rayng_profiles.json", "Name of the final output JSON file")
 	flag.Parse()
 
 	if *urls == "" {
@@ -110,58 +114,79 @@ func main() {
 	}
 	defer geoDB.Close()
 
-	// --- 1. Fetch all configs from subscription links ---
+	// --- 1. Fetch and Test ---
 	subscriptionURLs := strings.Split(*urls, ",")
 	allConfigs := fetchConfigsFromSubscriptions(subscriptionURLs)
 	if len(allConfigs) == 0 {
 		log.Fatal("No proxy configurations were found from the provided URLs.")
 	}
 	log.Printf("Found a total of %d configs. Starting tests...\n", len(allConfigs))
-
-	// --- 2. Test configs concurrently ---
 	results := testConfigs(*concurrency, allConfigs, *timeout)
 
-	// --- 3. Group results by Country ---
+	// --- 2. Filter Proxies by Speed ---
+	var fastProxies []Result
+	for _, p := range results {
+		if p.SpeedMbps >= minSpeedMbps {
+			fastProxies = append(fastProxies, p)
+		}
+	}
+	if len(fastProxies) == 0 {
+		log.Fatal("No proxies met the required speed of %.2f Mbps. Exiting.", minSpeedMbps)
+	}
+	log.Printf("Found %d proxies faster than %.2f Mbps.", len(fastProxies), minSpeedMbps)
+
+	// --- 3. Generate All Profiles ---
+	var allProfiles []XrayConfig
+
+	// 3.1 Generate "Fastest Location" profile
+	sort.SliceStable(fastProxies, func(i, j int) bool {
+		return fastProxies[i].SpeedMbps > fastProxies[j].SpeedMbps
+	})
+	numTopProxies := topNFastest
+	if len(fastProxies) < topNFastest {
+		numTopProxies = len(fastProxies)
+	}
+	topProxies := fastProxies[:numTopProxies]
+	log.Printf("Generating 'Fastest Location' profile with top %d proxies...", len(topProxies))
+	fastestProfile := generateSingleProfileConfig("Fastest Location", "FAST", topProxies)
+	allProfiles = append(allProfiles, fastestProfile)
+
+	// 3.2 Generate Per-Country profiles
 	groupedByCountry := make(map[string][]Result)
-	for _, res := range results {
+	for _, res := range fastProxies {
 		groupedByCountry[res.Country] = append(groupedByCountry[res.Country], res)
 	}
 
-	// --- 4. Generate load balancing configs ---
-	log.Println("--- Generating Load Balancing Configs ---")
-	for country, countryResults := range groupedByCountry {
-		// Filter by speed
-		var fastProxies []Result
-		for _, p := range countryResults {
-			if p.SpeedMbps >= minSpeedMbps {
-				fastProxies = append(fastProxies, p)
-			}
-		}
-
-		if len(fastProxies) == 0 {
-			log.Printf("Skipping %s: No proxies met the %.2f Mbps speed requirement.", country, minSpeedMbps)
-			continue
-		}
-
-		filename := fmt.Sprintf("loadbalance_%s.json", country)
-		err := generateLoadBalanceConfig(country, fastProxies, filename)
-		if err != nil {
-			log.Printf("Failed to generate config for %s: %v", country, err)
-		} else {
-			log.Printf("Successfully generated config for %s with %d proxies -> %s", country, len(fastProxies), filename)
-		}
+	for countryCode, countryResults := range groupedByCountry {
+		countryInfo := getCountryInfo(countryCode)
+		log.Printf("Generating '%s' profile with %d proxies...", countryInfo.Name, len(countryResults))
+		countryProfile := generateSingleProfileConfig(countryInfo.Name, countryCode, countryResults)
+		allProfiles = append(allProfiles, countryProfile)
 	}
+
+	// --- 4. Write Final Multi-Profile JSON File ---
+	finalJSON, err := json.MarshalIndent(allProfiles, "", "  ")
+	if err != nil {
+		log.Fatalf("Failed to marshal the final list of profiles: %v", err)
+	}
+
+	err = os.WriteFile(*outputFile, finalJSON, 0644)
+	if err != nil {
+		log.Fatalf("Failed to write the final config file: %v", err)
+	}
+
+	log.Printf("\nSUCCESS! All profiles have been written to %s", *outputFile)
 }
 
-// generateLoadBalanceConfig creates an Xray JSON config file based on the user's template.
-func generateLoadBalanceConfig(countryCode string, proxies []Result, filename string) error {
+// generateSingleProfileConfig creates one complete Xray config object.
+func generateSingleProfileConfig(profileName, countryCode string, proxies []Result) XrayConfig {
 	var proxyOutbounds []json.RawMessage
 	var proxyTags []string
 
 	for i, p := range proxies {
 		proxyJSON, err := json.Marshal(p.Protocol)
 		if err != nil {
-			continue // Skip this proxy if it can't be marshaled
+			continue
 		}
 
 		var proxyMap map[string]interface{}
@@ -169,7 +194,8 @@ func generateLoadBalanceConfig(countryCode string, proxies []Result, filename st
 			continue
 		}
 
-		tag := fmt.Sprintf("proxy-%s-%d", countryCode, i)
+		// Use the profile name in the tag to ensure uniqueness within the config
+		tag := fmt.Sprintf("proxy-%s-%d", strings.ReplaceAll(profileName, " ", ""), i)
 		proxyMap["tag"] = tag
 		proxyTags = append(proxyTags, tag)
 
@@ -177,136 +203,90 @@ func generateLoadBalanceConfig(countryCode string, proxies []Result, filename st
 		if err != nil {
 			continue
 		}
+
 		proxyOutbounds = append(proxyOutbounds, json.RawMessage(taggedProxyJSON))
 	}
 
-	if len(proxyOutbounds) == 0 {
-		return fmt.Errorf("no valid outbounds to create a config for country %s", countryCode)
-	}
-
 	countryInfo := getCountryInfo(countryCode)
+	remarks := fmt.Sprintf("%s %s", countryInfo.Emoji, countryInfo.Name)
 
 	// Create the final config from the template structure
 	config := XrayConfig{
-		Log: map[string]string{"loglevel": "warning"},
-		DNS: map[string]interface{}{
-			"queryStrategy": "UseIPv4",
-			"servers":       []string{"https://1.0.0.1/dns-query"},
-			"tag":           "dns_out",
-		},
+		Log:     map[string]string{"loglevel": "warning"},
+		DNS:     map[string]interface{}{"queryStrategy": "UseIPv4", "servers": []string{"https://1.0.0.1/dns-query"}, "tag": "dns_out"},
+		FakeDNS: []interface{}{},
 		Routing: RoutingConfig{
 			DomainStrategy: "IPIfNonMatch",
-			Balancers: []BalancerRule{
-				{
-					Tag:      "balancer",
-					Selector: proxyTags, // <-- DYNAMIC
-					Strategy: map[string]interface{}{"type": "leastPing"},
-				},
-			},
-			Rules: []Rule{
-				{
-					Type:        "field",
-					BalancerTag: "balancer",
-					Network:     "tcp,udp",
-				},
-			},
+			Balancers: []BalancerRule{{
+				Tag:      "balancer",
+				Selector: proxyTags,
+				Strategy: map[string]interface{}{"type": "leastPing"},
+			}},
+			Rules: []Rule{{Type: "field", BalancerTag: "balancer", Network: "tcp,udp"}},
 		},
-		Policy: map[string]interface{}{
-			"system": map[string]bool{
-				"statsOutboundDownlink": true,
-				"statsOutboundUplink":   true,
-			},
-		},
+		Policy: map[string]interface{}{"system": map[string]bool{"statsOutboundDownlink": true, "statsOutboundUplink": true}},
 		Inbounds: []map[string]interface{}{
-			{
-				"port":     10808,
-				"protocol": "socks",
-				"settings": map[string]interface{}{"auth": "noauth", "udp": true, "userLevel": 8},
-				"sniffing": map[string]interface{}{"destOverride": []string{"http", "tls"}, "enabled": true},
-				"tag":      "socks",
-			},
-			{
-				"port":     10809,
-				"protocol": "http",
-				"settings": map[string]interface{}{"userLevel": 8},
-				"tag":      "http",
-			},
+			{"port": 10808, "protocol": "socks", "settings": map[string]interface{}{"auth": "noauth", "udp": true, "userLevel": 8}, "sniffing": map[string]interface{}{"destOverride": []string{"http", "tls"}, "enabled": true}, "tag": "socks"},
+			{"port": 10809, "protocol": "http", "settings": map[string]interface{}{"userLevel": 8}, "tag": "http"},
 		},
-		Outbounds: []json.RawMessage{ // Static outbounds first
+		Outbounds: []json.RawMessage{
 			json.RawMessage(`{"tag":"dialer","protocol":"freedom","settings":{"fragment":{"packets":"tlshello","length":"1-10","interval":"0-1"}}}`),
 			json.RawMessage(`{"tag":"direct","protocol":"freedom","settings":{"domainStrategy":"UseIPv4"}}`),
 			json.RawMessage(`{"tag":"block","protocol":"blackhole"}`),
 			json.RawMessage(`{"tag":"dns-out","protocol":"dns"}`),
 		},
 		Observatory: ObservatoryConfig{
-			SubjectSelector:   proxyTags, // <-- DYNAMIC
+			SubjectSelector:   proxyTags,
 			ProbeURL:          "http://www.google.com/gen_204",
 			ProbeInterval:     "5m",
 			EnableConcurrency: true,
 		},
 		BurstObservatory: BurstObservatoryConfig{
-			SubjectSelector: proxyTags, // <-- DYNAMIC
-			PingConfig: map[string]interface{}{
-				"destination": "http://www.google.com/gen_204",
-				"interval":    "5m",
-				"timeout":     "10s",
-				"sampling":    3,
-			},
+			SubjectSelector: proxyTags,
+			PingConfig:      map[string]interface{}{"destination": "http://www.google.com/gen_204", "interval": "5m", "timeout": "10s", "sampling": 3},
 		},
 		Stats:   map[string]interface{}{},
-		Remarks: fmt.Sprintf("%s %s", countryInfo.Emoji, countryInfo.Name), // <-- DYNAMIC
+		Remarks: remarks,
 	}
-	// Append the dynamic proxy outbounds
 	config.Outbounds = append(config.Outbounds, proxyOutbounds...)
 
-	configJSON, err := json.MarshalIndent(config, "", "  ")
-	if err != nil {
-		return fmt.Errorf("failed to marshal final config: %w", err)
-	}
-
-	return os.WriteFile(filename, configJSON, 0644)
+	return config
 }
 
-// --- Helper Functions (Unchanged from previous version unless specified) ---
+// --- Helper Functions (Identical to previous version) ---
 
-// CountryInfo holds the name and emoji for a country
 type CountryInfo struct {
 	Name  string
 	Emoji string
 }
 
-// getCountryInfo maps ISO code to name and emoji
 func getCountryInfo(code string) CountryInfo {
-	// A small subset of country data
 	countryMap := map[string]CountryInfo{
-		"US": {"United States", "🇺🇸"},
-		"DE": {"Germany", "🇩🇪"},
-		"GB": {"United Kingdom", "🇬🇧"},
-		"FR": {"France", "🇫🇷"},
-		"JP": {"Japan", "🇯🇵"},
-		"KR": {"South Korea", "🇰🇷"},
-		"CA": {"Canada", "🇨🇦"},
-		"AU": {"Australia", "🇦🇺"},
-		"NL": {"Netherlands", "🇳🇱"},
-		"HK": {"Hong Kong", "🇭🇰"},
-		"SG": {"Singapore", "🇸🇬"},
-		"TW": {"Taiwan", "🇹🇼"},
+		"FAST": {"Fastest Location", "⚡️"},
+		"US":   {"United States", "🇺🇸"},
+		"DE":   {"Germany", "🇩🇪"},
+		"GB":   {"United Kingdom", "🇬🇧"},
+		"FR":   {"France", "🇫🇷"},
+		"JP":   {"Japan", "🇯🇵"},
+		"KR":   {"South Korea", "🇰🇷"},
+		"CA":   {"Canada", "🇨🇦"},
+		"AU":   {"Australia", "🇦🇺"},
+		"NL":   {"Netherlands", "🇳🇱"},
+		"HK":   {"Hong Kong", "🇭🇰"},
+		"SG":   {"Singapore", "🇸🇬"},
+		"TW":   {"Taiwan", "🇹🇼"},
+		"FI":   {"Finland", "🇫🇮"},
 	}
 	if info, ok := countryMap[code]; ok {
 		return info
 	}
-	// Fallback for unknown codes
 	return CountryInfo{Name: code, Emoji: "🌐"}
 }
-
-// The rest of the functions (fetchConfigsFromSubscriptions, testConfigs, worker, etc.) are identical
-// to the previous version. I am including them here for a complete, copy-pasteable file.
 
 func fetchConfigsFromSubscriptions(urls []string) []string {
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 	var allConfigs []string
-
 	for _, url := range urls {
 		wg.Add(1)
 		go func(u string) {
@@ -319,12 +299,10 @@ func fetchConfigsFromSubscriptions(urls []string) []string {
 				return
 			}
 			defer resp.Body.Close()
-
 			if resp.StatusCode != http.StatusOK {
 				log.Printf("Received non-200 status code from %s: %s", u, resp.Status)
 				return
 			}
-
 			body, err := io.ReadAll(resp.Body)
 			if err != nil {
 				log.Printf("Failed to read response body from %s: %v", u, err)
@@ -348,7 +326,6 @@ func fetchConfigsFromSubscriptions(urls []string) []string {
 			mu.Unlock()
 		}(url)
 	}
-
 	wg.Wait()
 	return allConfigs
 }
@@ -357,22 +334,15 @@ func testConfigs(numWorkers int, configs []string, timeout time.Duration) []Resu
 	jobs := make(chan string, len(configs))
 	resultsChan := make(chan Result, len(configs))
 	var wg sync.WaitGroup
-
 	for i := 0; i < numWorkers; i++ {
 		wg.Add(1)
 		go worker(i+1, &wg, jobs, resultsChan, timeout)
 	}
-
 	for _, config := range configs {
 		jobs <- config
 	}
 	close(jobs)
-
-	go func() {
-		wg.Wait()
-		close(resultsChan)
-	}()
-
+	go func() { wg.Wait(); close(resultsChan) }()
 	var finalResults []Result
 	for result := range resultsChan {
 		finalResults = append(finalResults, result)
@@ -389,12 +359,10 @@ func worker(id int, wg *sync.WaitGroup, jobs <-chan string, results chan<- Resul
 		} else {
 			core = xray.NewXrayService(false, false)
 		}
-
 		proto, err := core.CreateProtocol(config)
 		if err != nil || proto.Parse() != nil {
 			continue
 		}
-
 		httpClient, instance, err := core.MakeHttpClient(proto, timeout)
 		if err != nil {
 			continue
@@ -405,7 +373,6 @@ func worker(id int, wg *sync.WaitGroup, jobs <-chan string, results chan<- Resul
 			continue
 		}
 		log.Printf("Sanity check PASSED for %s. Proceeding to speed test.", proto.ConvertToGeneralConfig().Address)
-
 		speedTestClient, speedTestInstance, err := core.MakeHttpClient(proto, timeout*3)
 		if err != nil {
 			continue
@@ -416,7 +383,6 @@ func worker(id int, wg *sync.WaitGroup, jobs <-chan string, results chan<- Resul
 			continue
 		}
 		log.Printf("Speed test PASSED for %s | Speed: %.2f Mbps", proto.ConvertToGeneralConfig().Address, speed)
-
 		ipCheckClient, ipCheckInstance, err := core.MakeHttpClient(proto, timeout)
 		if err != nil {
 			continue
@@ -428,47 +394,35 @@ func worker(id int, wg *sync.WaitGroup, jobs <-chan string, results chan<- Resul
 			continue
 		}
 		log.Printf("SUCCESS: %s | Outbound IP: %s | Country: %s", proto.ConvertToGeneralConfig().Address, ip, country)
-
-		results <- Result{
-			Config:    config,
-			SpeedMbps: speed,
-			Country:   country,
-			Protocol:  proto,
-		}
+		results <- Result{Config: config, SpeedMbps: speed, Country: country, Protocol: proto}
 	}
 }
 
 func getIPAndCountry(client *http.Client, timeout time.Duration) (string, string) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
-
 	req, err := http.NewRequestWithContext(ctx, "GET", ipCheckURL, nil)
 	if err != nil {
 		return "", ""
 	}
-
 	resp, err := client.Do(req)
 	if err != nil {
 		return "", ""
 	}
 	defer resp.Body.Close()
-
 	ipBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", ""
 	}
-
 	ipStr := strings.TrimSpace(string(ipBytes))
 	ip := net.ParseIP(ipStr)
 	if ip == nil {
 		return "", ""
 	}
-
 	record, err := geoDB.Country(ip)
 	if err != nil {
 		return ipStr, "XX"
 	}
-
 	return ipStr, record.Country.IsoCode
 }
 
