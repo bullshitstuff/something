@@ -10,25 +10,26 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/naser-989/xray-knife/v3/pkg"
-	"github.com/naser-989/xray-knife/v3/pkg/protocol"
 	"github.com/naser-989/xray-knife/v3/pkg/singbox"
 	"github.com/naser-989/xray-knife/v3/pkg/xray"
 	"github.com/oschwald/geoip2-golang"
 )
 
-// Result holds the extended outcome of a successful test for a single config.
+// Result struct from your base code, now without the problematic protocol.Protocol
 type Result struct {
 	Config    string
 	SpeedMbps float64
 	Country   string
-	protocol.Protocol
+	Remarks   string // To store the decoded name from the link
 }
 
 const (
@@ -36,60 +37,222 @@ const (
 	speedTestURL      = "http://cachefly.cachefly.net/10mb.test"
 	speedTestFileSize = 10 * 1024 * 1024
 	ipCheckURL        = "https://api.ifconfig.me/ip"
-	minSpeedMbps      = 80.0 // Minimum speed in Mbps to be included in the config
-	topNFastest       = 20   // Number of proxies to include in the "Fastest" group
+	minSpeedMbps      = 80.0
+	topNFastest       = 20
 )
 
-// Global GeoIP database reader
 var geoDB *geoip2.Reader
 
-// --- Structs for Xray Config Template (Unchanged) ---
-type XrayConfig struct {
-	Log              map[string]string        `json:"log"`
-	DNS              map[string]interface{}   `json:"dns"`
-	FakeDNS          []interface{}            `json:"fakedns"`
-	Routing          RoutingConfig            `json:"routing"`
-	Policy           map[string]interface{}   `json:"policy"`
-	Inbounds         []map[string]interface{} `json:"inbounds"`
-	Outbounds        []json.RawMessage        `json:"outbounds"`
-	Observatory      ObservatoryConfig        `json:"observatory"`
-	BurstObservatory BurstObservatoryConfig   `json:"burstObservatory"`
-	Stats            map[string]interface{}   `json:"stats"`
-	Remarks          string                   `json:"remarks"`
+// --- Structs for Generating Xray Outbounds (for our Python-logic parser) ---
+type Outbound struct {
+	Tag            string          `json:"tag"`
+	Protocol       string          `json:"protocol"`
+	Settings       json.RawMessage `json:"settings"`
+	StreamSettings *StreamSettings `json:"streamSettings,omitempty"`
+	Mux            *Mux            `json:"mux,omitempty"`
+}
+type VmessSettings struct {
+	VNext []*VmessServer `json:"vnext"`
+}
+type VmessServer struct {
+	Address string       `json:"address"`
+	Port    int          `json:"port"`
+	Users   []*VmessUser `json:"users"`
+}
+type VmessUser struct {
+	ID       string `json:"id"`
+	AlterID  int    `json:"alterId"`
+	Security string `json:"security,omitempty"`
+}
+type VlessSettings struct {
+	VNext []*VlessServer `json:"vnext"`
+}
+type VlessServer struct {
+	Address string       `json:"address"`
+	Port    int          `json:"port"`
+	Users   []*VlessUser `json:"users"`
+}
+type VlessUser struct {
+	ID         string `json:"id"`
+	Encryption string `json:"encryption"`
+	Flow       string `json:"flow,omitempty"`
+}
+type StreamSettings struct {
+	Network         string           `json:"network,omitempty"`
+	Security        string           `json:"security,omitempty"`
+	TLSSettings     *TLSSettings     `json:"tlsSettings,omitempty"`
+	RealitySettings *RealitySettings `json:"realitySettings,omitempty"`
+	WSSettings      *WSSettings      `json:"wsSettings,omitempty"`
+	HTTPSettings    *HTTPSettings    `json:"httpSettings,omitempty"`
+	GRPCSettings    *GRPCSettings    `json:"grpcSettings,omitempty"`
+	Sockopt         *Sockopt         `json:"sockopt,omitempty"`
+}
+type TLSSettings struct {
+	ServerName    string   `json:"serverName,omitempty"`
+	AllowInsecure bool     `json:"allowInsecure,omitempty"`
+	ALPN          []string `json:"alpn,omitempty"`
+	Fingerprint   string   `json:"fingerprint,omitempty"`
+}
+type RealitySettings struct {
+	ServerName  string `json:"serverName,omitempty"`
+	Fingerprint string `json:"fingerprint,omitempty"`
+	PublicKey   string `json:"publicKey,omitempty"`
+	ShortID     string `json:"shortId,omitempty"`
+	SpiderX     string `json:"spiderX,omitempty"`
+}
+type WSSettings struct {
+	Path    string            `json:"path,omitempty"`
+	Headers map[string]string `json:"headers,omitempty"`
+}
+type HTTPSettings struct {
+	Host []string `json:"host,omitempty"`
+	Path string   `json:"path,omitempty"`
+}
+type GRPCSettings struct {
+	ServiceName string `json:"serviceName,omitempty"`
+	MultiMode   bool   `json:"multiMode,omitempty"`
+}
+type Sockopt struct {
+	DialerProxy string `json:"dialerProxy,omitempty"`
+}
+type Mux struct {
+	Enabled     bool `json:"enabled"`
+	Concurrency int  `json:"concurrency"`
+}
+type VmessLink struct {
+	PS   string          `json:"ps"`
+	Add  string          `json:"add"`
+	Port json.RawMessage `json:"port"`
+	ID   string          `json:"id"`
+	Aid  json.RawMessage `json:"aid"`
+	Net  string          `json:"net"`
+	Type string          `json:"type"`
+	Host string          `json:"host"`
+	Path string          `json:"path"`
+	TLS  string          `json:"tls"`
+	SNI  string          `json:"sni"`
+	ALPN string          `json:"alpn"`
+	FP   string          `json:"fp"`
 }
 
-type RoutingConfig struct {
-	Balancers      []BalancerRule `json:"balancers"`
-	DomainStrategy string         `json:"domainStrategy"`
-	Rules          []Rule         `json:"rules"`
-}
+// --- NEW CORE LOGIC: Replicates Python Script ---
+func parseLinkToOutboundJSON(link, tag string) (json.RawMessage, string, error) {
+	u, err := url.Parse(link)
+	if err != nil {
+		return nil, "", fmt.Errorf("invalid link format: %w", err)
+	}
 
-type BalancerRule struct {
-	Tag      string                 `json:"tag"`
-	Selector []string               `json:"selector"`
-	Strategy map[string]interface{} `json:"strategy"`
-}
+	out := Outbound{Tag: tag, Mux: &Mux{Enabled: true, Concurrency: 8}}
+	remarks := u.Fragment
 
-type Rule struct {
-	Type        string `json:"type"`
-	BalancerTag string `json:"balancerTag"`
-	Network     string `json:"network"`
-}
+	switch u.Scheme {
+	case "vless":
+		out.Protocol = "vless"
+		port, _ := strconv.Atoi(u.Port())
+		if port == 0 {
+			port = 443
+		}
+		queryParams := u.Query()
+		settings := VlessSettings{
+			VNext: []*VlessServer{{
+				Address: u.Hostname(), Port: port,
+				Users: []*VlessUser{{
+					ID: u.User.Username(), Encryption: queryParams.Get("encryption"), Flow: queryParams.Get("flow"),
+				}},
+			}},
+		}
+		settingsJSON, _ := json.Marshal(settings)
+		out.Settings = json.RawMessage(settingsJSON)
 
-type ObservatoryConfig struct {
-	SubjectSelector   []string `json:"subjectSelector"`
-	ProbeURL          string   `json:"probeURL"`
-	ProbeInterval     string   `json:"probeInterval"`
-	EnableConcurrency bool     `json:"enableConcurrency"`
-}
+		ss := &StreamSettings{Network: queryParams.Get("type"), Security: queryParams.Get("security"), Sockopt: &Sockopt{DialerProxy: "dialer"}}
+		if ss.Security == "tls" || ss.Security == "reality" {
+			sni := queryParams.Get("sni")
+			if sni == "" {
+				sni = queryParams.Get("host")
+			}
+			if ss.Security == "tls" {
+				ss.TLSSettings = &TLSSettings{ServerName: sni, Fingerprint: queryParams.Get("fp"), AllowInsecure: true, ALPN: strings.Split(queryParams.Get("alpn"), ",")}
+			} else {
+				ss.RealitySettings = &RealitySettings{ServerName: sni, PublicKey: queryParams.Get("pbk"), ShortID: queryParams.Get("sid"), SpiderX: queryParams.Get("spx"), Fingerprint: queryParams.Get("fp")}
+			}
+		}
+		switch ss.Network {
+		case "ws":
+			ss.WSSettings = &WSSettings{Path: queryParams.Get("path"), Headers: map[string]string{"Host": queryParams.Get("host")}}
+		case "grpc":
+			ss.GRPCSettings = &GRPCSettings{ServiceName: queryParams.Get("serviceName"), MultiMode: queryParams.Get("mode") == "multi"}
+		}
+		out.StreamSettings = ss
 
-type BurstObservatoryConfig struct {
-	SubjectSelector []string               `json:"subjectSelector"`
-	PingConfig      map[string]interface{} `json:"pingConfig"`
+	case "vmess":
+		out.Protocol = "vmess"
+		b64 := strings.TrimPrefix(link, "vmess://")
+		if len(b64)%4 != 0 {
+			b64 += strings.Repeat("=", 4-len(b64)%4)
+		}
+		decoded, err := base64.RawURLEncoding.DecodeString(b64)
+		if err != nil {
+			decoded, err = base64.StdEncoding.DecodeString(b64)
+			if err != nil {
+				return nil, "", fmt.Errorf("invalid vmess base64: %w", err)
+			}
+		}
+
+		var vmessData VmessLink
+		if err := json.Unmarshal(decoded, &vmessData); err != nil {
+			return nil, "", fmt.Errorf("invalid vmess json: %w", err)
+		}
+		remarks = vmessData.PS
+		var port int
+		if err := json.Unmarshal(vmessData.Port, &port); err != nil {
+			var portStr string
+			if err := json.Unmarshal(vmessData.Port, &portStr); err == nil {
+				port, _ = strconv.Atoi(portStr)
+			}
+		}
+		if port == 0 {
+			port = 443
+		}
+		var aid int
+		if err := json.Unmarshal(vmessData.Aid, &aid); err != nil {
+			var aidStr string
+			if err := json.Unmarshal(vmessData.Aid, &aidStr); err == nil {
+				aid, _ = strconv.Atoi(aidStr)
+			}
+		}
+
+		settings := VmessSettings{
+			VNext: []*VmessServer{{
+				Address: vmessData.Add, Port: port,
+				Users: []*VmessUser{{ID: vmessData.ID, AlterID: aid, Security: "auto"}},
+			}},
+		}
+		settingsJSON, _ := json.Marshal(settings)
+		out.Settings = json.RawMessage(settingsJSON)
+		ss := &StreamSettings{Network: vmessData.Net, Security: vmessData.TLS, Sockopt: &Sockopt{DialerProxy: "dialer"}}
+		if ss.Security == "tls" {
+			sni := vmessData.SNI
+			if sni == "" {
+				sni = vmessData.Host
+			}
+			ss.TLSSettings = &TLSSettings{ServerName: sni, Fingerprint: vmessData.FP, AllowInsecure: true, ALPN: strings.Split(vmessData.ALPN, ",")}
+		}
+		switch ss.Network {
+		case "ws":
+			ss.WSSettings = &WSSettings{Path: vmessData.Path, Headers: map[string]string{"Host": vmessData.Host}}
+		case "grpc":
+			ss.GRPCSettings = &GRPCSettings{ServiceName: vmessData.Path, MultiMode: vmessData.Type == "multi"}
+		}
+		out.StreamSettings = ss
+	default:
+		return nil, "", fmt.Errorf("unsupported link scheme: %s", u.Scheme)
+	}
+
+	jsonBytes, err := json.Marshal(out)
+	return jsonBytes, remarks, err
 }
 
 func main() {
-	// --- Command-Line Flags ---
 	urls := flag.String("urls", "", "Comma-separated list of subscription URLs")
 	timeout := flag.Duration("timeout", 10*time.Second, "Timeout for each network request")
 	concurrency := flag.Int("concurrency", 20, "Number of concurrent workers to test configs")
@@ -102,11 +265,8 @@ func main() {
 		flag.Usage()
 		os.Exit(1)
 	}
-
 	log.SetOutput(os.Stderr)
 	log.Println("Starting proxy tester...")
-
-	// --- 0. Load GeoIP Database ---
 	var err error
 	geoDB, err = geoip2.Open(*geoDBPath)
 	if err != nil {
@@ -114,7 +274,6 @@ func main() {
 	}
 	defer geoDB.Close()
 
-	// --- 1. Fetch and Test ---
 	subscriptionURLs := strings.Split(*urls, ",")
 	allConfigs := fetchConfigsFromSubscriptions(subscriptionURLs)
 	if len(allConfigs) == 0 {
@@ -123,7 +282,6 @@ func main() {
 	log.Printf("Found a total of %d configs. Starting tests...\n", len(allConfigs))
 	results := testConfigs(*concurrency, allConfigs, *timeout)
 
-	// --- 2. Filter Proxies by Speed ---
 	var fastProxies []Result
 	for _, p := range results {
 		if p.SpeedMbps >= minSpeedMbps {
@@ -131,129 +289,113 @@ func main() {
 		}
 	}
 	if len(fastProxies) == 0 {
-		log.Fatal("No proxies met the required speed of %.2f Mbps. Exiting.", minSpeedMbps)
+		log.Println("Warning: No proxies met the required speed of %.2f Mbps.", minSpeedMbps)
+		// Write an empty array to the file instead of fataling
+		os.WriteFile(*outputFile, []byte("[]"), 0644)
+		log.Printf("\nSUCCESS! An empty profile list has been written to %s", *outputFile)
+		return
 	}
 	log.Printf("Found %d proxies faster than %.2f Mbps.", len(fastProxies), minSpeedMbps)
 
-	// --- 3. Generate All Profiles ---
-	var allProfiles []XrayConfig
-
-	// 3.1 Generate "Fastest Location" profile
-	sort.SliceStable(fastProxies, func(i, j int) bool {
-		return fastProxies[i].SpeedMbps > fastProxies[j].SpeedMbps
-	})
+	var allProfiles []json.RawMessage
+	sort.SliceStable(fastProxies, func(i, j int) bool { return fastProxies[i].SpeedMbps > fastProxies[j].SpeedMbps })
 	numTopProxies := topNFastest
 	if len(fastProxies) < topNFastest {
 		numTopProxies = len(fastProxies)
 	}
 	topProxies := fastProxies[:numTopProxies]
 	log.Printf("Generating 'Fastest Location' profile with top %d proxies...", len(topProxies))
-	fastestProfile := generateSingleProfileConfig("Fastest Location", "FAST", topProxies)
-	allProfiles = append(allProfiles, fastestProfile)
+	fastestProfile, err := generateSingleProfileConfig("Fastest Location", "FAST", topProxies)
+	if err == nil {
+		allProfiles = append(allProfiles, fastestProfile)
+	}
 
-	// 3.2 Generate Per-Country profiles
 	groupedByCountry := make(map[string][]Result)
 	for _, res := range fastProxies {
 		groupedByCountry[res.Country] = append(groupedByCountry[res.Country], res)
 	}
-
 	for countryCode, countryResults := range groupedByCountry {
 		countryInfo := getCountryInfo(countryCode)
 		log.Printf("Generating '%s' profile with %d proxies...", countryInfo.Name, len(countryResults))
-		countryProfile := generateSingleProfileConfig(countryInfo.Name, countryCode, countryResults)
-		allProfiles = append(allProfiles, countryProfile)
+		countryProfile, err := generateSingleProfileConfig(countryInfo.Name, countryCode, countryResults)
+		if err == nil {
+			allProfiles = append(allProfiles, countryProfile)
+		}
 	}
 
-	// --- 4. Write Final Multi-Profile JSON File ---
+	if len(allProfiles) == 0 {
+		log.Println("Warning: No valid profiles could be generated.")
+		os.WriteFile(*outputFile, []byte("[]"), 0644)
+		log.Printf("\nSUCCESS! An empty profile list has been written to %s", *outputFile)
+		return
+	}
+
 	finalJSON, err := json.MarshalIndent(allProfiles, "", "  ")
 	if err != nil {
 		log.Fatalf("Failed to marshal the final list of profiles: %v", err)
 	}
-
 	err = os.WriteFile(*outputFile, finalJSON, 0644)
 	if err != nil {
 		log.Fatalf("Failed to write the final config file: %v", err)
 	}
-
 	log.Printf("\nSUCCESS! All profiles have been written to %s", *outputFile)
 }
 
-// generateSingleProfileConfig creates one complete Xray config object.
-func generateSingleProfileConfig(profileName, countryCode string, proxies []Result) XrayConfig {
+func generateSingleProfileConfig(profileName, countryCode string, proxies []Result) (json.RawMessage, error) {
 	var proxyOutbounds []json.RawMessage
 	var proxyTags []string
+	templateBytes, err := os.ReadFile("template.json")
+	if err != nil {
+		return nil, fmt.Errorf("could not read template.json: %w", err)
+	}
+	var config map[string]interface{}
+	if err := json.Unmarshal(templateBytes, &config); err != nil {
+		return nil, fmt.Errorf("could not parse template.json: %w", err)
+	}
 
 	for i, p := range proxies {
-		proxyJSON, err := json.Marshal(p.Protocol)
+		tag := fmt.Sprintf("%s-%d", p.Remarks, i)
+		outboundJSON, _, err := parseLinkToOutboundJSON(p.Config, tag)
 		if err != nil {
+			log.Printf("Skipping invalid config link: %v", err)
 			continue
 		}
-
-		var proxyMap map[string]interface{}
-		if err := json.Unmarshal(proxyJSON, &proxyMap); err != nil {
-			continue
-		}
-
-		// Use the profile name in the tag to ensure uniqueness within the config
-		tag := fmt.Sprintf("proxy-%s-%d", strings.ReplaceAll(profileName, " ", ""), i)
-		proxyMap["tag"] = tag
+		proxyOutbounds = append(proxyOutbounds, outboundJSON)
 		proxyTags = append(proxyTags, tag)
-
-		taggedProxyJSON, err := json.Marshal(proxyMap)
-		if err != nil {
-			continue
-		}
-
-		proxyOutbounds = append(proxyOutbounds, json.RawMessage(taggedProxyJSON))
 	}
 
+	if len(proxyOutbounds) == 0 {
+		return nil, fmt.Errorf("no valid proxies to generate profile for %s", profileName)
+	}
 	countryInfo := getCountryInfo(countryCode)
-	remarks := fmt.Sprintf("%s %s", countryInfo.Emoji, countryInfo.Name)
-
-	// Create the final config from the template structure
-	config := XrayConfig{
-		Log:     map[string]string{"loglevel": "warning"},
-		DNS:     map[string]interface{}{"queryStrategy": "UseIPv4", "servers": []string{"https://1.0.0.1/dns-query"}, "tag": "dns_out"},
-		FakeDNS: []interface{}{},
-		Routing: RoutingConfig{
-			DomainStrategy: "IPIfNonMatch",
-			Balancers: []BalancerRule{{
-				Tag:      "balancer",
-				Selector: proxyTags,
-				Strategy: map[string]interface{}{"type": "leastPing"},
-			}},
-			Rules: []Rule{{Type: "field", BalancerTag: "balancer", Network: "tcp,udp"}},
-		},
-		Policy: map[string]interface{}{"system": map[string]bool{"statsOutboundDownlink": true, "statsOutboundUplink": true}},
-		Inbounds: []map[string]interface{}{
-			{"port": 10808, "protocol": "socks", "settings": map[string]interface{}{"auth": "noauth", "udp": true, "userLevel": 8}, "sniffing": map[string]interface{}{"destOverride": []string{"http", "tls"}, "enabled": true}, "tag": "socks"},
-			{"port": 10809, "protocol": "http", "settings": map[string]interface{}{"userLevel": 8}, "tag": "http"},
-		},
-		Outbounds: []json.RawMessage{
-			json.RawMessage(`{"tag":"dialer","protocol":"freedom","settings":{"fragment":{"packets":"tlshello","length":"1-10","interval":"0-1"}}}`),
-			json.RawMessage(`{"tag":"direct","protocol":"freedom","settings":{"domainStrategy":"UseIPv4"}}`),
-			json.RawMessage(`{"tag":"block","protocol":"blackhole"}`),
-			json.RawMessage(`{"tag":"dns-out","protocol":"dns"}`),
-		},
-		Observatory: ObservatoryConfig{
-			SubjectSelector:   proxyTags,
-			ProbeURL:          "http://www.google.com/gen_204",
-			ProbeInterval:     "5m",
-			EnableConcurrency: true,
-		},
-		BurstObservatory: BurstObservatoryConfig{
-			SubjectSelector: proxyTags,
-			PingConfig:      map[string]interface{}{"destination": "http://www.google.com/gen_204", "interval": "5m", "timeout": "10s", "sampling": 3},
-		},
-		Stats:   map[string]interface{}{},
-		Remarks: remarks,
+	config["remarks"] = fmt.Sprintf("%s %s", countryInfo.Emoji, countryInfo.Name)
+	var interfaceOutbounds []interface{}
+	for _, raw := range proxyOutbounds {
+		var obj map[string]interface{}
+		json.Unmarshal(raw, &obj)
+		interfaceOutbounds = append(interfaceOutbounds, obj)
 	}
-	config.Outbounds = append(config.Outbounds, proxyOutbounds...)
-
-	return config
+	currentOutbounds, ok := config["outbounds"].([]interface{})
+	if !ok {
+		return nil, fmt.Errorf("template.json 'outbounds' is not an array")
+	}
+	config["outbounds"] = append(currentOutbounds, interfaceOutbounds...)
+	routing, ok := config["routing"].(map[string]interface{})
+	if !ok {
+		return nil, fmt.Errorf("template.json 'routing' is not an object")
+	}
+	balancers, ok := routing["balancers"].([]interface{})
+	if !ok {
+		return nil, fmt.Errorf("template.json 'balancers' is not an array")
+	}
+	balancer := balancers[0].(map[string]interface{})
+	balancer["selector"] = proxyTags
+	observatory := config["observatory"].(map[string]interface{})
+	observatory["subjectSelector"] = proxyTags
+	burstObservatory := config["burstObservatory"].(map[string]interface{})
+	burstObservatory["subjectSelector"] = proxyTags
+	return json.Marshal(config)
 }
-
-// --- Helper Functions (Identical to previous version) ---
 
 type CountryInfo struct {
 	Name  string
@@ -262,27 +404,15 @@ type CountryInfo struct {
 
 func getCountryInfo(code string) CountryInfo {
 	countryMap := map[string]CountryInfo{
-		"FAST": {"Fastest Location", "⚡️"},
-		"US":   {"United States", "🇺🇸"},
-		"DE":   {"Germany", "🇩🇪"},
-		"GB":   {"United Kingdom", "🇬🇧"},
-		"FR":   {"France", "🇫🇷"},
-		"JP":   {"Japan", "🇯🇵"},
-		"KR":   {"South Korea", "🇰🇷"},
-		"CA":   {"Canada", "🇨🇦"},
-		"AU":   {"Australia", "🇦🇺"},
-		"NL":   {"Netherlands", "🇳🇱"},
-		"HK":   {"Hong Kong", "🇭🇰"},
-		"SG":   {"Singapore", "🇸🇬"},
-		"TW":   {"Taiwan", "🇹🇼"},
-		"FI":   {"Finland", "🇫🇮"},
+		"FAST": {"Fastest Location", "⚡️"}, "US": {"United States", "🇺🇸"}, "DE": {"Germany", "🇩🇪"}, "GB": {"United Kingdom", "🇬🇧"},
+		"FR": {"France", "🇫🇷"}, "JP": {"Japan", "🇯🇵"}, "KR": {"South Korea", "🇰🇷"}, "CA": {"Canada", "🇨🇦"}, "AU": {"Australia", "🇦🇺"},
+		"NL": {"Netherlands", "🇳🇱"}, "HK": {"Hong Kong", "🇭🇰"}, "SG": {"Singapore", "🇸🇬"}, "TW": {"Taiwan", "🇹🇼"}, "FI": {"Finland", "🇫🇮"},
 	}
 	if info, ok := countryMap[code]; ok {
 		return info
 	}
 	return CountryInfo{Name: code, Emoji: "🌐"}
 }
-
 func fetchConfigsFromSubscriptions(urls []string) []string {
 	var wg sync.WaitGroup
 	var mu sync.Mutex
@@ -329,7 +459,6 @@ func fetchConfigsFromSubscriptions(urls []string) []string {
 	wg.Wait()
 	return allConfigs
 }
-
 func testConfigs(numWorkers int, configs []string, timeout time.Duration) []Result {
 	jobs := make(chan string, len(configs))
 	resultsChan := make(chan Result, len(configs))
@@ -349,7 +478,6 @@ func testConfigs(numWorkers int, configs []string, timeout time.Duration) []Resu
 	}
 	return finalResults
 }
-
 func worker(id int, wg *sync.WaitGroup, jobs <-chan string, results chan<- Result, timeout time.Duration) {
 	defer wg.Done()
 	for config := range jobs {
@@ -359,6 +487,7 @@ func worker(id int, wg *sync.WaitGroup, jobs <-chan string, results chan<- Resul
 		} else {
 			core = xray.NewXrayService(false, false)
 		}
+		// We parse the link here just for testing, not for generation
 		proto, err := core.CreateProtocol(config)
 		if err != nil || proto.Parse() != nil {
 			continue
@@ -394,10 +523,13 @@ func worker(id int, wg *sync.WaitGroup, jobs <-chan string, results chan<- Resul
 			continue
 		}
 		log.Printf("SUCCESS: %s | Outbound IP: %s | Country: %s", proto.ConvertToGeneralConfig().Address, ip, country)
-		results <- Result{Config: config, SpeedMbps: speed, Country: country, Protocol: proto}
+
+		// Get the remarks for use in the tag later
+		_, remarks, _ := parseLinkToOutboundJSON(config, "")
+
+		results <- Result{Config: config, SpeedMbps: speed, Country: country, Remarks: remarks}
 	}
 }
-
 func getIPAndCountry(client *http.Client, timeout time.Duration) (string, string) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
@@ -425,7 +557,6 @@ func getIPAndCountry(client *http.Client, timeout time.Duration) (string, string
 	}
 	return ipStr, record.Country.IsoCode
 }
-
 func checkReachability(client *http.Client, timeout time.Duration) bool {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
@@ -440,7 +571,6 @@ func checkReachability(client *http.Client, timeout time.Duration) bool {
 	defer resp.Body.Close()
 	return resp.StatusCode >= 200 && resp.StatusCode < 400
 }
-
 func testDownloadSpeed(client *http.Client, timeout time.Duration) (float64, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
