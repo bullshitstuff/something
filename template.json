@@ -15,7 +15,8 @@
         "selector": ["proxy"],
         "strategy": {
           "type": "leastPing"
-        }
+        },
+        "fallbackTag": "proxy1"
       }
     ],
     "domainStrategy": "IPIfNonMatch",
