@@ -24,12 +24,11 @@ import (
 	"github.com/oschwald/geoip2-golang"
 )
 
-// Simplified Result struct from your base code
+// Result struct
 type Result struct {
 	Config    string
 	SpeedMbps float64
 	Country   string
-	// The protocol.Protocol is no longer needed here as we parse from the raw string
 }
 
 const (
@@ -76,6 +75,24 @@ type VlessUser struct {
 	ID         string `json:"id"`
 	Encryption string `json:"encryption"`
 	Flow       string `json:"flow,omitempty"`
+}
+type TrojanSettings struct {
+	Servers []*TrojanServer `json:"servers"`
+}
+type TrojanServer struct {
+	Address  string `json:"address"`
+	Port     int    `json:"port"`
+	Password string `json:"password"`
+	Flow     string `json:"flow,omitempty"`
+}
+type ShadowsocksSettings struct {
+	Servers []*ShadowsocksServer `json:"servers"`
+}
+type ShadowsocksServer struct {
+	Address  string `json:"address"`
+	Port     int    `json:"port"`
+	Method   string `json:"method"`
+	Password string `json:"password"`
 }
 type StreamSettings struct {
 	Network         string           `json:"network,omitempty"`
@@ -131,7 +148,7 @@ type VmessLink struct {
 	Scy  string          `json:"scy"`
 }
 
-// --- CORE LOGIC: Replicates Python Script ---
+// --- CORE LOGIC: Replicates Python Script for VLESS, VMESS, TROJAN, SS ---
 func parseLinkToOutboundJSON(link, tag string) (json.RawMessage, error) {
 	u, err := url.Parse(link)
 	if err != nil {
@@ -139,35 +156,41 @@ func parseLinkToOutboundJSON(link, tag string) (json.RawMessage, error) {
 	}
 
 	out := Outbound{Tag: tag, Mux: &Mux{Enabled: true, Concurrency: 8}}
+	queryParams := u.Query()
 
 	switch u.Scheme {
-	case "vless":
-		out.Protocol = "vless"
+	case "vless", "trojan":
+		if u.Scheme == "vless" {
+			out.Protocol = "vless"
+		} else {
+			out.Protocol = "trojan"
+		}
+
 		port, _ := strconv.Atoi(u.Port())
 		if port == 0 {
 			port = 443
 		}
-		queryParams := u.Query()
-		encryption := queryParams.Get("encryption")
-		if encryption == "" {
-			encryption = "none"
+
+		if out.Protocol == "vless" {
+			encryption := queryParams.Get("encryption")
+			if encryption == "" {
+				encryption = "none"
+			}
+			settings := VlessSettings{VNext: []*VlessServer{{Address: u.Hostname(), Port: port, Users: []*VlessUser{{ID: u.User.Username(), Encryption: encryption, Flow: queryParams.Get("flow")}}}}}
+			settingsJSON, _ := json.Marshal(settings)
+			out.Settings = json.RawMessage(settingsJSON)
 		}
+
+		if out.Protocol == "trojan" {
+			settings := TrojanSettings{Servers: []*TrojanServer{{Address: u.Hostname(), Port: port, Password: u.User.Username(), Flow: queryParams.Get("flow")}}}
+			settingsJSON, _ := json.Marshal(settings)
+			out.Settings = json.RawMessage(settingsJSON)
+		}
+
 		networkType := queryParams.Get("type")
 		if networkType == "" {
 			networkType = "tcp"
 		}
-
-		settings := VlessSettings{
-			VNext: []*VlessServer{{
-				Address: u.Hostname(), Port: port,
-				Users: []*VlessUser{{
-					ID: u.User.Username(), Encryption: encryption, Flow: queryParams.Get("flow"),
-				}},
-			}},
-		}
-		settingsJSON, _ := json.Marshal(settings)
-		out.Settings = json.RawMessage(settingsJSON)
-
 		ss := &StreamSettings{Network: networkType, Security: queryParams.Get("security"), Sockopt: &Sockopt{DialerProxy: "dialer"}}
 		if ss.Security == "tls" || ss.Security == "reality" {
 			sni := queryParams.Get("sni")
@@ -198,7 +221,6 @@ func parseLinkToOutboundJSON(link, tag string) (json.RawMessage, error) {
 		if err != nil {
 			return nil, fmt.Errorf("invalid vmess base64: %w", err)
 		}
-
 		var vmessData VmessLink
 		if err := json.Unmarshal(decoded, &vmessData); err != nil {
 			return nil, fmt.Errorf("invalid vmess json: %w", err)
@@ -224,13 +246,7 @@ func parseLinkToOutboundJSON(link, tag string) (json.RawMessage, error) {
 		if security == "" || security == "auto" {
 			security = "none"
 		}
-
-		settings := VmessSettings{
-			VNext: []*VmessServer{{
-				Address: vmessData.Add, Port: port,
-				Users: []*VmessUser{{ID: vmessData.ID, AlterID: aid, Security: security}},
-			}},
-		}
+		settings := VmessSettings{VNext: []*VmessServer{{Address: vmessData.Add, Port: port, Users: []*VmessUser{{ID: vmessData.ID, AlterID: aid, Security: security}}}}}
 		settingsJSON, _ := json.Marshal(settings)
 		out.Settings = json.RawMessage(settingsJSON)
 		ss := &StreamSettings{Network: vmessData.Net, Security: vmessData.TLS, Sockopt: &Sockopt{DialerProxy: "dialer"}}
@@ -248,6 +264,39 @@ func parseLinkToOutboundJSON(link, tag string) (json.RawMessage, error) {
 			ss.GRPCSettings = &GRPCSettings{ServiceName: vmessData.Path, MultiMode: vmessData.Type == "multi"}
 		}
 		out.StreamSettings = ss
+
+	case "ss":
+		out.Protocol = "shadowsocks"
+		var server ShadowsocksServer
+
+		if u.User != nil {
+			password, ok := u.User.Password()
+			if ok { // SIP002 format: ss://method:password@host:port
+				server.Method = u.User.Username()
+				server.Password = password
+			} else { // Legacy Base64 part
+				decodedCreds, err := base64.RawURLEncoding.DecodeString(u.User.Username())
+				if err != nil {
+					return nil, fmt.Errorf("invalid legacy ss base64: %w", err)
+				}
+				credParts := strings.SplitN(string(decodedCreds), ":", 2)
+				if len(credParts) != 2 {
+					return nil, fmt.Errorf("invalid legacy ss credentials format")
+				}
+				server.Method = credParts[0]
+				server.Password = credParts[1]
+			}
+			server.Address = u.Hostname()
+			port, _ := strconv.Atoi(u.Port())
+			server.Port = port
+		} else {
+			return nil, fmt.Errorf("invalid ss link: no user info")
+		}
+		settings := ShadowsocksSettings{Servers: []*ShadowsocksServer{&server}}
+		settingsJSON, _ := json.Marshal(settings)
+		out.Settings = json.RawMessage(settingsJSON)
+		out.Mux = nil
+
 	default:
 		return nil, fmt.Errorf("unsupported link scheme: %s", u.Scheme)
 	}
@@ -354,11 +403,10 @@ func generateSingleProfileConfig(profileName, countryCode string, proxies []Resu
 
 	var proxyOutbounds []interface{}
 	for i, p := range proxies {
-		// *** This now uses the new, simplified tagging scheme ***
 		tag := fmt.Sprintf("proxy%d", i+1)
 		outboundJSON, err := parseLinkToOutboundJSON(p.Config, tag)
 		if err != nil {
-			log.Printf("Skipping invalid config link: %v", err)
+			log.Printf("Skipping invalid config link (%s): %v", p.Config, err)
 			continue
 		}
 		var obj map[string]interface{}
@@ -376,10 +424,8 @@ func generateSingleProfileConfig(profileName, countryCode string, proxies []Resu
 	if !ok {
 		return nil, fmt.Errorf("template.json 'outbounds' is not an array")
 	}
-	// Append the newly generated proxies
 	config["outbounds"] = append(currentOutbounds, proxyOutbounds...)
 
-	// No longer need to modify selectors, the template handles it!
 	return json.Marshal(config)
 }
 
@@ -389,11 +435,7 @@ type CountryInfo struct {
 }
 
 func getCountryInfo(code string) CountryInfo {
-	countryMap := map[string]CountryInfo{
-		"FAST": {"Fastest Location", "⚡️"}, "US": {"United States", "🇺🇸"}, "DE": {"Germany", "🇩🇪"}, "GB": {"United Kingdom", "🇬🇧"},
-		"FR": {"France", "🇫🇷"}, "JP": {"Japan", "🇯🇵"}, "KR": {"South Korea", "🇰🇷"}, "CA": {"Canada", "🇨🇦"}, "AU": {"Australia", "🇦🇺"},
-		"NL": {"Netherlands", "🇳🇱"}, "HK": {"Hong Kong", "🇭🇰"}, "SG": {"Singapore", "🇸🇬"}, "TW": {"Taiwan", "🇹🇼"}, "FI": {"Finland", "🇫🇮"},
-	}
+	countryMap := map[string]CountryInfo{"FAST": {"Fastest Location", "⚡️"}, "US": {"United States", "🇺🇸"}, "DE": {"Germany", "🇩🇪"}, "GB": {"United Kingdom", "🇬🇧"}, "FR": {"France", "🇫🇷"}, "JP": {"Japan", "🇯🇵"}, "KR": {"South Korea", "🇰🇷"}, "CA": {"Canada", "🇨🇦"}, "AU": {"Australia", "🇦🇺"}, "NL": {"Netherlands", "🇳🇱"}, "HK": {"Hong Kong", "🇭🇰"}, "SG": {"Singapore", "🇸🇬"}, "TW": {"Taiwan", "🇹🇼"}, "FI": {"Finland", "🇫🇮"}}
 	if info, ok := countryMap[code]; ok {
 		return info
 	}
@@ -403,7 +445,8 @@ func fetchConfigsFromSubscriptions(urls []string) []string {
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 	var allConfigs []string
-	for _, url := range urls {
+	// *** THIS IS THE FIX for the compiler error ***
+	for _, u := range urls {
 		wg.Add(1)
 		go func(u string) {
 			defer wg.Done()
@@ -440,7 +483,7 @@ func fetchConfigsFromSubscriptions(urls []string) []string {
 				}
 			}
 			mu.Unlock()
-		}(url)
+		}(u)
 	}
 	wg.Wait()
 	return allConfigs
