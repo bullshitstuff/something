@@ -278,7 +278,7 @@ func parseLinkToOutboundJSON(link, tag string) (json.RawMessage, error) {
 		return nil, fmt.Errorf("invalid link format: %w", err)
 	}
 
-	out := Outbound{Tag: tag, Mux: &Mux{Enabled: true, Concurrency: 8}}
+	out := Outbound{Tag: tag, Mux: &Mux{Enabled: false, Concurrency: 8}}
 
 	switch u.Scheme {
 	case "vless":

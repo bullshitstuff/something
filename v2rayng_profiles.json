@@ -87,53 +87,18 @@
       {
         "mux": {
           "concurrency": 8,
-          "enabled": true
+          "enabled": false
         },
         "protocol": "vmess",
         "settings": {
           "vnext": [
             {
-              "address": "216.173.69.250",
-              "port": 8443,
+              "address": "s3.ipyar.org",
+              "port": 32020,
               "users": [
                 {
                   "alterId": 0,
-                  "id": "91382092-2330-455b-8a1c-9c129cfe661a",
-                  "security": "none"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy1"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vmess",
-        "settings": {
-          "vnext": [
-            {
-              "address": "154.90.49.57",
-              "port": 58868,
-              "users": [
-                {
-                  "alterId": 0,
-                  "id": "fbffeb6b-b5e5-4f77-8888-c7919fbeb0ad",
+                  "id": "78b4fb57-39d7-4e9d-dd38-c9a38322bcb2",
                   "security": "none"
                 }
               ]
@@ -146,12 +111,12 @@
             "dialerProxy": "dialer"
           }
         },
-        "tag": "proxy2"
+        "tag": "proxy1"
       },
       {
         "mux": {
           "concurrency": 8,
-          "enabled": true
+          "enabled": false
         },
         "protocol": "vmess",
         "settings": {
@@ -181,12 +146,54 @@
             "path": "/"
           }
         },
+        "tag": "proxy2"
+      },
+      {
+        "mux": {
+          "concurrency": 8,
+          "enabled": false
+        },
+        "protocol": "vmess",
+        "settings": {
+          "vnext": [
+            {
+              "address": "b62a948c-faa2-4e8a-bf8a-3ff3121c875a.asoul-ava.top",
+              "port": 443,
+              "users": [
+                {
+                  "alterId": 0,
+                  "id": "5f726fe3-d82e-4da5-a711-8af0cbb2b682",
+                  "security": "none"
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "ws",
+          "security": "tls",
+          "sockopt": {
+            "dialerProxy": "dialer"
+          },
+          "tlsSettings": {
+            "allowInsecure": true,
+            "alpn": [
+              ""
+            ]
+          },
+          "wsSettings": {
+            "headers": {
+              "Host": ""
+            },
+            "path": "/azumase.ren"
+          }
+        },
         "tag": "proxy3"
       },
       {
         "mux": {
           "concurrency": 8,
-          "enabled": true
+          "enabled": false
         },
         "protocol": "vmess",
         "settings": {
@@ -215,36 +222,7 @@
       {
         "mux": {
           "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vmess",
-        "settings": {
-          "vnext": [
-            {
-              "address": "s3.ipyar.org",
-              "port": 32020,
-              "users": [
-                {
-                  "alterId": 0,
-                  "id": "78b4fb57-39d7-4e9d-dd38-c9a38322bcb2",
-                  "security": "none"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy5"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
+          "enabled": false
         },
         "protocol": "vmess",
         "settings": {
@@ -268,71 +246,7 @@
             "dialerProxy": "dialer"
           }
         },
-        "tag": "proxy6"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vmess",
-        "settings": {
-          "vnext": [
-            {
-              "address": "135.125.182.74",
-              "port": 28213,
-              "users": [
-                {
-                  "alterId": 0,
-                  "id": "81852771-76fb-4e94-e4f1-4e37a698a49a",
-                  "security": "none"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy7"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vmess",
-        "settings": {
-          "vnext": [
-            {
-              "address": "45.8.146.129",
-              "port": 80,
-              "users": [
-                {
-                  "alterId": 0,
-                  "id": "0704016f-5435-4655-be6a-771a5aba52c3",
-                  "security": "none"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/vmess/"
-          }
-        },
-        "tag": "proxy8"
+        "tag": "proxy5"
       }
     ],
     "policy": {
