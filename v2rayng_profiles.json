@@ -1,6158 +1,1663 @@
 [
-  {
-    "burstObservatory": {
-      "pingConfig": {
-        "destination": "http://www.google.com/gen_204",
-        "interval": "5m",
-        "sampling": 3,
-        "timeout": "10s"
-      },
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "dns": {
-      "queryStrategy": "UseIPv4",
-      "servers": [
-        "https://1.0.0.1/dns-query"
-      ],
-      "tag": "dns_out"
-    },
-    "fakedns": [],
-    "inbounds": [
-      {
-        "port": 10808,
-        "protocol": "socks",
-        "settings": {
-          "auth": "noauth",
-          "udp": true,
-          "userLevel": 8
-        },
-        "sniffing": {
-          "destOverride": [
-            "http",
-            "tls"
-          ],
-          "enabled": true
-        },
-        "tag": "socks"
-      },
-      {
-        "port": 10809,
-        "protocol": "http",
-        "settings": {
-          "userLevel": 8
-        },
-        "tag": "http"
-      }
-    ],
-    "log": {
-      "loglevel": "warning"
-    },
-    "observatory": {
-      "enableConcurrency": true,
-      "probeInterval": "5m",
-      "probeURL": "http://www.google.com/gen_204",
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "outbounds": [
-      {
-        "protocol": "freedom",
-        "settings": {
-          "fragment": {
-            "interval": "0-1",
-            "length": "1-10",
-            "packets": "tlshello"
-          }
-        },
-        "tag": "dialer"
-      },
-      {
-        "protocol": "freedom",
-        "settings": {
-          "domainStrategy": "UseIPv4"
-        },
-        "tag": "direct"
-      },
-      {
-        "protocol": "blackhole",
-        "tag": "block"
-      },
-      {
-        "protocol": "dns",
-        "tag": "dns-out"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "102.177.189.29",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "hk.laoyoutiao.link"
-            },
-            "path": "/TelegramU0001F1E8U0001F1F3?---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---"
-          }
-        },
-        "tag": "proxy1"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "102.177.176.213",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "jp.laoyoutiao.link"
-            },
-            "path": "/?---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---"
-          }
-        },
-        "tag": "proxy2"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "89.116.161.29",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "hk.laoyoutiao.link"
-            },
-            "path": "/TelegramU0001F1E8U0001F1F3 @MxlShare @WangCai2 /?ed=2560"
-          }
-        },
-        "tag": "proxy3"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "ip.sb",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "8df60790-c903-4661-b85d-64c0009378e5"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              "h3"
-            ],
-            "fingerprint": "edge",
-            "serverName": "F1.paRsa.fiLegEar-Sg.Me"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "f1.parsa.filegear-sg.me"
-            },
-            "path": "/?ed=#TELEGRAM-YamYamProxy_YamYamProxy_YamYamProxy?ed=512"
-          }
-        },
-        "tag": "proxy4"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "104.18.131.54",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "d88937d0-ce43-4bf8-9df6-d632810ba9ff"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "fingerprint": "random",
-            "serverName": "007.xingfu.qzz.io"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "007.xingfu.qzz.io"
-            },
-            "path": "/?TELEGRAM-YamYamProxy_YamYamProxy_YamYamProxy?ed=512"
-          }
-        },
-        "tag": "proxy5"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "156.238.18.166",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "sg.laoyoutiao.link"
-            },
-            "path": "Telegram@WangCai2/?ed=2048"
-          }
-        },
-        "tag": "proxy6"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "app-stg.gopay.co.id.servpn.my.id",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "41b8c97a-7fac-4191-8922-f58d42a9acf7"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "fingerprint": "chrome",
-            "serverName": "app-stg.gopay.co.id.servpn.my.id"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "app-stg.gopay.co.id.servpn.my.id"
-            },
-            "path": "/id5/?-Tel-@V2rayAlpha"
-          }
-        },
-        "tag": "proxy7"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "104.17.147.22",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "6ec52bc7-fcd7-4841-ab69-70d6e03a6eda"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "www.speedtest.net.zula.ir.cfp1.a2hdhjdxjbxjsjdjd.ddns-ip.net."
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy8"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "104.21.80.1",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "0d0f0fea-64be-46fb-bb98-f8d5f5740752"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              "http/1.1"
-            ],
-            "serverName": "SchQqn0yHRRS34QN3a2k4i6G9xap1TpH.pAgEs.dEV"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "schqqn0yhrrs34qn3a2k4i6g9xap1tph.pages.dev"
-            },
-            "path": "/8fyir2diSmB8lAKc/NDQuMjI0LjI0LjkxLDE4LjE4My4xNTguMjEx"
-          }
-        },
-        "tag": "proxy9"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "5.10.246.29",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "hk.laoyoutiao.link"
-            },
-            "path": "/TelegramU0001F1E8U0001F1F3"
-          }
-        },
-        "tag": "proxy10"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "104.17.148.22",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "6ec52bc7-fcd7-4841-ab69-70d6e03a6eda"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "www.speedtest.net.zula.ir.cfp1.a2hdhjdxjbxjsjdjd.ddns-ip.net."
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy11"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "77.105.163.251",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "0132166f-e702-48ed-a9e7-b07af768faf8"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "cf.d3z.net"
-            },
-            "path": "/Telegram🇨🇳"
-          }
-        },
-        "tag": "proxy12"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "104.17.148.22",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "6ec52bc7-fcd7-4841-ab69-70d6e03a6eda"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "www.speedtest.net.zula.ir.cfp1.a2hdhjdxjbxjsjdjd.ddns-ip.nEt."
-            },
-            "path": "/Telegram@ShadowProxy66/?ed=2560"
-          }
-        },
-        "tag": "proxy13"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "app-stg.gopay.co.id.servpn.my.id",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "41b8c97a-7fac-4191-8922-f58d42a9acf7"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "fingerprint": "chrome",
-            "serverName": "app-stg.gopay.co.id.servpn.my.id"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "app-stg.gopay.co.id.servpn.my.id"
-            },
-            "path": "/id5?/?ed=2048Join---i10VPN---Join---i10VPN---Join---i10VPN---Join---i10VPN"
-          }
-        },
-        "tag": "proxy14"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "156.238.18.149",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "yd.laoyoutiao.link"
-            },
-            "path": "/TelegramU0001F1E8U0001F1F3 @MxlShare @WangCai2 /?ed=2560"
-          }
-        },
-        "tag": "proxy15"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "app-stg.gopay.co.id.servpn.my.id",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "41b8c97a-7fac-4191-8922-f58d42a9acf7"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "fingerprint": "chrome",
-            "serverName": "app-stg.gopay.co.id.servpn.my.id"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "app-stg.gopay.co.id.servpn.my.id"
-            },
-            "path": "/id5/?-Join---i10VPN---Join---i10VPN---Join---i10VPN---Join---i10VPN"
-          }
-        },
-        "tag": "proxy16"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "app-stg.gopay.co.id.servpn.my.id",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "41b8c97a-7fac-4191-8922-f58d42a9acf7"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "fingerprint": "chrome",
-            "serverName": "app-stg.gopay.co.id.servpn.my.id"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "app-stg.gopay.co.id.servpn.my.id"
-            },
-            "path": "/id5/?-Tel---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN"
-          }
-        },
-        "tag": "proxy17"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "193.124.18.3",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "b5441b0d-2147-4898-8a6a-9b2c87f58382"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "bitget1.asdasd.click"
-            },
-            "path": "/Telegram🇨🇳"
-          }
-        },
-        "tag": "proxy18"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "190.93.245.232",
-              "port": 8443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "b5441b0d-2147-4898-8a6a-9b2c87f58382"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "fingerprint": "random",
-            "serverName": "bitget1.asdasd.click"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "bitget1.asdasd.click"
-            },
-            "path": "/?ed=2560"
-          }
-        },
-        "tag": "proxy19"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "app-stg.gopay.co.id.servpn.my.id",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "41b8c97a-7fac-4191-8922-f58d42a9acf7"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "fingerprint": "chrome",
-            "serverName": "app-stg.gopay.co.id.servpn.my.id"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "app-stg.gopay.co.id.servpn.my.id"
-            },
-            "path": "/id5/?-Join---MTMVPN---Join---MTMVPN---Join---MTMVPN---Join---MTMVPN"
-          }
-        },
-        "tag": "proxy20"
-      }
-    ],
-    "policy": {
-      "system": {
-        "statsOutboundDownlink": true,
-        "statsOutboundUplink": true
-      }
-    },
-    "remarks": "⚡️ Fastest Location",
-    "routing": {
-      "balancers": [
-        {
-          "fallbackTag": "proxy1",
-          "selector": [
-            "proxy"
-          ],
-          "strategy": {
-            "type": "leastPing"
-          },
-          "tag": "balancer"
-        }
-      ],
-      "domainStrategy": "IPIfNonMatch",
-      "rules": [
-        {
-          "balancerTag": "balancer",
-          "network": "tcp,udp",
-          "type": "field"
-        }
-      ]
-    },
-    "stats": {}
+ {
+  "burstObservatory": {
+   "pingConfig": {
+    "destination": "http://www.google.com/gen_204",
+    "interval": "5m",
+    "sampling": 3,
+    "timeout": "10s"
+   },
+   "subjectSelector": [
+    "proxy"
+   ]
   },
-  {
-    "burstObservatory": {
-      "pingConfig": {
-        "destination": "http://www.google.com/gen_204",
-        "interval": "5m",
-        "sampling": 3,
-        "timeout": "10s"
-      },
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "dns": {
-      "queryStrategy": "UseIPv4",
-      "servers": [
-        "https://1.0.0.1/dns-query"
-      ],
-      "tag": "dns_out"
-    },
-    "fakedns": [],
-    "inbounds": [
-      {
-        "port": 10808,
-        "protocol": "socks",
-        "settings": {
-          "auth": "noauth",
-          "udp": true,
-          "userLevel": 8
-        },
-        "sniffing": {
-          "destOverride": [
-            "http",
-            "tls"
-          ],
-          "enabled": true
-        },
-        "tag": "socks"
-      },
-      {
-        "port": 10809,
-        "protocol": "http",
-        "settings": {
-          "userLevel": 8
-        },
-        "tag": "http"
-      }
-    ],
-    "log": {
-      "loglevel": "warning"
-    },
-    "observatory": {
-      "enableConcurrency": true,
-      "probeInterval": "5m",
-      "probeURL": "http://www.google.com/gen_204",
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "outbounds": [
-      {
-        "protocol": "freedom",
-        "settings": {
-          "fragment": {
-            "interval": "0-1",
-            "length": "1-10",
-            "packets": "tlshello"
-          }
-        },
-        "tag": "dialer"
-      },
-      {
-        "protocol": "freedom",
-        "settings": {
-          "domainStrategy": "UseIPv4"
-        },
-        "tag": "direct"
-      },
-      {
-        "protocol": "blackhole",
-        "tag": "block"
-      },
-      {
-        "protocol": "dns",
-        "tag": "dns-out"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "102.177.189.29",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "hk.laoyoutiao.link"
-            },
-            "path": "/TelegramU0001F1E8U0001F1F3?---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---"
-          }
-        },
-        "tag": "proxy1"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "102.177.176.213",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "jp.laoyoutiao.link"
-            },
-            "path": "/?---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---VITUREY---"
-          }
-        },
-        "tag": "proxy2"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "89.116.161.29",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "hk.laoyoutiao.link"
-            },
-            "path": "/TelegramU0001F1E8U0001F1F3 @MxlShare @WangCai2 /?ed=2560"
-          }
-        },
-        "tag": "proxy3"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "ip.sb",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "8df60790-c903-4661-b85d-64c0009378e5"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              "h3"
-            ],
-            "fingerprint": "edge",
-            "serverName": "F1.paRsa.fiLegEar-Sg.Me"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "f1.parsa.filegear-sg.me"
-            },
-            "path": "/?ed=#TELEGRAM-YamYamProxy_YamYamProxy_YamYamProxy?ed=512"
-          }
-        },
-        "tag": "proxy4"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "104.18.131.54",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "d88937d0-ce43-4bf8-9df6-d632810ba9ff"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "fingerprint": "random",
-            "serverName": "007.xingfu.qzz.io"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "007.xingfu.qzz.io"
-            },
-            "path": "/?TELEGRAM-YamYamProxy_YamYamProxy_YamYamProxy?ed=512"
-          }
-        },
-        "tag": "proxy5"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "156.238.18.166",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "sg.laoyoutiao.link"
-            },
-            "path": "Telegram@WangCai2/?ed=2048"
-          }
-        },
-        "tag": "proxy6"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "app-stg.gopay.co.id.servpn.my.id",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "41b8c97a-7fac-4191-8922-f58d42a9acf7"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "fingerprint": "chrome",
-            "serverName": "app-stg.gopay.co.id.servpn.my.id"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "app-stg.gopay.co.id.servpn.my.id"
-            },
-            "path": "/id5/?-Tel-@V2rayAlpha"
-          }
-        },
-        "tag": "proxy7"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "104.17.147.22",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "6ec52bc7-fcd7-4841-ab69-70d6e03a6eda"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "www.speedtest.net.zula.ir.cfp1.a2hdhjdxjbxjsjdjd.ddns-ip.net."
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy8"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "104.21.80.1",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "0d0f0fea-64be-46fb-bb98-f8d5f5740752"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              "http/1.1"
-            ],
-            "serverName": "SchQqn0yHRRS34QN3a2k4i6G9xap1TpH.pAgEs.dEV"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "schqqn0yhrrs34qn3a2k4i6g9xap1tph.pages.dev"
-            },
-            "path": "/8fyir2diSmB8lAKc/NDQuMjI0LjI0LjkxLDE4LjE4My4xNTguMjEx"
-          }
-        },
-        "tag": "proxy9"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "5.10.246.29",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "hk.laoyoutiao.link"
-            },
-            "path": "/TelegramU0001F1E8U0001F1F3"
-          }
-        },
-        "tag": "proxy10"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "104.17.148.22",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "6ec52bc7-fcd7-4841-ab69-70d6e03a6eda"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "www.speedtest.net.zula.ir.cfp1.a2hdhjdxjbxjsjdjd.ddns-ip.net."
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy11"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "77.105.163.251",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "0132166f-e702-48ed-a9e7-b07af768faf8"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "cf.d3z.net"
-            },
-            "path": "/Telegram🇨🇳"
-          }
-        },
-        "tag": "proxy12"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "104.17.148.22",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "6ec52bc7-fcd7-4841-ab69-70d6e03a6eda"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "www.speedtest.net.zula.ir.cfp1.a2hdhjdxjbxjsjdjd.ddns-ip.nEt."
-            },
-            "path": "/Telegram@ShadowProxy66/?ed=2560"
-          }
-        },
-        "tag": "proxy13"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "app-stg.gopay.co.id.servpn.my.id",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "41b8c97a-7fac-4191-8922-f58d42a9acf7"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "fingerprint": "chrome",
-            "serverName": "app-stg.gopay.co.id.servpn.my.id"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "app-stg.gopay.co.id.servpn.my.id"
-            },
-            "path": "/id5?/?ed=2048Join---i10VPN---Join---i10VPN---Join---i10VPN---Join---i10VPN"
-          }
-        },
-        "tag": "proxy14"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "156.238.18.149",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "fab7bf9c-ddb9-4563-8a04-fb01ce6c0fbf"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "yd.laoyoutiao.link"
-            },
-            "path": "/TelegramU0001F1E8U0001F1F3 @MxlShare @WangCai2 /?ed=2560"
-          }
-        },
-        "tag": "proxy15"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "app-stg.gopay.co.id.servpn.my.id",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "41b8c97a-7fac-4191-8922-f58d42a9acf7"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "fingerprint": "chrome",
-            "serverName": "app-stg.gopay.co.id.servpn.my.id"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "app-stg.gopay.co.id.servpn.my.id"
-            },
-            "path": "/id5/?-Join---i10VPN---Join---i10VPN---Join---i10VPN---Join---i10VPN"
-          }
-        },
-        "tag": "proxy16"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "app-stg.gopay.co.id.servpn.my.id",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "41b8c97a-7fac-4191-8922-f58d42a9acf7"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "fingerprint": "chrome",
-            "serverName": "app-stg.gopay.co.id.servpn.my.id"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "app-stg.gopay.co.id.servpn.my.id"
-            },
-            "path": "/id5/?-Tel---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN"
-          }
-        },
-        "tag": "proxy17"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "193.124.18.3",
-              "port": 8880,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "b5441b0d-2147-4898-8a6a-9b2c87f58382"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "bitget1.asdasd.click"
-            },
-            "path": "/Telegram🇨🇳"
-          }
-        },
-        "tag": "proxy18"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "190.93.245.232",
-              "port": 8443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "b5441b0d-2147-4898-8a6a-9b2c87f58382"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "fingerprint": "random",
-            "serverName": "bitget1.asdasd.click"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "bitget1.asdasd.click"
-            },
-            "path": "/?ed=2560"
-          }
-        },
-        "tag": "proxy19"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "app-stg.gopay.co.id.servpn.my.id",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "41b8c97a-7fac-4191-8922-f58d42a9acf7"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "fingerprint": "chrome",
-            "serverName": "app-stg.gopay.co.id.servpn.my.id"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "app-stg.gopay.co.id.servpn.my.id"
-            },
-            "path": "/id5/?-Join---MTMVPN---Join---MTMVPN---Join---MTMVPN---Join---MTMVPN"
-          }
-        },
-        "tag": "proxy20"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "190.93.246.246",
-              "port": 8443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "b5441b0d-2147-4898-8a6a-9b2c87f58382"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "serverName": "bitget1.asdasd.click"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "bitget1.asdasd.click"
-            },
-            "path": "/?ed"
-          }
-        },
-        "tag": "proxy21"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "ava.game.naver.com.servpn.my.id",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "4ca95fa5-8967-4bdc-a82d-3a65b44a3818"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "fingerprint": "randomized",
-            "serverName": "ava.game.naver.com.servpn.my.id"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "ava.game.naver.com.servpn.my.id"
-            },
-            "path": "/sg4/?--MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN"
-          }
-        },
-        "tag": "proxy22"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "WWw.speedtest.net",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "86c50e3a-5b87-49dd-bd20-03c7f2735e40"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              "h2",
-              "http/1.1"
-            ],
-            "fingerprint": "chrome",
-            "serverName": "xbox.fastnetpro.xyz"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "xbox.fastnetpro.xyz"
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy23"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "app-stg.gopay.co.id.servpn.my.id",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "39ca66b9-a34c-4031-a6ce-8846f75d8cb9"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "serverName": "app-stg.gopay.co.id.servpn.my.id"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "app-stg.gopay.co.id.servpn.my.id"
-            },
-            "path": "/sg10"
-          }
-        },
-        "tag": "proxy24"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "172.66.40.99",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "327f1f36-7cfa-4e0c-87a4-5da7f5fa6f8f"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "dfgopee-workers.dev."
-            },
-            "path": "/Mosiv2---Mosiv2--Mosiv2---Mosiv2--Mosiv2---Mosiv2--Mosiv2---Mosiv2--Mosiv2---Mosiv2--Mosiv2---Mosiv2--Mosiv2---Mosiv2---Mosiv2--Mosiv2---Mosiv2--Mosiv2---Mosiv2--Mosiv2---Mosiv2--Mosiv2---Mosiv2--Mosiv2---Mosiv2--Mosiv2---Mosiv2---Mosiv2--Mosiv2---Mosiv2--Mosiv2---Mosiv2--Mosiv2---Mosiv2--Mosiv2---Mosiv2--Mosiv2---Mosiv2--Mosiv2?ed=2560"
-          }
-        },
-        "tag": "proxy25"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "104.16.176.185",
-              "port": 2087,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "905076f9-e34e-40b1-9e33-df06726f6336"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              "http/1.1"
-            ],
-            "fingerprint": "chrome",
-            "serverName": "jkLkL-CX6.PAGEs.DEV"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "jklkl-cx6.pages.dev"
-            },
-            "path": "/51uBuxfAJBLSkC6b/NjIuMy4xMi43Ng=="
-          }
-        },
-        "tag": "proxy26"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "www.visa.com.sg",
-              "port": 2087,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "90c7ad5e-cd15-4314-b39b-aeabd397d592"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "fingerprint": "random",
-            "serverName": "vl.hongkong6.qzz.io"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "vl.hongkong6.qzz.io"
-            },
-            "path": "/?ed=2560"
-          }
-        },
-        "tag": "proxy27"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "www.speedtest.net",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "17d43328-bbd2-40df-bd45-c94aeb554e89"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              "http/1.1"
-            ],
-            "fingerprint": "firefox",
-            "serverName": "paGeS.DeV"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "09sp38aey76eabnpj79orvawf-0ssxts.pages.dev"
-            },
-            "path": "/vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-vpnowl-?ed=2560"
-          }
-        },
-        "tag": "proxy28"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "www.speedtest.net",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "17d43328-bbd2-40df-bd45-c94aeb554e89"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              "http/1.1"
-            ],
-            "fingerprint": "firefox",
-            "serverName": "paGeS.DeV"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "09sp38aey76eabnpj79orvawf-0ssxts.pages.dev"
-            },
-            "path": "//MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN?ed=2560"
-          }
-        },
-        "tag": "proxy29"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "web.xhamster.biz.id",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "aaaaaaa1-bbbb-4ccc-accc-eeeeeeeeeee1"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "serverName": "web.xhamster.biz.id"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "web.xhamster.biz.id"
-            },
-            "path": "/Free-CF-Proxy-AT4"
-          }
-        },
-        "tag": "proxy30"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "162.159.129.67",
-              "port": 8443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "d6b8011a-c725-435a-9fec-bf6d3530392c"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "fingerprint": "randomized",
-            "serverName": "vle.amclubsdns.dpdns.org"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "vle.amclubsdns.dpdns.org"
-            },
-            "path": "/?ed=2560"
-          }
-        },
-        "tag": "proxy31"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "privasi.turah.my.id",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "0fbf4f81-2598-4b6a-a623-0ead4cb9efa8"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "fingerprint": "chrome",
-            "serverName": "privasi.turah.my.id"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "privasi.turah.my.id"
-            },
-            "path": "/Free-CF-Proxy-AD192.3.113.4-19318?ed=2048MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN---MTMVPN"
-          }
-        },
-        "tag": "proxy32"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "malaysia.com",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "c4587bda-09fc-4b3b-8221-4450fccc33d1"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "fingerprint": "random",
-            "serverName": "yx.yushan.dpdns.org"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "yx.yushan.dpdns.org"
-            },
-            "path": "/?ed=#TELEGRAM-YamYamProxy_YamYamProxy_YamYamProxy?ed=512"
-          }
-        },
-        "tag": "proxy33"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "www.speedtest.net",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "9e7b3b9f-ab4b-4f2c-9529-2fc61840db40"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "serverName": "rayan-fg-4.abar-farz.filegear-sg.me"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "rayan-fg-4.abar-farz.filegear-sg.me"
-            },
-            "path": "/?ed=#TELEGRAM-YamYamProxy_YamYamProxy_YamYamProxy?ed=512"
-          }
-        },
-        "tag": "proxy34"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "www.speedtest.net",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "826f524a-cea1-4e44-9b49-3381d13b7593"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              "http/1.1"
-            ],
-            "fingerprint": "randomized",
-            "serverName": "FK31lnDM4w8UJ0YP1dRWLtdtDKO6Y-cu.pages.dEv"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "fk31lndm4w8uj0yp1drwltdtdko6y-cu.pages.dev"
-            },
-            "path": "/kDPocrIW3Ice02v4"
-          }
-        },
-        "tag": "proxy35"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "89.110.104.14",
-              "port": 4434,
-              "users": [
-                {
-                  "encryption": "none",
-                  "flow": "xtls-rprx-vision",
-                  "id": "fca53ace-498a-4e27-8b3c-a97bb6423cbd"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "realitySettings": {
-            "fingerprint": "chrome",
-            "publicKey": "jRReXVS85X0Qm7jovHgNSOyz7BuS7p3iMPE4EfUHRlk",
-            "serverName": "teamdocs.su",
-            "shortId": "1ae2fd1e1ace9935"
-          },
-          "security": "reality",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy36"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "famous-danger.oneeat.co",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "ddc27bd6-6efa-47cf-8bfc-acaf973ba6b3"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy37"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "64.188.96.208",
-              "port": 34045,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "d8dd94fd-540e-461d-b5d4-acebef02c22a"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "realitySettings": {
-            "publicKey": "cDaDzPr3PlS3NM8lreHZbdo-Mhqz8vMBzMSkHXhGIUA",
-            "serverName": "visit-this-invitation-link-to-join-tg-enkelte-notif.ekt.me",
-            "shortId": "e8ab71d0"
-          },
-          "security": "reality",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy38"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "5.129.208.19",
-              "port": 34045,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "d8dd94fd-540e-461d-b5d4-acebef02c22a"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "realitySettings": {
-            "publicKey": "cDaDzPr3PlS3NM8lreHZbdo-Mhqz8vMBzMSkHXhGIUA",
-            "serverName": "visit-this-invitation-link-to-join-tg-enkelte-notif.ekt.me",
-            "shortId": "e8ab71d0"
-          },
-          "security": "reality",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy39"
-      }
-    ],
-    "policy": {
-      "system": {
-        "statsOutboundDownlink": true,
-        "statsOutboundUplink": true
-      }
-    },
-    "remarks": "🇳🇱 Netherlands",
-    "routing": {
-      "balancers": [
-        {
-          "fallbackTag": "proxy1",
-          "selector": [
-            "proxy"
-          ],
-          "strategy": {
-            "type": "leastPing"
-          },
-          "tag": "balancer"
-        }
-      ],
-      "domainStrategy": "IPIfNonMatch",
-      "rules": [
-        {
-          "balancerTag": "balancer",
-          "network": "tcp,udp",
-          "type": "field"
-        }
-      ]
-    },
-    "stats": {}
+  "dns": {
+   "queryStrategy": "UseIPv4",
+   "servers": [
+    "https://1.0.0.1/dns-query"
+   ],
+   "tag": "dns_out"
   },
-  {
-    "burstObservatory": {
-      "pingConfig": {
-        "destination": "http://www.google.com/gen_204",
-        "interval": "5m",
-        "sampling": 3,
-        "timeout": "10s"
-      },
-      "subjectSelector": [
-        "proxy"
-      ]
+  "fakedns": [],
+  "inbounds": [
+   {
+    "port": 10808,
+    "protocol": "socks",
+    "settings": {
+     "auth": "noauth",
+     "udp": true,
+     "userLevel": 8
     },
-    "dns": {
-      "queryStrategy": "UseIPv4",
-      "servers": [
-        "https://1.0.0.1/dns-query"
-      ],
-      "tag": "dns_out"
+    "sniffing": {
+     "destOverride": [
+      "http",
+      "tls"
+     ],
+     "enabled": true
     },
-    "fakedns": [],
-    "inbounds": [
-      {
-        "port": 10808,
-        "protocol": "socks",
-        "settings": {
-          "auth": "noauth",
-          "udp": true,
-          "userLevel": 8
-        },
-        "sniffing": {
-          "destOverride": [
-            "http",
-            "tls"
-          ],
-          "enabled": true
-        },
-        "tag": "socks"
-      },
-      {
-        "port": 10809,
-        "protocol": "http",
-        "settings": {
-          "userLevel": 8
-        },
-        "tag": "http"
-      }
-    ],
-    "log": {
-      "loglevel": "warning"
+    "tag": "socks"
+   },
+   {
+    "port": 10809,
+    "protocol": "http",
+    "settings": {
+     "userLevel": 8
     },
-    "observatory": {
-      "enableConcurrency": true,
-      "probeInterval": "5m",
-      "probeURL": "http://www.google.com/gen_204",
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "outbounds": [
-      {
-        "protocol": "freedom",
-        "settings": {
-          "fragment": {
-            "interval": "0-1",
-            "length": "1-10",
-            "packets": "tlshello"
-          }
-        },
-        "tag": "dialer"
-      },
-      {
-        "protocol": "freedom",
-        "settings": {
-          "domainStrategy": "UseIPv4"
-        },
-        "tag": "direct"
-      },
-      {
-        "protocol": "blackhole",
-        "tag": "block"
-      },
-      {
-        "protocol": "dns",
-        "tag": "dns-out"
-      },
-      {
-        "protocol": "shadowsocks",
-        "settings": {
-          "servers": [
-            {
-              "address": "84.234.31.193",
-              "method": "chacha20-ietf-poly1305",
-              "password": "9wYzxW0jIoPdbI6nvcfyvw",
-              "port": 1080
-            }
-          ]
-        },
-        "tag": "proxy1"
-      }
-    ],
-    "policy": {
-      "system": {
-        "statsOutboundDownlink": true,
-        "statsOutboundUplink": true
-      }
-    },
-    "remarks": "🌐 CH",
-    "routing": {
-      "balancers": [
-        {
-          "fallbackTag": "proxy1",
-          "selector": [
-            "proxy"
-          ],
-          "strategy": {
-            "type": "leastPing"
-          },
-          "tag": "balancer"
-        }
-      ],
-      "domainStrategy": "IPIfNonMatch",
-      "rules": [
-        {
-          "balancerTag": "balancer",
-          "network": "tcp,udp",
-          "type": "field"
-        }
-      ]
-    },
-    "stats": {}
+    "tag": "http"
+   }
+  ],
+  "log": {
+   "loglevel": "warning"
   },
-  {
-    "burstObservatory": {
-      "pingConfig": {
-        "destination": "http://www.google.com/gen_204",
-        "interval": "5m",
-        "sampling": 3,
-        "timeout": "10s"
-      },
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "dns": {
-      "queryStrategy": "UseIPv4",
-      "servers": [
-        "https://1.0.0.1/dns-query"
-      ],
-      "tag": "dns_out"
-    },
-    "fakedns": [],
-    "inbounds": [
-      {
-        "port": 10808,
-        "protocol": "socks",
-        "settings": {
-          "auth": "noauth",
-          "udp": true,
-          "userLevel": 8
-        },
-        "sniffing": {
-          "destOverride": [
-            "http",
-            "tls"
-          ],
-          "enabled": true
-        },
-        "tag": "socks"
-      },
-      {
-        "port": 10809,
-        "protocol": "http",
-        "settings": {
-          "userLevel": 8
-        },
-        "tag": "http"
-      }
-    ],
-    "log": {
-      "loglevel": "warning"
-    },
-    "observatory": {
-      "enableConcurrency": true,
-      "probeInterval": "5m",
-      "probeURL": "http://www.google.com/gen_204",
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "outbounds": [
-      {
-        "protocol": "freedom",
-        "settings": {
-          "fragment": {
-            "interval": "0-1",
-            "length": "1-10",
-            "packets": "tlshello"
-          }
-        },
-        "tag": "dialer"
-      },
-      {
-        "protocol": "freedom",
-        "settings": {
-          "domainStrategy": "UseIPv4"
-        },
-        "tag": "direct"
-      },
-      {
-        "protocol": "blackhole",
-        "tag": "block"
-      },
-      {
-        "protocol": "dns",
-        "tag": "dns-out"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "bestcf.030101.xyz",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "897a4bec-26b8-11e8-94be-00505695472c"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "serverName": "xv6.jpmj.dpdns.org"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "xv6.jpmj.dpdns.org"
-            },
-            "path": "/bbs?ed=2048"
-          }
-        },
-        "tag": "proxy1"
-      }
-    ],
-    "policy": {
-      "system": {
-        "statsOutboundDownlink": true,
-        "statsOutboundUplink": true
-      }
-    },
-    "remarks": "🇺🇸 United States",
-    "routing": {
-      "balancers": [
-        {
-          "fallbackTag": "proxy1",
-          "selector": [
-            "proxy"
-          ],
-          "strategy": {
-            "type": "leastPing"
-          },
-          "tag": "balancer"
-        }
-      ],
-      "domainStrategy": "IPIfNonMatch",
-      "rules": [
-        {
-          "balancerTag": "balancer",
-          "network": "tcp,udp",
-          "type": "field"
-        }
-      ]
-    },
-    "stats": {}
+  "observatory": {
+   "enableConcurrency": true,
+   "probeInterval": "5m",
+   "probeURL": "http://www.google.com/gen_204",
+   "subjectSelector": [
+    "proxy"
+   ]
   },
-  {
-    "burstObservatory": {
-      "pingConfig": {
-        "destination": "http://www.google.com/gen_204",
-        "interval": "5m",
-        "sampling": 3,
-        "timeout": "10s"
-      },
-      "subjectSelector": [
-        "proxy"
-      ]
+  "outbounds": [
+   {
+    "protocol": "freedom",
+    "settings": {
+     "fragment": {
+      "interval": "0-1",
+      "length": "1-10",
+      "packets": "tlshello"
+     }
     },
-    "dns": {
-      "queryStrategy": "UseIPv4",
-      "servers": [
-        "https://1.0.0.1/dns-query"
-      ],
-      "tag": "dns_out"
+    "tag": "dialer"
+   },
+   {
+    "protocol": "freedom",
+    "settings": {
+     "domainStrategy": "UseIPv4"
     },
-    "fakedns": [],
-    "inbounds": [
-      {
-        "port": 10808,
-        "protocol": "socks",
-        "settings": {
-          "auth": "noauth",
-          "udp": true,
-          "userLevel": 8
-        },
-        "sniffing": {
-          "destOverride": [
-            "http",
-            "tls"
-          ],
-          "enabled": true
-        },
-        "tag": "socks"
-      },
-      {
-        "port": 10809,
-        "protocol": "http",
-        "settings": {
-          "userLevel": 8
-        },
-        "tag": "http"
-      }
-    ],
-    "log": {
-      "loglevel": "warning"
+    "tag": "direct"
+   },
+   {
+    "protocol": "blackhole",
+    "tag": "block"
+   },
+   {
+    "protocol": "dns",
+    "tag": "dns-out"
+   },
+   {
+    "mux": {
+     "concurrency": 8,
+     "enabled": true
     },
-    "observatory": {
-      "enableConcurrency": true,
-      "probeInterval": "5m",
-      "probeURL": "http://www.google.com/gen_204",
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "outbounds": [
+    "protocol": "vmess",
+    "settings": {
+     "vnext": [
       {
-        "protocol": "freedom",
-        "settings": {
-          "fragment": {
-            "interval": "0-1",
-            "length": "1-10",
-            "packets": "tlshello"
-          }
-        },
-        "tag": "dialer"
-      },
-      {
-        "protocol": "freedom",
-        "settings": {
-          "domainStrategy": "UseIPv4"
-        },
-        "tag": "direct"
-      },
-      {
-        "protocol": "blackhole",
-        "tag": "block"
-      },
-      {
-        "protocol": "dns",
-        "tag": "dns-out"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "95.217.243.235",
-              "port": 13560,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "9d717e24-b4b5-4fa5-8b3b-22ed9b30bf65"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            }
-          }
-        },
-        "tag": "proxy1"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vmess",
-        "settings": {
-          "vnext": [
-            {
-              "address": "65.109.190.91.suupermeat.ir",
-              "port": 2053,
-              "users": [
-                {
-                  "alterId": 0,
-                  "id": "b4493eed-d316-45d5-addf-9857ffeba30e",
-                  "security": "none"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy2"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "65.109.187.52",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "cb212ce0-be0b-4d69-a80c-0b3904764f21"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "realitySettings": {
-            "fingerprint": "chrome",
-            "publicKey": "qz662d61nkl7U5m4wCNCQJBNDVVFrMlCKOovQFEg8mk",
-            "serverName": "connectivitycheck.gstatic.com",
-            "spiderX": "/generate_204"
-          },
-          "security": "reality",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy3"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vmess",
-        "settings": {
-          "vnext": [
-            {
-              "address": "65.109.188.195",
-              "port": 32017,
-              "users": [
-                {
-                  "alterId": 0,
-                  "id": "c0ccdeb9-784c-4d67-b904-20dcaac9902a",
-                  "security": "none"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy4"
-      }
-    ],
-    "policy": {
-      "system": {
-        "statsOutboundDownlink": true,
-        "statsOutboundUplink": true
-      }
-    },
-    "remarks": "🇫🇮 Finland",
-    "routing": {
-      "balancers": [
+       "address": "216.173.69.250",
+       "port": 8443,
+       "users": [
         {
-          "fallbackTag": "proxy1",
-          "selector": [
-            "proxy"
-          ],
-          "strategy": {
-            "type": "leastPing"
-          },
-          "tag": "balancer"
+         "alterId": 0,
+         "id": "91382092-2330-455b-8a1c-9c129cfe661a",
+         "security": "none"
         }
-      ],
-      "domainStrategy": "IPIfNonMatch",
-      "rules": [
-        {
-          "balancerTag": "balancer",
-          "network": "tcp,udp",
-          "type": "field"
-        }
-      ]
+       ]
+      }
+     ]
     },
-    "stats": {}
+    "streamSettings": {
+     "network": "ws",
+     "sockopt": {
+      "dialerProxy": "dialer"
+     },
+     "wsSettings": {
+      "headers": {
+       "Host": ""
+      },
+      "path": "/"
+     }
+    },
+    "tag": "proxy1"
+   },
+   {
+    "mux": {
+     "concurrency": 8,
+     "enabled": true
+    },
+    "protocol": "vmess",
+    "settings": {
+     "vnext": [
+      {
+       "address": "b62a948c-faa2-4e8a-bf8a-3ff3121c875a.asoul-ava.top",
+       "port": 443,
+       "users": [
+        {
+         "alterId": 0,
+         "id": "5f726fe3-d82e-4da5-a711-8af0cbb2b682",
+         "security": "none"
+        }
+       ]
+      }
+     ]
+    },
+    "streamSettings": {
+     "network": "ws",
+     "security": "tls",
+     "sockopt": {
+      "dialerProxy": "dialer"
+     },
+     "tlsSettings": {
+      "allowInsecure": true,
+      "alpn": [
+       ""
+      ]
+     },
+     "wsSettings": {
+      "headers": {
+       "Host": ""
+      },
+      "path": "/azumase.ren"
+     }
+    },
+    "tag": "proxy2"
+   },
+   {
+    "mux": {
+     "concurrency": 8,
+     "enabled": true
+    },
+    "protocol": "vmess",
+    "settings": {
+     "vnext": [
+      {
+       "address": "135.125.182.74",
+       "port": 28213,
+       "users": [
+        {
+         "alterId": 0,
+         "id": "81852771-76fb-4e94-e4f1-4e37a698a49a",
+         "security": "none"
+        }
+       ]
+      }
+     ]
+    },
+    "streamSettings": {
+     "network": "tcp",
+     "sockopt": {
+      "dialerProxy": "dialer"
+     }
+    },
+    "tag": "proxy3"
+   },
+   {
+    "mux": {
+     "concurrency": 8,
+     "enabled": true
+    },
+    "protocol": "vmess",
+    "settings": {
+     "vnext": [
+      {
+       "address": "91.99.185.216",
+       "port": 20086,
+       "users": [
+        {
+         "alterId": 0,
+         "id": "7bd6a1ea-a220-4f1c-afed-6cfb8ab96ad9",
+         "security": "none"
+        }
+       ]
+      }
+     ]
+    },
+    "streamSettings": {
+     "network": "ws",
+     "sockopt": {
+      "dialerProxy": "dialer"
+     },
+     "wsSettings": {
+      "headers": {
+       "Host": ""
+      },
+      "path": "/"
+     }
+    },
+    "tag": "proxy4"
+   },
+   {
+    "mux": {
+     "concurrency": 8,
+     "enabled": true
+    },
+    "protocol": "vmess",
+    "settings": {
+     "vnext": [
+      {
+       "address": "s3.ipyar.org",
+       "port": 32020,
+       "users": [
+        {
+         "alterId": 0,
+         "id": "78b4fb57-39d7-4e9d-dd38-c9a38322bcb2",
+         "security": "none"
+        }
+       ]
+      }
+     ]
+    },
+    "streamSettings": {
+     "network": "tcp",
+     "sockopt": {
+      "dialerProxy": "dialer"
+     }
+    },
+    "tag": "proxy5"
+   },
+   {
+    "mux": {
+     "concurrency": 8,
+     "enabled": true
+    },
+    "protocol": "vmess",
+    "settings": {
+     "vnext": [
+      {
+       "address": "161.248.30.3",
+       "port": 20086,
+       "users": [
+        {
+         "alterId": 0,
+         "id": "1006a928-2021-4a3b-beb5-d5853c6281c5",
+         "security": "none"
+        }
+       ]
+      }
+     ]
+    },
+    "streamSettings": {
+     "network": "ws",
+     "sockopt": {
+      "dialerProxy": "dialer"
+     },
+     "wsSettings": {
+      "headers": {
+       "Host": ""
+      },
+      "path": "/"
+     }
+    },
+    "tag": "proxy6"
+   },
+   {
+    "mux": {
+     "concurrency": 8,
+     "enabled": true
+    },
+    "protocol": "vmess",
+    "settings": {
+     "vnext": [
+      {
+       "address": "51.38.64.209",
+       "port": 44023,
+       "users": [
+        {
+         "alterId": 0,
+         "id": "7da457da-ed0f-437d-c81d-6c35885bbea3",
+         "security": "none"
+        }
+       ]
+      }
+     ]
+    },
+    "streamSettings": {
+     "network": "tcp",
+     "sockopt": {
+      "dialerProxy": "dialer"
+     }
+    },
+    "tag": "proxy7"
+   },
+   {
+    "mux": {
+     "concurrency": 8,
+     "enabled": true
+    },
+    "protocol": "vmess",
+    "settings": {
+     "vnext": [
+      {
+       "address": "51.79.102.253",
+       "port": 80,
+       "users": [
+        {
+         "alterId": 0,
+         "id": "58fe1542-5290-40ad-815a-77707a81afe5",
+         "security": "none"
+        }
+       ]
+      }
+     ]
+    },
+    "streamSettings": {
+     "network": "ws",
+     "sockopt": {
+      "dialerProxy": "dialer"
+     },
+     "wsSettings": {
+      "headers": {
+       "Host": "51.79.102.253"
+      },
+      "path": "/IOebhLMhl1CTbFHbL95myfRX2"
+     }
+    },
+    "tag": "proxy8"
+   },
+   {
+    "mux": {
+     "concurrency": 8,
+     "enabled": true
+    },
+    "protocol": "vmess",
+    "settings": {
+     "vnext": [
+      {
+       "address": "103.61.139.137",
+       "port": 20521,
+       "users": [
+        {
+         "alterId": 0,
+         "id": "f8d93cfb-3d5d-447c-a697-16496dd74697",
+         "security": "none"
+        }
+       ]
+      }
+     ]
+    },
+    "streamSettings": {
+     "network": "ws",
+     "sockopt": {
+      "dialerProxy": "dialer"
+     },
+     "wsSettings": {
+      "headers": {
+       "Host": ""
+      },
+      "path": "/"
+     }
+    },
+    "tag": "proxy9"
+   }
+  ],
+  "policy": {
+   "system": {
+    "statsOutboundDownlink": true,
+    "statsOutboundUplink": true
+   }
   },
-  {
-    "burstObservatory": {
-      "pingConfig": {
-        "destination": "http://www.google.com/gen_204",
-        "interval": "5m",
-        "sampling": 3,
-        "timeout": "10s"
-      },
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "dns": {
-      "queryStrategy": "UseIPv4",
-      "servers": [
-        "https://1.0.0.1/dns-query"
-      ],
-      "tag": "dns_out"
-    },
-    "fakedns": [],
-    "inbounds": [
-      {
-        "port": 10808,
-        "protocol": "socks",
-        "settings": {
-          "auth": "noauth",
-          "udp": true,
-          "userLevel": 8
-        },
-        "sniffing": {
-          "destOverride": [
-            "http",
-            "tls"
-          ],
-          "enabled": true
-        },
-        "tag": "socks"
-      },
-      {
-        "port": 10809,
-        "protocol": "http",
-        "settings": {
-          "userLevel": 8
-        },
-        "tag": "http"
-      }
-    ],
-    "log": {
-      "loglevel": "warning"
-    },
-    "observatory": {
-      "enableConcurrency": true,
-      "probeInterval": "5m",
-      "probeURL": "http://www.google.com/gen_204",
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "outbounds": [
-      {
-        "protocol": "freedom",
-        "settings": {
-          "fragment": {
-            "interval": "0-1",
-            "length": "1-10",
-            "packets": "tlshello"
-          }
-        },
-        "tag": "dialer"
-      },
-      {
-        "protocol": "freedom",
-        "settings": {
-          "domainStrategy": "UseIPv4"
-        },
-        "tag": "direct"
-      },
-      {
-        "protocol": "blackhole",
-        "tag": "block"
-      },
-      {
-        "protocol": "dns",
-        "tag": "dns-out"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "simonil.zarghamportal.ir",
-              "port": 2095,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "26e06c13-56ec-41d3-a750-d8f070053306"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "shole.zarghamportal.ir"
-            },
-            "path": "/@iSpeedTopVPN?ed=80"
-          }
-        },
-        "tag": "proxy1"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "93.115.240.88",
-              "port": 20300,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "78a9db78-4ba2-4286-9a0c-057be49c380b"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            }
-          }
-        },
-        "tag": "proxy2"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "92.223.2.40",
-              "port": 12900,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "2ad55c63-0818-4c47-8cf9-89a16a214e60"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            }
-          }
-        },
-        "tag": "proxy3"
-      }
-    ],
-    "policy": {
-      "system": {
-        "statsOutboundDownlink": true,
-        "statsOutboundUplink": true
-      }
-    },
-    "remarks": "🌐 AM",
-    "routing": {
-      "balancers": [
-        {
-          "fallbackTag": "proxy1",
-          "selector": [
-            "proxy"
-          ],
-          "strategy": {
-            "type": "leastPing"
-          },
-          "tag": "balancer"
-        }
-      ],
-      "domainStrategy": "IPIfNonMatch",
-      "rules": [
-        {
-          "balancerTag": "balancer",
-          "network": "tcp,udp",
-          "type": "field"
-        }
-      ]
-    },
-    "stats": {}
+  "remarks": "⚡️ Fastest Location",
+  "routing": {
+   "balancers": [
+    {
+     "fallbackTag": "proxy1",
+     "selector": [
+      "proxy"
+     ],
+     "strategy": {
+      "type": "leastPing"
+     },
+     "tag": "balancer"
+    }
+   ],
+   "domainStrategy": "IPIfNonMatch",
+   "rules": [
+    {
+     "balancerTag": "balancer",
+     "network": "tcp,udp",
+     "type": "field"
+    }
+   ]
   },
-  {
-    "burstObservatory": {
-      "pingConfig": {
-        "destination": "http://www.google.com/gen_204",
-        "interval": "5m",
-        "sampling": 3,
-        "timeout": "10s"
-      },
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "dns": {
-      "queryStrategy": "UseIPv4",
-      "servers": [
-        "https://1.0.0.1/dns-query"
-      ],
-      "tag": "dns_out"
-    },
-    "fakedns": [],
-    "inbounds": [
-      {
-        "port": 10808,
-        "protocol": "socks",
-        "settings": {
-          "auth": "noauth",
-          "udp": true,
-          "userLevel": 8
-        },
-        "sniffing": {
-          "destOverride": [
-            "http",
-            "tls"
-          ],
-          "enabled": true
-        },
-        "tag": "socks"
-      },
-      {
-        "port": 10809,
-        "protocol": "http",
-        "settings": {
-          "userLevel": 8
-        },
-        "tag": "http"
-      }
-    ],
-    "log": {
-      "loglevel": "warning"
-    },
-    "observatory": {
-      "enableConcurrency": true,
-      "probeInterval": "5m",
-      "probeURL": "http://www.google.com/gen_204",
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "outbounds": [
-      {
-        "protocol": "freedom",
-        "settings": {
-          "fragment": {
-            "interval": "0-1",
-            "length": "1-10",
-            "packets": "tlshello"
-          }
-        },
-        "tag": "dialer"
-      },
-      {
-        "protocol": "freedom",
-        "settings": {
-          "domainStrategy": "UseIPv4"
-        },
-        "tag": "direct"
-      },
-      {
-        "protocol": "blackhole",
-        "tag": "block"
-      },
-      {
-        "protocol": "dns",
-        "tag": "dns-out"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vmess",
-        "settings": {
-          "vnext": [
-            {
-              "address": "161.248.30.3",
-              "port": 20086,
-              "users": [
-                {
-                  "alterId": 0,
-                  "id": "1006a928-2021-4a3b-beb5-d5853c6281c5",
-                  "security": "none"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy1"
-      }
-    ],
-    "policy": {
-      "system": {
-        "statsOutboundDownlink": true,
-        "statsOutboundUplink": true
-      }
-    },
-    "remarks": "🌐 VN",
-    "routing": {
-      "balancers": [
-        {
-          "fallbackTag": "proxy1",
-          "selector": [
-            "proxy"
-          ],
-          "strategy": {
-            "type": "leastPing"
-          },
-          "tag": "balancer"
-        }
-      ],
-      "domainStrategy": "IPIfNonMatch",
-      "rules": [
-        {
-          "balancerTag": "balancer",
-          "network": "tcp,udp",
-          "type": "field"
-        }
-      ]
-    },
-    "stats": {}
+  "stats": {}
+ },
+ {
+  "burstObservatory": {
+   "pingConfig": {
+    "destination": "http://www.google.com/gen_204",
+    "interval": "5m",
+    "sampling": 3,
+    "timeout": "10s"
+   },
+   "subjectSelector": [
+    "proxy"
+   ]
   },
-  {
-    "burstObservatory": {
-      "pingConfig": {
-        "destination": "http://www.google.com/gen_204",
-        "interval": "5m",
-        "sampling": 3,
-        "timeout": "10s"
-      },
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "dns": {
-      "queryStrategy": "UseIPv4",
-      "servers": [
-        "https://1.0.0.1/dns-query"
-      ],
-      "tag": "dns_out"
-    },
-    "fakedns": [],
-    "inbounds": [
-      {
-        "port": 10808,
-        "protocol": "socks",
-        "settings": {
-          "auth": "noauth",
-          "udp": true,
-          "userLevel": 8
-        },
-        "sniffing": {
-          "destOverride": [
-            "http",
-            "tls"
-          ],
-          "enabled": true
-        },
-        "tag": "socks"
-      },
-      {
-        "port": 10809,
-        "protocol": "http",
-        "settings": {
-          "userLevel": 8
-        },
-        "tag": "http"
-      }
-    ],
-    "log": {
-      "loglevel": "warning"
-    },
-    "observatory": {
-      "enableConcurrency": true,
-      "probeInterval": "5m",
-      "probeURL": "http://www.google.com/gen_204",
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "outbounds": [
-      {
-        "protocol": "freedom",
-        "settings": {
-          "fragment": {
-            "interval": "0-1",
-            "length": "1-10",
-            "packets": "tlshello"
-          }
-        },
-        "tag": "dialer"
-      },
-      {
-        "protocol": "freedom",
-        "settings": {
-          "domainStrategy": "UseIPv4"
-        },
-        "tag": "direct"
-      },
-      {
-        "protocol": "blackhole",
-        "tag": "block"
-      },
-      {
-        "protocol": "dns",
-        "tag": "dns-out"
-      },
-      {
-        "protocol": "shadowsocks",
-        "settings": {
-          "servers": [
-            {
-              "address": "152.53.2.128",
-              "method": "aes-256-gcm",
-              "password": "TG:@Enkelte_notif\u0026\u0026TG:@Notif_Chat",
-              "port": 34045
-            }
-          ]
-        },
-        "tag": "proxy1"
-      }
-    ],
-    "policy": {
-      "system": {
-        "statsOutboundDownlink": true,
-        "statsOutboundUplink": true
-      }
-    },
-    "remarks": "🌐 AT",
-    "routing": {
-      "balancers": [
-        {
-          "fallbackTag": "proxy1",
-          "selector": [
-            "proxy"
-          ],
-          "strategy": {
-            "type": "leastPing"
-          },
-          "tag": "balancer"
-        }
-      ],
-      "domainStrategy": "IPIfNonMatch",
-      "rules": [
-        {
-          "balancerTag": "balancer",
-          "network": "tcp,udp",
-          "type": "field"
-        }
-      ]
-    },
-    "stats": {}
+  "dns": {
+   "queryStrategy": "UseIPv4",
+   "servers": [
+    "https://1.0.0.1/dns-query"
+   ],
+   "tag": "dns_out"
   },
-  {
-    "burstObservatory": {
-      "pingConfig": {
-        "destination": "http://www.google.com/gen_204",
-        "interval": "5m",
-        "sampling": 3,
-        "timeout": "10s"
-      },
-      "subjectSelector": [
-        "proxy"
-      ]
+  "fakedns": [],
+  "inbounds": [
+   {
+    "port": 10808,
+    "protocol": "socks",
+    "settings": {
+     "auth": "noauth",
+     "udp": true,
+     "userLevel": 8
     },
-    "dns": {
-      "queryStrategy": "UseIPv4",
-      "servers": [
-        "https://1.0.0.1/dns-query"
-      ],
-      "tag": "dns_out"
+    "sniffing": {
+     "destOverride": [
+      "http",
+      "tls"
+     ],
+     "enabled": true
     },
-    "fakedns": [],
-    "inbounds": [
-      {
-        "port": 10808,
-        "protocol": "socks",
-        "settings": {
-          "auth": "noauth",
-          "udp": true,
-          "userLevel": 8
-        },
-        "sniffing": {
-          "destOverride": [
-            "http",
-            "tls"
-          ],
-          "enabled": true
-        },
-        "tag": "socks"
-      },
-      {
-        "port": 10809,
-        "protocol": "http",
-        "settings": {
-          "userLevel": 8
-        },
-        "tag": "http"
-      }
-    ],
-    "log": {
-      "loglevel": "warning"
+    "tag": "socks"
+   },
+   {
+    "port": 10809,
+    "protocol": "http",
+    "settings": {
+     "userLevel": 8
     },
-    "observatory": {
-      "enableConcurrency": true,
-      "probeInterval": "5m",
-      "probeURL": "http://www.google.com/gen_204",
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "outbounds": [
-      {
-        "protocol": "freedom",
-        "settings": {
-          "fragment": {
-            "interval": "0-1",
-            "length": "1-10",
-            "packets": "tlshello"
-          }
-        },
-        "tag": "dialer"
-      },
-      {
-        "protocol": "freedom",
-        "settings": {
-          "domainStrategy": "UseIPv4"
-        },
-        "tag": "direct"
-      },
-      {
-        "protocol": "blackhole",
-        "tag": "block"
-      },
-      {
-        "protocol": "dns",
-        "tag": "dns-out"
-      },
-      {
-        "protocol": "shadowsocks",
-        "settings": {
-          "servers": [
-            {
-              "address": "85.210.120.237",
-              "method": "chacha20-ietf-poly1305",
-              "password": "Bog0ELmMM9DSxDdQ",
-              "port": 443
-            }
-          ]
-        },
-        "tag": "proxy1"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "iranvipen.1dlkimi.ir",
-              "port": 248,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "6607589a-09b3-4e94-a389-28cacbe48b82"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy2"
-      },
-      {
-        "protocol": "shadowsocks",
-        "settings": {
-          "servers": [
-            {
-              "address": "78.129.140.11",
-              "method": "chacha20-ietf-poly1305",
-              "password": "s0FPknItoA1fkQRfky6mQv",
-              "port": 443
-            }
-          ]
-        },
-        "tag": "proxy3"
-      },
-      {
-        "protocol": "shadowsocks",
-        "settings": {
-          "servers": [
-            {
-              "address": "78.129.140.11",
-              "method": "chacha20-ietf-poly1305",
-              "password": "S3wEELZ0WsK0rsLzl811P6",
-              "port": 443
-            }
-          ]
-        },
-        "tag": "proxy4"
-      }
-    ],
-    "policy": {
-      "system": {
-        "statsOutboundDownlink": true,
-        "statsOutboundUplink": true
-      }
-    },
-    "remarks": "🇬🇧 United Kingdom",
-    "routing": {
-      "balancers": [
-        {
-          "fallbackTag": "proxy1",
-          "selector": [
-            "proxy"
-          ],
-          "strategy": {
-            "type": "leastPing"
-          },
-          "tag": "balancer"
-        }
-      ],
-      "domainStrategy": "IPIfNonMatch",
-      "rules": [
-        {
-          "balancerTag": "balancer",
-          "network": "tcp,udp",
-          "type": "field"
-        }
-      ]
-    },
-    "stats": {}
+    "tag": "http"
+   }
+  ],
+  "log": {
+   "loglevel": "warning"
   },
-  {
-    "burstObservatory": {
-      "pingConfig": {
-        "destination": "http://www.google.com/gen_204",
-        "interval": "5m",
-        "sampling": 3,
-        "timeout": "10s"
-      },
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "dns": {
-      "queryStrategy": "UseIPv4",
-      "servers": [
-        "https://1.0.0.1/dns-query"
-      ],
-      "tag": "dns_out"
-    },
-    "fakedns": [],
-    "inbounds": [
-      {
-        "port": 10808,
-        "protocol": "socks",
-        "settings": {
-          "auth": "noauth",
-          "udp": true,
-          "userLevel": 8
-        },
-        "sniffing": {
-          "destOverride": [
-            "http",
-            "tls"
-          ],
-          "enabled": true
-        },
-        "tag": "socks"
-      },
-      {
-        "port": 10809,
-        "protocol": "http",
-        "settings": {
-          "userLevel": 8
-        },
-        "tag": "http"
-      }
-    ],
-    "log": {
-      "loglevel": "warning"
-    },
-    "observatory": {
-      "enableConcurrency": true,
-      "probeInterval": "5m",
-      "probeURL": "http://www.google.com/gen_204",
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "outbounds": [
-      {
-        "protocol": "freedom",
-        "settings": {
-          "fragment": {
-            "interval": "0-1",
-            "length": "1-10",
-            "packets": "tlshello"
-          }
-        },
-        "tag": "dialer"
-      },
-      {
-        "protocol": "freedom",
-        "settings": {
-          "domainStrategy": "UseIPv4"
-        },
-        "tag": "direct"
-      },
-      {
-        "protocol": "blackhole",
-        "tag": "block"
-      },
-      {
-        "protocol": "dns",
-        "tag": "dns-out"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "amazon-4.cristiano.name.ng",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "flow": "xtls-rprx-vision",
-                  "id": "4c26ebc3-7784-46d8-b52a-7b0ccae6f4b4"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "realitySettings": {
-            "fingerprint": "chrome",
-            "publicKey": "TGlPtfVzGIVpMauPRMGJj2Uu6GUiCpu5ZizIIjw-wx4",
-            "serverName": "store.steampowered.com",
-            "shortId": "f5",
-            "spiderX": "/"
-          },
-          "security": "reality",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy1"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "amazon-4.cristiano.name.ng",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "flow": "xtls-rprx-vision",
-                  "id": "4c26ebc3-7784-46d8-b52a-7b0ccae6f4b4"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "realitySettings": {
-            "fingerprint": "chrome",
-            "publicKey": "TGlPtfVzGIVpMauPRMGJj2Uu6GUiCpu5ZizIIjw-wx4",
-            "serverName": "store.steampowered.com",
-            "shortId": "f5",
-            "spiderX": "/"
-          },
-          "security": "reality",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy2"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "modern-promise.seotoolsforyou.co.uk",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "bd9b0366-e5dd-4665-bd5b-9896bc7327ae"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy3"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "moody-lock.seotoolsforyou.co.uk",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "82cdcdf0-e772-4d9a-b0a2-d6b605572ac1"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy4"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "obedient-menu.seotoolsforyou.co.uk",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "561623c8-4983-44d3-a6ef-92b803a74ee8"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy5"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "charming-process.seotoolsforyou.co.uk",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "43791e7f-8e02-4189-9533-4f842bcacd79"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy6"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "dedicated-development.seotoolsforyou.co.uk",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "2054405e-70ff-40a2-ae27-16b63d72390a"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy7"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "OBEDiENT-detAiL.SEOTOOlSFOrYou.co.uk",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "1dd49fb8-6570-4a2a-a236-f410b63159cf"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy8"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "obedient-menu.seotoolsforyou.co.uk",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "561623c8-4983-44d3-a6ef-92b803a74ee8"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy9"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "wild-bird.seotoolsforyou.co.uk",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "1d0dfde1-9f18-4557-9af8-4f3124ee5dcd"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy10"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "obedient-menu.seotoolsforyou.co.uk",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "561623c8-4983-44d3-a6ef-92b803a74ee8"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy11"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "51.75.161.60",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "3f277f78-ef7c-4fab-982c-0ae1b0c0cf67"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/vless/"
-          }
-        },
-        "tag": "proxy12"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "51.75.161.60",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "3f277f78-ef7c-4fab-982c-0ae1b0c0cf67"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/vless/"
-          }
-        },
-        "tag": "proxy13"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "brilliant-knowledge.seotoolsforyou.co.uk",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "4ad29f1b-2cea-4ddc-b856-fab1ff141ac6"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/?ed=2048@el774--@el774--@el774--@el774--@el774--@el774--@el774--@el774--@el774--@el774--@el774--@el774--@el774"
-          }
-        },
-        "tag": "proxy14"
-      }
-    ],
-    "policy": {
-      "system": {
-        "statsOutboundDownlink": true,
-        "statsOutboundUplink": true
-      }
-    },
-    "remarks": "🇫🇷 France",
-    "routing": {
-      "balancers": [
-        {
-          "fallbackTag": "proxy1",
-          "selector": [
-            "proxy"
-          ],
-          "strategy": {
-            "type": "leastPing"
-          },
-          "tag": "balancer"
-        }
-      ],
-      "domainStrategy": "IPIfNonMatch",
-      "rules": [
-        {
-          "balancerTag": "balancer",
-          "network": "tcp,udp",
-          "type": "field"
-        }
-      ]
-    },
-    "stats": {}
+  "observatory": {
+   "enableConcurrency": true,
+   "probeInterval": "5m",
+   "probeURL": "http://www.google.com/gen_204",
+   "subjectSelector": [
+    "proxy"
+   ]
   },
-  {
-    "burstObservatory": {
-      "pingConfig": {
-        "destination": "http://www.google.com/gen_204",
-        "interval": "5m",
-        "sampling": 3,
-        "timeout": "10s"
-      },
-      "subjectSelector": [
-        "proxy"
-      ]
+  "outbounds": [
+   {
+    "protocol": "freedom",
+    "settings": {
+     "fragment": {
+      "interval": "0-1",
+      "length": "1-10",
+      "packets": "tlshello"
+     }
     },
-    "dns": {
-      "queryStrategy": "UseIPv4",
-      "servers": [
-        "https://1.0.0.1/dns-query"
-      ],
-      "tag": "dns_out"
+    "tag": "dialer"
+   },
+   {
+    "protocol": "freedom",
+    "settings": {
+     "domainStrategy": "UseIPv4"
     },
-    "fakedns": [],
-    "inbounds": [
-      {
-        "port": 10808,
-        "protocol": "socks",
-        "settings": {
-          "auth": "noauth",
-          "udp": true,
-          "userLevel": 8
-        },
-        "sniffing": {
-          "destOverride": [
-            "http",
-            "tls"
-          ],
-          "enabled": true
-        },
-        "tag": "socks"
-      },
-      {
-        "port": 10809,
-        "protocol": "http",
-        "settings": {
-          "userLevel": 8
-        },
-        "tag": "http"
-      }
-    ],
-    "log": {
-      "loglevel": "warning"
+    "tag": "direct"
+   },
+   {
+    "protocol": "blackhole",
+    "tag": "block"
+   },
+   {
+    "protocol": "dns",
+    "tag": "dns-out"
+   },
+   {
+    "mux": {
+     "concurrency": 8,
+     "enabled": true
     },
-    "observatory": {
-      "enableConcurrency": true,
-      "probeInterval": "5m",
-      "probeURL": "http://www.google.com/gen_204",
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "outbounds": [
+    "protocol": "vmess",
+    "settings": {
+     "vnext": [
       {
-        "protocol": "freedom",
-        "settings": {
-          "fragment": {
-            "interval": "0-1",
-            "length": "1-10",
-            "packets": "tlshello"
-          }
-        },
-        "tag": "dialer"
-      },
-      {
-        "protocol": "freedom",
-        "settings": {
-          "domainStrategy": "UseIPv4"
-        },
-        "tag": "direct"
-      },
-      {
-        "protocol": "blackhole",
-        "tag": "block"
-      },
-      {
-        "protocol": "dns",
-        "tag": "dns-out"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vmess",
-        "settings": {
-          "vnext": [
-            {
-              "address": "aeryrixsp630ww1.lovebaipiao.net",
-              "port": 54298,
-              "users": [
-                {
-                  "alterId": 0,
-                  "id": "5276ec30-a084-438d-85a0-5d9793e6ccb8",
-                  "security": "none"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "www.bytedance.com"
-            },
-            "path": "/zh"
-          }
-        },
-        "tag": "proxy2"
-      }
-    ],
-    "policy": {
-      "system": {
-        "statsOutboundDownlink": true,
-        "statsOutboundUplink": true
-      }
-    },
-    "remarks": "🇭🇰 Hong Kong",
-    "routing": {
-      "balancers": [
+       "address": "51.79.102.253",
+       "port": 80,
+       "users": [
         {
-          "fallbackTag": "proxy1",
-          "selector": [
-            "proxy"
-          ],
-          "strategy": {
-            "type": "leastPing"
-          },
-          "tag": "balancer"
+         "alterId": 0,
+         "id": "58fe1542-5290-40ad-815a-77707a81afe5",
+         "security": "none"
         }
-      ],
-      "domainStrategy": "IPIfNonMatch",
-      "rules": [
-        {
-          "balancerTag": "balancer",
-          "network": "tcp,udp",
-          "type": "field"
-        }
-      ]
+       ]
+      }
+     ]
     },
-    "stats": {}
+    "streamSettings": {
+     "network": "ws",
+     "sockopt": {
+      "dialerProxy": "dialer"
+     },
+     "wsSettings": {
+      "headers": {
+       "Host": "51.79.102.253"
+      },
+      "path": "/IOebhLMhl1CTbFHbL95myfRX2"
+     }
+    },
+    "tag": "proxy1"
+   }
+  ],
+  "policy": {
+   "system": {
+    "statsOutboundDownlink": true,
+    "statsOutboundUplink": true
+   }
   },
-  {
-    "burstObservatory": {
-      "pingConfig": {
-        "destination": "http://www.google.com/gen_204",
-        "interval": "5m",
-        "sampling": 3,
-        "timeout": "10s"
-      },
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "dns": {
-      "queryStrategy": "UseIPv4",
-      "servers": [
-        "https://1.0.0.1/dns-query"
-      ],
-      "tag": "dns_out"
-    },
-    "fakedns": [],
-    "inbounds": [
-      {
-        "port": 10808,
-        "protocol": "socks",
-        "settings": {
-          "auth": "noauth",
-          "udp": true,
-          "userLevel": 8
-        },
-        "sniffing": {
-          "destOverride": [
-            "http",
-            "tls"
-          ],
-          "enabled": true
-        },
-        "tag": "socks"
-      },
-      {
-        "port": 10809,
-        "protocol": "http",
-        "settings": {
-          "userLevel": 8
-        },
-        "tag": "http"
-      }
-    ],
-    "log": {
-      "loglevel": "warning"
-    },
-    "observatory": {
-      "enableConcurrency": true,
-      "probeInterval": "5m",
-      "probeURL": "http://www.google.com/gen_204",
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "outbounds": [
-      {
-        "protocol": "freedom",
-        "settings": {
-          "fragment": {
-            "interval": "0-1",
-            "length": "1-10",
-            "packets": "tlshello"
-          }
-        },
-        "tag": "dialer"
-      },
-      {
-        "protocol": "freedom",
-        "settings": {
-          "domainStrategy": "UseIPv4"
-        },
-        "tag": "direct"
-      },
-      {
-        "protocol": "blackhole",
-        "tag": "block"
-      },
-      {
-        "protocol": "dns",
-        "tag": "dns-out"
-      },
-      {
-        "protocol": "shadowsocks",
-        "settings": {
-          "servers": [
-            {
-              "address": "114.41.27.224",
-              "method": "aes-128-gcm",
-              "password": "79739832-b888-415a-a454-8b53911c944a",
-              "port": 30332
-            }
-          ]
-        },
-        "tag": "proxy1"
-      },
-      {
-        "protocol": "shadowsocks",
-        "settings": {
-          "servers": [
-            {
-              "address": "vps.200566.xyz",
-              "method": "aes-128-gcm",
-              "password": "79739832-b888-415a-a454-8b53911c944a",
-              "port": 30332
-            }
-          ]
-        },
-        "tag": "proxy2"
-      }
-    ],
-    "policy": {
-      "system": {
-        "statsOutboundDownlink": true,
-        "statsOutboundUplink": true
-      }
-    },
-    "remarks": "🇹🇼 Taiwan",
-    "routing": {
-      "balancers": [
-        {
-          "fallbackTag": "proxy1",
-          "selector": [
-            "proxy"
-          ],
-          "strategy": {
-            "type": "leastPing"
-          },
-          "tag": "balancer"
-        }
-      ],
-      "domainStrategy": "IPIfNonMatch",
-      "rules": [
-        {
-          "balancerTag": "balancer",
-          "network": "tcp,udp",
-          "type": "field"
-        }
-      ]
-    },
-    "stats": {}
+  "remarks": "🇨🇦 Canada",
+  "routing": {
+   "balancers": [
+    {
+     "fallbackTag": "proxy1",
+     "selector": [
+      "proxy"
+     ],
+     "strategy": {
+      "type": "leastPing"
+     },
+     "tag": "balancer"
+    }
+   ],
+   "domainStrategy": "IPIfNonMatch",
+   "rules": [
+    {
+     "balancerTag": "balancer",
+     "network": "tcp,udp",
+     "type": "field"
+    }
+   ]
   },
-  {
-    "burstObservatory": {
-      "pingConfig": {
-        "destination": "http://www.google.com/gen_204",
-        "interval": "5m",
-        "sampling": 3,
-        "timeout": "10s"
-      },
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "dns": {
-      "queryStrategy": "UseIPv4",
-      "servers": [
-        "https://1.0.0.1/dns-query"
-      ],
-      "tag": "dns_out"
-    },
-    "fakedns": [],
-    "inbounds": [
-      {
-        "port": 10808,
-        "protocol": "socks",
-        "settings": {
-          "auth": "noauth",
-          "udp": true,
-          "userLevel": 8
-        },
-        "sniffing": {
-          "destOverride": [
-            "http",
-            "tls"
-          ],
-          "enabled": true
-        },
-        "tag": "socks"
-      },
-      {
-        "port": 10809,
-        "protocol": "http",
-        "settings": {
-          "userLevel": 8
-        },
-        "tag": "http"
-      }
-    ],
-    "log": {
-      "loglevel": "warning"
-    },
-    "observatory": {
-      "enableConcurrency": true,
-      "probeInterval": "5m",
-      "probeURL": "http://www.google.com/gen_204",
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "outbounds": [
-      {
-        "protocol": "freedom",
-        "settings": {
-          "fragment": {
-            "interval": "0-1",
-            "length": "1-10",
-            "packets": "tlshello"
-          }
-        },
-        "tag": "dialer"
-      },
-      {
-        "protocol": "freedom",
-        "settings": {
-          "domainStrategy": "UseIPv4"
-        },
-        "tag": "direct"
-      },
-      {
-        "protocol": "blackhole",
-        "tag": "block"
-      },
-      {
-        "protocol": "dns",
-        "tag": "dns-out"
-      },
-      {
-        "protocol": "shadowsocks",
-        "settings": {
-          "servers": [
-            {
-              "address": "206.189.35.197",
-              "method": "chacha20-ietf-poly1305",
-              "password": "AA7CZKmAYMp7SunvalJQXd",
-              "port": 20632
-            }
-          ]
-        },
-        "tag": "proxy1"
-      }
-    ],
-    "policy": {
-      "system": {
-        "statsOutboundDownlink": true,
-        "statsOutboundUplink": true
-      }
-    },
-    "remarks": "🇸🇬 Singapore",
-    "routing": {
-      "balancers": [
-        {
-          "fallbackTag": "proxy1",
-          "selector": [
-            "proxy"
-          ],
-          "strategy": {
-            "type": "leastPing"
-          },
-          "tag": "balancer"
-        }
-      ],
-      "domainStrategy": "IPIfNonMatch",
-      "rules": [
-        {
-          "balancerTag": "balancer",
-          "network": "tcp,udp",
-          "type": "field"
-        }
-      ]
-    },
-    "stats": {}
+  "stats": {}
+ },
+ {
+  "burstObservatory": {
+   "pingConfig": {
+    "destination": "http://www.google.com/gen_204",
+    "interval": "5m",
+    "sampling": 3,
+    "timeout": "10s"
+   },
+   "subjectSelector": [
+    "proxy"
+   ]
   },
-  {
-    "burstObservatory": {
-      "pingConfig": {
-        "destination": "http://www.google.com/gen_204",
-        "interval": "5m",
-        "sampling": 3,
-        "timeout": "10s"
-      },
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "dns": {
-      "queryStrategy": "UseIPv4",
-      "servers": [
-        "https://1.0.0.1/dns-query"
-      ],
-      "tag": "dns_out"
-    },
-    "fakedns": [],
-    "inbounds": [
-      {
-        "port": 10808,
-        "protocol": "socks",
-        "settings": {
-          "auth": "noauth",
-          "udp": true,
-          "userLevel": 8
-        },
-        "sniffing": {
-          "destOverride": [
-            "http",
-            "tls"
-          ],
-          "enabled": true
-        },
-        "tag": "socks"
-      },
-      {
-        "port": 10809,
-        "protocol": "http",
-        "settings": {
-          "userLevel": 8
-        },
-        "tag": "http"
-      }
-    ],
-    "log": {
-      "loglevel": "warning"
-    },
-    "observatory": {
-      "enableConcurrency": true,
-      "probeInterval": "5m",
-      "probeURL": "http://www.google.com/gen_204",
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "outbounds": [
-      {
-        "protocol": "freedom",
-        "settings": {
-          "fragment": {
-            "interval": "0-1",
-            "length": "1-10",
-            "packets": "tlshello"
-          }
-        },
-        "tag": "dialer"
-      },
-      {
-        "protocol": "freedom",
-        "settings": {
-          "domainStrategy": "UseIPv4"
-        },
-        "tag": "direct"
-      },
-      {
-        "protocol": "blackhole",
-        "tag": "block"
-      },
-      {
-        "protocol": "dns",
-        "tag": "dns-out"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vmess",
-        "settings": {
-          "vnext": [
-            {
-              "address": "b62a948c-faa2-4e8a-bf8a-3ff3121c875a.asoul-ava.top",
-              "port": 443,
-              "users": [
-                {
-                  "alterId": 0,
-                  "id": "5f726fe3-d82e-4da5-a711-8af0cbb2b682",
-                  "security": "none"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ]
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/azumase.ren"
-          }
-        },
-        "tag": "proxy1"
-      }
-    ],
-    "policy": {
-      "system": {
-        "statsOutboundDownlink": true,
-        "statsOutboundUplink": true
-      }
-    },
-    "remarks": "🌐 PL",
-    "routing": {
-      "balancers": [
-        {
-          "fallbackTag": "proxy1",
-          "selector": [
-            "proxy"
-          ],
-          "strategy": {
-            "type": "leastPing"
-          },
-          "tag": "balancer"
-        }
-      ],
-      "domainStrategy": "IPIfNonMatch",
-      "rules": [
-        {
-          "balancerTag": "balancer",
-          "network": "tcp,udp",
-          "type": "field"
-        }
-      ]
-    },
-    "stats": {}
+  "dns": {
+   "queryStrategy": "UseIPv4",
+   "servers": [
+    "https://1.0.0.1/dns-query"
+   ],
+   "tag": "dns_out"
   },
-  {
-    "burstObservatory": {
-      "pingConfig": {
-        "destination": "http://www.google.com/gen_204",
-        "interval": "5m",
-        "sampling": 3,
-        "timeout": "10s"
-      },
-      "subjectSelector": [
-        "proxy"
-      ]
+  "fakedns": [],
+  "inbounds": [
+   {
+    "port": 10808,
+    "protocol": "socks",
+    "settings": {
+     "auth": "noauth",
+     "udp": true,
+     "userLevel": 8
     },
-    "dns": {
-      "queryStrategy": "UseIPv4",
-      "servers": [
-        "https://1.0.0.1/dns-query"
-      ],
-      "tag": "dns_out"
+    "sniffing": {
+     "destOverride": [
+      "http",
+      "tls"
+     ],
+     "enabled": true
     },
-    "fakedns": [],
-    "inbounds": [
-      {
-        "port": 10808,
-        "protocol": "socks",
-        "settings": {
-          "auth": "noauth",
-          "udp": true,
-          "userLevel": 8
-        },
-        "sniffing": {
-          "destOverride": [
-            "http",
-            "tls"
-          ],
-          "enabled": true
-        },
-        "tag": "socks"
-      },
-      {
-        "port": 10809,
-        "protocol": "http",
-        "settings": {
-          "userLevel": 8
-        },
-        "tag": "http"
-      }
-    ],
-    "log": {
-      "loglevel": "warning"
+    "tag": "socks"
+   },
+   {
+    "port": 10809,
+    "protocol": "http",
+    "settings": {
+     "userLevel": 8
     },
-    "observatory": {
-      "enableConcurrency": true,
-      "probeInterval": "5m",
-      "probeURL": "http://www.google.com/gen_204",
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "outbounds": [
-      {
-        "protocol": "freedom",
-        "settings": {
-          "fragment": {
-            "interval": "0-1",
-            "length": "1-10",
-            "packets": "tlshello"
-          }
-        },
-        "tag": "dialer"
-      },
-      {
-        "protocol": "freedom",
-        "settings": {
-          "domainStrategy": "UseIPv4"
-        },
-        "tag": "direct"
-      },
-      {
-        "protocol": "blackhole",
-        "tag": "block"
-      },
-      {
-        "protocol": "dns",
-        "tag": "dns-out"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "sss13712.tas-bazi.com",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "7606bb75-416a-4f99-ba20-019cb25543cf"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "xhttp",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy1"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "sss90869.tas-bazi.com",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "1f5cfb7a-c03e-4779-b91f-a24e442e2a8f"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "xhttp",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy2"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "sss2180.tas-bazi.com",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "43fbd4b6-0e35-4b6f-9ed2-8fe95be28bf5"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "xhttp",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy3"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "sss35225.tas-bazi.com",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "ee845a26-9d15-4cac-b3a0-fc0c0c8135af"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "xhttp",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy4"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "91.99.89.156",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "0f7e89d6-9f35-4e94-ba4b-509a724dc177"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "xhttp",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy5"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "188.245.228.94",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "d7ed8991-e019-47c1-b578-93a8d8443830"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "xhttp",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy6"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "sss94870.tas-bazi.com",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "43fbd4b6-0e35-4b6f-9ed2-8fe95be28bf5"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "xhttp",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy7"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "172.66.40.99",
-              "port": 2095,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "6d4a7d95-1a7c-4b3f-827f-a7f2b94bfbd5"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "httpupgrade",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy8"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "172.66.40.99",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "bb76291b-4aa2-4b13-8b93-393f8fe16b67"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              "h2",
-              "http/1.1"
-            ],
-            "fingerprint": "chrome",
-            "serverName": "www.dollardoon.com"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "www.dollardoon.com"
-            },
-            "path": "/@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7@V2RAYFAST_7?ed=2048"
-          }
-        },
-        "tag": "proxy9"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "cloudgetservice.mcloudservice.site",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "7db68497-fbfd-40a3-ac95-96d2ee28b709"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              ""
-            ],
-            "serverName": "maxnetvipap-de145.maxnetservices.online"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "maxnetvipap-de145.maxnetservices.online"
-            },
-            "path": "/linkws"
-          }
-        },
-        "tag": "proxy10"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "DeEp-RAdIo.SEOtOoLSForYou.CO.UK",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "5139af95-a453-46c6-831a-a532b6b51305"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/?ed=2048@el774--@el774--@el774--@el774--@el774--@el774--@el774--@el774--@el774--@el774--@el774--@el774--@el774"
-          }
-        },
-        "tag": "proxy11"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "brainy-party.seotoolsforyou.co.uk",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "34797f17-09a1-400c-9f4b-275718d62a0f"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/?ed=2048@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN--@HiByeVPNN"
-          }
-        },
-        "tag": "proxy12"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vmess",
-        "settings": {
-          "vnext": [
-            {
-              "address": "91.99.185.216",
-              "port": 20086,
-              "users": [
-                {
-                  "alterId": 0,
-                  "id": "7bd6a1ea-a220-4f1c-afed-6cfb8ab96ad9",
-                  "security": "none"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy13"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "DeEp-RAdIo.SEOtOoLSForYou.CO.UK",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "5139af95-a453-46c6-831a-a532b6b51305"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy14"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "www.snl24.com",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "930e2d97-c3e4-4840-9289-748ae4fde82e"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              "h2"
-            ],
-            "fingerprint": "chrome",
-            "serverName": "matoride2.sabzipolo.site"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "matoride2.sabzipolo.site"
-            },
-            "path": "/downloader.php?ed=2560"
-          }
-        },
-        "tag": "proxy15"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "www.speedtest.net",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "930e2d97-c3e4-4840-9289-748ae4fde82e"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "tls",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "tlsSettings": {
-            "allowInsecure": true,
-            "alpn": [
-              "h2"
-            ],
-            "fingerprint": "chrome",
-            "serverName": "matoride2.sabzipolo.site"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": "matoride2.sabzipolo.site"
-            },
-            "path": "/downloader.php?ed=2560"
-          }
-        },
-        "tag": "proxy16"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "91.107.178.242",
-              "port": 20087,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "f2c44225-736e-45a4-9cfb-490fa34e15a0"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy17"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "DeEp-RAdIo.SEOtOoLSForYou.CO.UK",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "5139af95-a453-46c6-831a-a532b6b51305"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/"
-          }
-        },
-        "tag": "proxy18"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "informed-location.seotoolsforyou.co.uk",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "5c929ec5-5b1e-447a-950c-354c5d1ba1de"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/?ed=2048@el774--@el774--@el774--@el774--@el774--@el774--@el774--@el774--@el774--@el774--@el774--@el774--@el774"
-          }
-        },
-        "tag": "proxy19"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "jealous-competition.seotoolsforyou.co.uk",
-              "port": 80,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "7094df26-af60-41c4-afac-857060d1bab0"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "ws",
-          "security": "none",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          },
-          "wsSettings": {
-            "headers": {
-              "Host": ""
-            },
-            "path": "/?@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn----@Evay_vpn"
-          }
-        },
-        "tag": "proxy20"
-      },
-      {
-        "protocol": "shadowsocks",
-        "settings": {
-          "servers": [
-            {
-              "address": "185.177.229.245",
-              "method": "chacha20-ietf-poly1305",
-              "password": "oXGp1+ihlfKg826H",
-              "port": 1866
-            }
-          ]
-        },
-        "tag": "proxy21"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "91.107.241.250",
-              "port": 6000,
-              "users": [
-                {
-                  "encryption": "none",
-                  "id": "330e627f-3752-467a-b0a5-d46d07b5acf9"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "xhttp",
-          "realitySettings": {
-            "fingerprint": "chrome",
-            "publicKey": "aNK-4Lg53CF9JKVv7LFTAGP9Bmha0HxY6ms1emd57nQ",
-            "serverName": "wiredminds.de",
-            "shortId": "243e",
-            "spiderX": "/"
-          },
-          "security": "reality",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy22"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vmess",
-        "settings": {
-          "vnext": [
-            {
-              "address": "s3.ipyar.org",
-              "port": 32020,
-              "users": [
-                {
-                  "alterId": 0,
-                  "id": "78b4fb57-39d7-4e9d-dd38-c9a38322bcb2",
-                  "security": "none"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy23"
-      },
-      {
-        "protocol": "shadowsocks",
-        "settings": {
-          "servers": [
-            {
-              "address": "81.19.141.45",
-              "method": "chacha20-ietf-poly1305",
-              "password": "s5P4ZTLlCYZay6wuGXxHim",
-              "port": 443
-            }
-          ]
-        },
-        "tag": "proxy24"
-      }
-    ],
-    "policy": {
-      "system": {
-        "statsOutboundDownlink": true,
-        "statsOutboundUplink": true
-      }
-    },
-    "remarks": "🇩🇪 Germany",
-    "routing": {
-      "balancers": [
-        {
-          "fallbackTag": "proxy1",
-          "selector": [
-            "proxy"
-          ],
-          "strategy": {
-            "type": "leastPing"
-          },
-          "tag": "balancer"
-        }
-      ],
-      "domainStrategy": "IPIfNonMatch",
-      "rules": [
-        {
-          "balancerTag": "balancer",
-          "network": "tcp,udp",
-          "type": "field"
-        }
-      ]
-    },
-    "stats": {}
+    "tag": "http"
+   }
+  ],
+  "log": {
+   "loglevel": "warning"
   },
-  {
-    "burstObservatory": {
-      "pingConfig": {
-        "destination": "http://www.google.com/gen_204",
-        "interval": "5m",
-        "sampling": 3,
-        "timeout": "10s"
-      },
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "dns": {
-      "queryStrategy": "UseIPv4",
-      "servers": [
-        "https://1.0.0.1/dns-query"
-      ],
-      "tag": "dns_out"
-    },
-    "fakedns": [],
-    "inbounds": [
-      {
-        "port": 10808,
-        "protocol": "socks",
-        "settings": {
-          "auth": "noauth",
-          "udp": true,
-          "userLevel": 8
-        },
-        "sniffing": {
-          "destOverride": [
-            "http",
-            "tls"
-          ],
-          "enabled": true
-        },
-        "tag": "socks"
-      },
-      {
-        "port": 10809,
-        "protocol": "http",
-        "settings": {
-          "userLevel": 8
-        },
-        "tag": "http"
-      }
-    ],
-    "log": {
-      "loglevel": "warning"
-    },
-    "observatory": {
-      "enableConcurrency": true,
-      "probeInterval": "5m",
-      "probeURL": "http://www.google.com/gen_204",
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "outbounds": [
-      {
-        "protocol": "freedom",
-        "settings": {
-          "fragment": {
-            "interval": "0-1",
-            "length": "1-10",
-            "packets": "tlshello"
-          }
-        },
-        "tag": "dialer"
-      },
-      {
-        "protocol": "freedom",
-        "settings": {
-          "domainStrategy": "UseIPv4"
-        },
-        "tag": "direct"
-      },
-      {
-        "protocol": "blackhole",
-        "tag": "block"
-      },
-      {
-        "protocol": "dns",
-        "tag": "dns-out"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vmess",
-        "settings": {
-          "vnext": [
-            {
-              "address": "45.67.230.79",
-              "port": 11052,
-              "users": [
-                {
-                  "alterId": 0,
-                  "id": "314185f7-931d-4656-922d-0857e7afd224",
-                  "security": "none"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy1"
-      },
-      {
-        "protocol": "shadowsocks",
-        "settings": {
-          "servers": [
-            {
-              "address": "45.139.24.24",
-              "method": "chacha20-ietf-poly1305",
-              "password": "360e21d21977dc11",
-              "port": 57456
-            }
-          ]
-        },
-        "tag": "proxy2"
-      }
-    ],
-    "policy": {
-      "system": {
-        "statsOutboundDownlink": true,
-        "statsOutboundUplink": true
-      }
-    },
-    "remarks": "🌐 RU",
-    "routing": {
-      "balancers": [
-        {
-          "fallbackTag": "proxy1",
-          "selector": [
-            "proxy"
-          ],
-          "strategy": {
-            "type": "leastPing"
-          },
-          "tag": "balancer"
-        }
-      ],
-      "domainStrategy": "IPIfNonMatch",
-      "rules": [
-        {
-          "balancerTag": "balancer",
-          "network": "tcp,udp",
-          "type": "field"
-        }
-      ]
-    },
-    "stats": {}
+  "observatory": {
+   "enableConcurrency": true,
+   "probeInterval": "5m",
+   "probeURL": "http://www.google.com/gen_204",
+   "subjectSelector": [
+    "proxy"
+   ]
   },
-  {
-    "burstObservatory": {
-      "pingConfig": {
-        "destination": "http://www.google.com/gen_204",
-        "interval": "5m",
-        "sampling": 3,
-        "timeout": "10s"
-      },
-      "subjectSelector": [
-        "proxy"
-      ]
+  "outbounds": [
+   {
+    "protocol": "freedom",
+    "settings": {
+     "fragment": {
+      "interval": "0-1",
+      "length": "1-10",
+      "packets": "tlshello"
+     }
     },
-    "dns": {
-      "queryStrategy": "UseIPv4",
-      "servers": [
-        "https://1.0.0.1/dns-query"
-      ],
-      "tag": "dns_out"
+    "tag": "dialer"
+   },
+   {
+    "protocol": "freedom",
+    "settings": {
+     "domainStrategy": "UseIPv4"
     },
-    "fakedns": [],
-    "inbounds": [
-      {
-        "port": 10808,
-        "protocol": "socks",
-        "settings": {
-          "auth": "noauth",
-          "udp": true,
-          "userLevel": 8
-        },
-        "sniffing": {
-          "destOverride": [
-            "http",
-            "tls"
-          ],
-          "enabled": true
-        },
-        "tag": "socks"
-      },
-      {
-        "port": 10809,
-        "protocol": "http",
-        "settings": {
-          "userLevel": 8
-        },
-        "tag": "http"
-      }
-    ],
-    "log": {
-      "loglevel": "warning"
+    "tag": "direct"
+   },
+   {
+    "protocol": "blackhole",
+    "tag": "block"
+   },
+   {
+    "protocol": "dns",
+    "tag": "dns-out"
+   },
+   {
+    "mux": {
+     "concurrency": 8,
+     "enabled": true
     },
-    "observatory": {
-      "enableConcurrency": true,
-      "probeInterval": "5m",
-      "probeURL": "http://www.google.com/gen_204",
-      "subjectSelector": [
-        "proxy"
-      ]
-    },
-    "outbounds": [
+    "protocol": "vmess",
+    "settings": {
+     "vnext": [
       {
-        "protocol": "freedom",
-        "settings": {
-          "fragment": {
-            "interval": "0-1",
-            "length": "1-10",
-            "packets": "tlshello"
-          }
-        },
-        "tag": "dialer"
-      },
-      {
-        "protocol": "freedom",
-        "settings": {
-          "domainStrategy": "UseIPv4"
-        },
-        "tag": "direct"
-      },
-      {
-        "protocol": "blackhole",
-        "tag": "block"
-      },
-      {
-        "protocol": "dns",
-        "tag": "dns-out"
-      },
-      {
-        "mux": {
-          "concurrency": 8,
-          "enabled": true
-        },
-        "protocol": "vless",
-        "settings": {
-          "vnext": [
-            {
-              "address": "87.120.165.214",
-              "port": 443,
-              "users": [
-                {
-                  "encryption": "none",
-                  "flow": "xtls-rprx-vision",
-                  "id": "9bc48566-76f9-44d7-8ad0-af41336b4004"
-                }
-              ]
-            }
-          ]
-        },
-        "streamSettings": {
-          "network": "tcp",
-          "realitySettings": {
-            "fingerprint": "chrome",
-            "publicKey": "7tgf5o3AfrE-TWqB3CpBuuZyt7S9tJq6TZ26gPWNyzY",
-            "serverName": "google.com",
-            "shortId": "3549df188940fe"
-          },
-          "security": "reality",
-          "sockopt": {
-            "dialerProxy": "dialer"
-          }
-        },
-        "tag": "proxy1"
-      }
-    ],
-    "policy": {
-      "system": {
-        "statsOutboundDownlink": true,
-        "statsOutboundUplink": true
-      }
-    },
-    "remarks": "🌐 BG",
-    "routing": {
-      "balancers": [
+       "address": "103.61.139.137",
+       "port": 20521,
+       "users": [
         {
-          "fallbackTag": "proxy1",
-          "selector": [
-            "proxy"
-          ],
-          "strategy": {
-            "type": "leastPing"
-          },
-          "tag": "balancer"
+         "alterId": 0,
+         "id": "f8d93cfb-3d5d-447c-a697-16496dd74697",
+         "security": "none"
         }
-      ],
-      "domainStrategy": "IPIfNonMatch",
-      "rules": [
-        {
-          "balancerTag": "balancer",
-          "network": "tcp,udp",
-          "type": "field"
-        }
-      ]
+       ]
+      }
+     ]
     },
-    "stats": {}
-  }
+    "streamSettings": {
+     "network": "ws",
+     "sockopt": {
+      "dialerProxy": "dialer"
+     },
+     "wsSettings": {
+      "headers": {
+       "Host": ""
+      },
+      "path": "/"
+     }
+    },
+    "tag": "proxy1"
+   }
+  ],
+  "policy": {
+   "system": {
+    "statsOutboundDownlink": true,
+    "statsOutboundUplink": true
+   }
+  },
+  "remarks": "🇹🇼 Taiwan",
+  "routing": {
+   "balancers": [
+    {
+     "fallbackTag": "proxy1",
+     "selector": [
+      "proxy"
+     ],
+     "strategy": {
+      "type": "leastPing"
+     },
+     "tag": "balancer"
+    }
+   ],
+   "domainStrategy": "IPIfNonMatch",
+   "rules": [
+    {
+     "balancerTag": "balancer",
+     "network": "tcp,udp",
+     "type": "field"
+    }
+   ]
+  },
+  "stats": {}
+ },
+ {
+  "burstObservatory": {
+   "pingConfig": {
+    "destination": "http://www.google.com/gen_204",
+    "interval": "5m",
+    "sampling": 3,
+    "timeout": "10s"
+   },
+   "subjectSelector": [
+    "proxy"
+   ]
+  },
+  "dns": {
+   "queryStrategy": "UseIPv4",
+   "servers": [
+    "https://1.0.0.1/dns-query"
+   ],
+   "tag": "dns_out"
+  },
+  "fakedns": [],
+  "inbounds": [
+   {
+    "port": 10808,
+    "protocol": "socks",
+    "settings": {
+     "auth": "noauth",
+     "udp": true,
+     "userLevel": 8
+    },
+    "sniffing": {
+     "destOverride": [
+      "http",
+      "tls"
+     ],
+     "enabled": true
+    },
+    "tag": "socks"
+   },
+   {
+    "port": 10809,
+    "protocol": "http",
+    "settings": {
+     "userLevel": 8
+    },
+    "tag": "http"
+   }
+  ],
+  "log": {
+   "loglevel": "warning"
+  },
+  "observatory": {
+   "enableConcurrency": true,
+   "probeInterval": "5m",
+   "probeURL": "http://www.google.com/gen_204",
+   "subjectSelector": [
+    "proxy"
+   ]
+  },
+  "outbounds": [
+   {
+    "protocol": "freedom",
+    "settings": {
+     "fragment": {
+      "interval": "0-1",
+      "length": "1-10",
+      "packets": "tlshello"
+     }
+    },
+    "tag": "dialer"
+   },
+   {
+    "protocol": "freedom",
+    "settings": {
+     "domainStrategy": "UseIPv4"
+    },
+    "tag": "direct"
+   },
+   {
+    "protocol": "blackhole",
+    "tag": "block"
+   },
+   {
+    "protocol": "dns",
+    "tag": "dns-out"
+   },
+   {
+    "mux": {
+     "concurrency": 8,
+     "enabled": true
+    },
+    "protocol": "vmess",
+    "settings": {
+     "vnext": [
+      {
+       "address": "216.173.69.250",
+       "port": 8443,
+       "users": [
+        {
+         "alterId": 0,
+         "id": "91382092-2330-455b-8a1c-9c129cfe661a",
+         "security": "none"
+        }
+       ]
+      }
+     ]
+    },
+    "streamSettings": {
+     "network": "ws",
+     "sockopt": {
+      "dialerProxy": "dialer"
+     },
+     "wsSettings": {
+      "headers": {
+       "Host": ""
+      },
+      "path": "/"
+     }
+    },
+    "tag": "proxy1"
+   }
+  ],
+  "policy": {
+   "system": {
+    "statsOutboundDownlink": true,
+    "statsOutboundUplink": true
+   }
+  },
+  "remarks": "🌐 LV",
+  "routing": {
+   "balancers": [
+    {
+     "fallbackTag": "proxy1",
+     "selector": [
+      "proxy"
+     ],
+     "strategy": {
+      "type": "leastPing"
+     },
+     "tag": "balancer"
+    }
+   ],
+   "domainStrategy": "IPIfNonMatch",
+   "rules": [
+    {
+     "balancerTag": "balancer",
+     "network": "tcp,udp",
+     "type": "field"
+    }
+   ]
+  },
+  "stats": {}
+ },
+ {
+  "burstObservatory": {
+   "pingConfig": {
+    "destination": "http://www.google.com/gen_204",
+    "interval": "5m",
+    "sampling": 3,
+    "timeout": "10s"
+   },
+   "subjectSelector": [
+    "proxy"
+   ]
+  },
+  "dns": {
+   "queryStrategy": "UseIPv4",
+   "servers": [
+    "https://1.0.0.1/dns-query"
+   ],
+   "tag": "dns_out"
+  },
+  "fakedns": [],
+  "inbounds": [
+   {
+    "port": 10808,
+    "protocol": "socks",
+    "settings": {
+     "auth": "noauth",
+     "udp": true,
+     "userLevel": 8
+    },
+    "sniffing": {
+     "destOverride": [
+      "http",
+      "tls"
+     ],
+     "enabled": true
+    },
+    "tag": "socks"
+   },
+   {
+    "port": 10809,
+    "protocol": "http",
+    "settings": {
+     "userLevel": 8
+    },
+    "tag": "http"
+   }
+  ],
+  "log": {
+   "loglevel": "warning"
+  },
+  "observatory": {
+   "enableConcurrency": true,
+   "probeInterval": "5m",
+   "probeURL": "http://www.google.com/gen_204",
+   "subjectSelector": [
+    "proxy"
+   ]
+  },
+  "outbounds": [
+   {
+    "protocol": "freedom",
+    "settings": {
+     "fragment": {
+      "interval": "0-1",
+      "length": "1-10",
+      "packets": "tlshello"
+     }
+    },
+    "tag": "dialer"
+   },
+   {
+    "protocol": "freedom",
+    "settings": {
+     "domainStrategy": "UseIPv4"
+    },
+    "tag": "direct"
+   },
+   {
+    "protocol": "blackhole",
+    "tag": "block"
+   },
+   {
+    "protocol": "dns",
+    "tag": "dns-out"
+   },
+   {
+    "mux": {
+     "concurrency": 8,
+     "enabled": true
+    },
+    "protocol": "vmess",
+    "settings": {
+     "vnext": [
+      {
+       "address": "b62a948c-faa2-4e8a-bf8a-3ff3121c875a.asoul-ava.top",
+       "port": 443,
+       "users": [
+        {
+         "alterId": 0,
+         "id": "5f726fe3-d82e-4da5-a711-8af0cbb2b682",
+         "security": "none"
+        }
+       ]
+      }
+     ]
+    },
+    "streamSettings": {
+     "network": "ws",
+     "security": "tls",
+     "sockopt": {
+      "dialerProxy": "dialer"
+     },
+     "tlsSettings": {
+      "allowInsecure": true,
+      "alpn": [
+       ""
+      ]
+     },
+     "wsSettings": {
+      "headers": {
+       "Host": ""
+      },
+      "path": "/azumase.ren"
+     }
+    },
+    "tag": "proxy1"
+   }
+  ],
+  "policy": {
+   "system": {
+    "statsOutboundDownlink": true,
+    "statsOutboundUplink": true
+   }
+  },
+  "remarks": "🌐 PL",
+  "routing": {
+   "balancers": [
+    {
+     "fallbackTag": "proxy1",
+     "selector": [
+      "proxy"
+     ],
+     "strategy": {
+      "type": "leastPing"
+     },
+     "tag": "balancer"
+    }
+   ],
+   "domainStrategy": "IPIfNonMatch",
+   "rules": [
+    {
+     "balancerTag": "balancer",
+     "network": "tcp,udp",
+     "type": "field"
+    }
+   ]
+  },
+  "stats": {}
+ },
+ {
+  "burstObservatory": {
+   "pingConfig": {
+    "destination": "http://www.google.com/gen_204",
+    "interval": "5m",
+    "sampling": 3,
+    "timeout": "10s"
+   },
+   "subjectSelector": [
+    "proxy"
+   ]
+  },
+  "dns": {
+   "queryStrategy": "UseIPv4",
+   "servers": [
+    "https://1.0.0.1/dns-query"
+   ],
+   "tag": "dns_out"
+  },
+  "fakedns": [],
+  "inbounds": [
+   {
+    "port": 10808,
+    "protocol": "socks",
+    "settings": {
+     "auth": "noauth",
+     "udp": true,
+     "userLevel": 8
+    },
+    "sniffing": {
+     "destOverride": [
+      "http",
+      "tls"
+     ],
+     "enabled": true
+    },
+    "tag": "socks"
+   },
+   {
+    "port": 10809,
+    "protocol": "http",
+    "settings": {
+     "userLevel": 8
+    },
+    "tag": "http"
+   }
+  ],
+  "log": {
+   "loglevel": "warning"
+  },
+  "observatory": {
+   "enableConcurrency": true,
+   "probeInterval": "5m",
+   "probeURL": "http://www.google.com/gen_204",
+   "subjectSelector": [
+    "proxy"
+   ]
+  },
+  "outbounds": [
+   {
+    "protocol": "freedom",
+    "settings": {
+     "fragment": {
+      "interval": "0-1",
+      "length": "1-10",
+      "packets": "tlshello"
+     }
+    },
+    "tag": "dialer"
+   },
+   {
+    "protocol": "freedom",
+    "settings": {
+     "domainStrategy": "UseIPv4"
+    },
+    "tag": "direct"
+   },
+   {
+    "protocol": "blackhole",
+    "tag": "block"
+   },
+   {
+    "protocol": "dns",
+    "tag": "dns-out"
+   },
+   {
+    "mux": {
+     "concurrency": 8,
+     "enabled": true
+    },
+    "protocol": "vmess",
+    "settings": {
+     "vnext": [
+      {
+       "address": "135.125.182.74",
+       "port": 28213,
+       "users": [
+        {
+         "alterId": 0,
+         "id": "81852771-76fb-4e94-e4f1-4e37a698a49a",
+         "security": "none"
+        }
+       ]
+      }
+     ]
+    },
+    "streamSettings": {
+     "network": "tcp",
+     "sockopt": {
+      "dialerProxy": "dialer"
+     }
+    },
+    "tag": "proxy1"
+   }
+  ],
+  "policy": {
+   "system": {
+    "statsOutboundDownlink": true,
+    "statsOutboundUplink": true
+   }
+  },
+  "remarks": "🇫🇷 France",
+  "routing": {
+   "balancers": [
+    {
+     "fallbackTag": "proxy1",
+     "selector": [
+      "proxy"
+     ],
+     "strategy": {
+      "type": "leastPing"
+     },
+     "tag": "balancer"
+    }
+   ],
+   "domainStrategy": "IPIfNonMatch",
+   "rules": [
+    {
+     "balancerTag": "balancer",
+     "network": "tcp,udp",
+     "type": "field"
+    }
+   ]
+  },
+  "stats": {}
+ },
+ {
+  "burstObservatory": {
+   "pingConfig": {
+    "destination": "http://www.google.com/gen_204",
+    "interval": "5m",
+    "sampling": 3,
+    "timeout": "10s"
+   },
+   "subjectSelector": [
+    "proxy"
+   ]
+  },
+  "dns": {
+   "queryStrategy": "UseIPv4",
+   "servers": [
+    "https://1.0.0.1/dns-query"
+   ],
+   "tag": "dns_out"
+  },
+  "fakedns": [],
+  "inbounds": [
+   {
+    "port": 10808,
+    "protocol": "socks",
+    "settings": {
+     "auth": "noauth",
+     "udp": true,
+     "userLevel": 8
+    },
+    "sniffing": {
+     "destOverride": [
+      "http",
+      "tls"
+     ],
+     "enabled": true
+    },
+    "tag": "socks"
+   },
+   {
+    "port": 10809,
+    "protocol": "http",
+    "settings": {
+     "userLevel": 8
+    },
+    "tag": "http"
+   }
+  ],
+  "log": {
+   "loglevel": "warning"
+  },
+  "observatory": {
+   "enableConcurrency": true,
+   "probeInterval": "5m",
+   "probeURL": "http://www.google.com/gen_204",
+   "subjectSelector": [
+    "proxy"
+   ]
+  },
+  "outbounds": [
+   {
+    "protocol": "freedom",
+    "settings": {
+     "fragment": {
+      "interval": "0-1",
+      "length": "1-10",
+      "packets": "tlshello"
+     }
+    },
+    "tag": "dialer"
+   },
+   {
+    "protocol": "freedom",
+    "settings": {
+     "domainStrategy": "UseIPv4"
+    },
+    "tag": "direct"
+   },
+   {
+    "protocol": "blackhole",
+    "tag": "block"
+   },
+   {
+    "protocol": "dns",
+    "tag": "dns-out"
+   },
+   {
+    "mux": {
+     "concurrency": 8,
+     "enabled": true
+    },
+    "protocol": "vmess",
+    "settings": {
+     "vnext": [
+      {
+       "address": "91.99.185.216",
+       "port": 20086,
+       "users": [
+        {
+         "alterId": 0,
+         "id": "7bd6a1ea-a220-4f1c-afed-6cfb8ab96ad9",
+         "security": "none"
+        }
+       ]
+      }
+     ]
+    },
+    "streamSettings": {
+     "network": "ws",
+     "sockopt": {
+      "dialerProxy": "dialer"
+     },
+     "wsSettings": {
+      "headers": {
+       "Host": ""
+      },
+      "path": "/"
+     }
+    },
+    "tag": "proxy1"
+   },
+   {
+    "mux": {
+     "concurrency": 8,
+     "enabled": true
+    },
+    "protocol": "vmess",
+    "settings": {
+     "vnext": [
+      {
+       "address": "s3.ipyar.org",
+       "port": 32020,
+       "users": [
+        {
+         "alterId": 0,
+         "id": "78b4fb57-39d7-4e9d-dd38-c9a38322bcb2",
+         "security": "none"
+        }
+       ]
+      }
+     ]
+    },
+    "streamSettings": {
+     "network": "tcp",
+     "sockopt": {
+      "dialerProxy": "dialer"
+     }
+    },
+    "tag": "proxy2"
+   }
+  ],
+  "policy": {
+   "system": {
+    "statsOutboundDownlink": true,
+    "statsOutboundUplink": true
+   }
+  },
+  "remarks": "🇩🇪 Germany",
+  "routing": {
+   "balancers": [
+    {
+     "fallbackTag": "proxy1",
+     "selector": [
+      "proxy"
+     ],
+     "strategy": {
+      "type": "leastPing"
+     },
+     "tag": "balancer"
+    }
+   ],
+   "domainStrategy": "IPIfNonMatch",
+   "rules": [
+    {
+     "balancerTag": "balancer",
+     "network": "tcp,udp",
+     "type": "field"
+    }
+   ]
+  },
+  "stats": {}
+ },
+ {
+  "burstObservatory": {
+   "pingConfig": {
+    "destination": "http://www.google.com/gen_204",
+    "interval": "5m",
+    "sampling": 3,
+    "timeout": "10s"
+   },
+   "subjectSelector": [
+    "proxy"
+   ]
+  },
+  "dns": {
+   "queryStrategy": "UseIPv4",
+   "servers": [
+    "https://1.0.0.1/dns-query"
+   ],
+   "tag": "dns_out"
+  },
+  "fakedns": [],
+  "inbounds": [
+   {
+    "port": 10808,
+    "protocol": "socks",
+    "settings": {
+     "auth": "noauth",
+     "udp": true,
+     "userLevel": 8
+    },
+    "sniffing": {
+     "destOverride": [
+      "http",
+      "tls"
+     ],
+     "enabled": true
+    },
+    "tag": "socks"
+   },
+   {
+    "port": 10809,
+    "protocol": "http",
+    "settings": {
+     "userLevel": 8
+    },
+    "tag": "http"
+   }
+  ],
+  "log": {
+   "loglevel": "warning"
+  },
+  "observatory": {
+   "enableConcurrency": true,
+   "probeInterval": "5m",
+   "probeURL": "http://www.google.com/gen_204",
+   "subjectSelector": [
+    "proxy"
+   ]
+  },
+  "outbounds": [
+   {
+    "protocol": "freedom",
+    "settings": {
+     "fragment": {
+      "interval": "0-1",
+      "length": "1-10",
+      "packets": "tlshello"
+     }
+    },
+    "tag": "dialer"
+   },
+   {
+    "protocol": "freedom",
+    "settings": {
+     "domainStrategy": "UseIPv4"
+    },
+    "tag": "direct"
+   },
+   {
+    "protocol": "blackhole",
+    "tag": "block"
+   },
+   {
+    "protocol": "dns",
+    "tag": "dns-out"
+   },
+   {
+    "mux": {
+     "concurrency": 8,
+     "enabled": true
+    },
+    "protocol": "vmess",
+    "settings": {
+     "vnext": [
+      {
+       "address": "161.248.30.3",
+       "port": 20086,
+       "users": [
+        {
+         "alterId": 0,
+         "id": "1006a928-2021-4a3b-beb5-d5853c6281c5",
+         "security": "none"
+        }
+       ]
+      }
+     ]
+    },
+    "streamSettings": {
+     "network": "ws",
+     "sockopt": {
+      "dialerProxy": "dialer"
+     },
+     "wsSettings": {
+      "headers": {
+       "Host": ""
+      },
+      "path": "/"
+     }
+    },
+    "tag": "proxy1"
+   }
+  ],
+  "policy": {
+   "system": {
+    "statsOutboundDownlink": true,
+    "statsOutboundUplink": true
+   }
+  },
+  "remarks": "🌐 VN",
+  "routing": {
+   "balancers": [
+    {
+     "fallbackTag": "proxy1",
+     "selector": [
+      "proxy"
+     ],
+     "strategy": {
+      "type": "leastPing"
+     },
+     "tag": "balancer"
+    }
+   ],
+   "domainStrategy": "IPIfNonMatch",
+   "rules": [
+    {
+     "balancerTag": "balancer",
+     "network": "tcp,udp",
+     "type": "field"
+    }
+   ]
+  },
+  "stats": {}
+ },
+ {
+  "burstObservatory": {
+   "pingConfig": {
+    "destination": "http://www.google.com/gen_204",
+    "interval": "5m",
+    "sampling": 3,
+    "timeout": "10s"
+   },
+   "subjectSelector": [
+    "proxy"
+   ]
+  },
+  "dns": {
+   "queryStrategy": "UseIPv4",
+   "servers": [
+    "https://1.0.0.1/dns-query"
+   ],
+   "tag": "dns_out"
+  },
+  "fakedns": [],
+  "inbounds": [
+   {
+    "port": 10808,
+    "protocol": "socks",
+    "settings": {
+     "auth": "noauth",
+     "udp": true,
+     "userLevel": 8
+    },
+    "sniffing": {
+     "destOverride": [
+      "http",
+      "tls"
+     ],
+     "enabled": true
+    },
+    "tag": "socks"
+   },
+   {
+    "port": 10809,
+    "protocol": "http",
+    "settings": {
+     "userLevel": 8
+    },
+    "tag": "http"
+   }
+  ],
+  "log": {
+   "loglevel": "warning"
+  },
+  "observatory": {
+   "enableConcurrency": true,
+   "probeInterval": "5m",
+   "probeURL": "http://www.google.com/gen_204",
+   "subjectSelector": [
+    "proxy"
+   ]
+  },
+  "outbounds": [
+   {
+    "protocol": "freedom",
+    "settings": {
+     "fragment": {
+      "interval": "0-1",
+      "length": "1-10",
+      "packets": "tlshello"
+     }
+    },
+    "tag": "dialer"
+   },
+   {
+    "protocol": "freedom",
+    "settings": {
+     "domainStrategy": "UseIPv4"
+    },
+    "tag": "direct"
+   },
+   {
+    "protocol": "blackhole",
+    "tag": "block"
+   },
+   {
+    "protocol": "dns",
+    "tag": "dns-out"
+   },
+   {
+    "mux": {
+     "concurrency": 8,
+     "enabled": true
+    },
+    "protocol": "vmess",
+    "settings": {
+     "vnext": [
+      {
+       "address": "51.38.64.209",
+       "port": 44023,
+       "users": [
+        {
+         "alterId": 0,
+         "id": "7da457da-ed0f-437d-c81d-6c35885bbea3",
+         "security": "none"
+        }
+       ]
+      }
+     ]
+    },
+    "streamSettings": {
+     "network": "tcp",
+     "sockopt": {
+      "dialerProxy": "dialer"
+     }
+    },
+    "tag": "proxy1"
+   }
+  ],
+  "policy": {
+   "system": {
+    "statsOutboundDownlink": true,
+    "statsOutboundUplink": true
+   }
+  },
+  "remarks": "🇬🇧 United Kingdom",
+  "routing": {
+   "balancers": [
+    {
+     "fallbackTag": "proxy1",
+     "selector": [
+      "proxy"
+     ],
+     "strategy": {
+      "type": "leastPing"
+     },
+     "tag": "balancer"
+    }
+   ],
+   "domainStrategy": "IPIfNonMatch",
+   "rules": [
+    {
+     "balancerTag": "balancer",
+     "network": "tcp,udp",
+     "type": "field"
+    }
+   ]
+  },
+  "stats": {}
+ }
 ]
